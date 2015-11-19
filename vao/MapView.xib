@@ -1,0 +1,40 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.XIB" version="3.0" toolsVersion="9059" systemVersion="15B42" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES">
+    <dependencies>
+        <deployment identifier="iOS"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="9049"/>
+        <capability name="Constraints to layout margins" minToolsVersion="6.0"/>
+    </dependencies>
+    <objects>
+        <placeholder placeholderIdentifier="IBFilesOwner" id="-1" userLabel="File's Owner"/>
+        <placeholder placeholderIdentifier="IBFirstResponder" id="-2" customClass="UIResponder"/>
+        <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" selectionStyle="default" indentationWidth="10" reuseIdentifier="mapCell" rowHeight="131" id="gY4-Bm-edV" customClass="MapViewCell" customModule="vao" customModuleProvider="target">
+            <rect key="frame" x="0.0" y="0.0" width="320" height="132"/>
+            <autoresizingMask key="autoresizingMask"/>
+            <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" tableViewCell="gY4-Bm-edV" id="1rS-zC-aYy">
+                <rect key="frame" x="0.0" y="0.0" width="320" height="131"/>
+                <autoresizingMask key="autoresizingMask"/>
+                <subviews>
+                    <mapView clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" mapType="standard" translatesAutoresizingMaskIntoConstraints="NO" id="cjc-6S-bht">
+                        <rect key="frame" x="0.0" y="0.0" width="320" height="130"/>
+                        <animations/>
+                        <constraints>
+                            <constraint firstAttribute="height" constant="130" id="Mp0-Tq-iXA"/>
+                        </constraints>
+                    </mapView>
+                </subviews>
+                <animations/>
+                <constraints>
+                    <constraint firstAttribute="trailingMargin" secondItem="cjc-6S-bht" secondAttribute="trailing" constant="-8" id="KlC-th-xos"/>
+                    <constraint firstItem="cjc-6S-bht" firstAttribute="leading" secondItem="1rS-zC-aYy" secondAttribute="leadingMargin" constant="-8" id="SVd-Ht-uHy"/>
+                    <constraint firstItem="cjc-6S-bht" firstAttribute="top" secondItem="1rS-zC-aYy" secondAttribute="top" id="dAG-rO-vGd"/>
+                </constraints>
+            </tableViewCellContentView>
+            <animations/>
+            <connections>
+                <outlet property="mapView" destination="cjc-6S-bht" id="I1F-Pn-8vQ"/>
+            </connections>
+            <point key="canvasLocation" x="465" y="451"/>
+        </tableViewCell>
+    </objects>
+</document>

@@ -1,0 +1,78 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.XIB" version="3.0" toolsVersion="9059" systemVersion="15B42" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES">
+    <dependencies>
+        <deployment identifier="iOS"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="9049"/>
+        <capability name="Aspect ratio constraints" minToolsVersion="5.1"/>
+        <capability name="Constraints to layout margins" minToolsVersion="6.0"/>
+    </dependencies>
+    <objects>
+        <placeholder placeholderIdentifier="IBFilesOwner" id="-1" userLabel="File's Owner"/>
+        <placeholder placeholderIdentifier="IBFirstResponder" id="-2" customClass="UIResponder"/>
+        <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" selectionStyle="default" indentationWidth="10" reuseIdentifier="cell" rowHeight="89" id="d7F-Hx-aTH" customClass="RatedCell" customModule="vao" customModuleProvider="target">
+            <rect key="frame" x="0.0" y="0.0" width="320" height="89"/>
+            <autoresizingMask key="autoresizingMask"/>
+            <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" tableViewCell="d7F-Hx-aTH" id="F9a-R4-EzQ">
+                <rect key="frame" x="0.0" y="0.0" width="320" height="88"/>
+                <autoresizingMask key="autoresizingMask"/>
+                <subviews>
+                    <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" image="ion-ios-star_100_0_e4e400_none.png" translatesAutoresizingMaskIntoConstraints="NO" id="bdo-wY-ofe">
+                        <rect key="frame" x="93" y="8" width="30" height="30"/>
+                        <animations/>
+                    </imageView>
+                    <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" image="ion-ios-star_100_0_e4e400_none.png" translatesAutoresizingMaskIntoConstraints="NO" id="BKe-8Q-FDt">
+                        <rect key="frame" x="126" y="8" width="30" height="30"/>
+                        <animations/>
+                    </imageView>
+                    <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" image="ion-ios-star_100_0_e4e400_none.png" translatesAutoresizingMaskIntoConstraints="NO" id="r5T-uS-wVZ">
+                        <rect key="frame" x="157" y="8" width="30" height="30"/>
+                        <animations/>
+                    </imageView>
+                    <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" image="ion-ios-star_100_0_e4e400_none.png" translatesAutoresizingMaskIntoConstraints="NO" id="XvX-YR-Cyb">
+                        <rect key="frame" x="189" y="8" width="30" height="30"/>
+                        <animations/>
+                    </imageView>
+                    <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" image="ion-ios-star-outline_100_0_a3a3a3_none.png" translatesAutoresizingMaskIntoConstraints="NO" id="DdT-4i-Iux">
+                        <rect key="frame" x="221" y="8" width="30" height="30"/>
+                        <animations/>
+                    </imageView>
+                    <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" text="Rated for Axiom Youth" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="krZ-cG-gfE">
+                        <rect key="frame" x="93" y="40" width="153" height="21"/>
+                        <animations/>
+                        <fontDescription key="fontDescription" type="system" pointSize="15"/>
+                        <color key="textColor" cocoaTouchSystemColor="darkTextColor"/>
+                        <nil key="highlightedColor"/>
+                    </label>
+                    <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" text="By Axiom" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="ywZ-oK-Im3">
+                        <rect key="frame" x="93" y="59" width="64" height="21"/>
+                        <animations/>
+                        <fontDescription key="fontDescription" type="system" pointSize="15"/>
+                        <color key="textColor" cocoaTouchSystemColor="darkTextColor"/>
+                        <nil key="highlightedColor"/>
+                    </label>
+                    <imageView userInteractionEnabled="NO" contentMode="scaleAspectFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="axiom_logo.jpg" translatesAutoresizingMaskIntoConstraints="NO" id="uxE-u1-iam">
+                        <rect key="frame" x="20" y="11" width="65" height="65"/>
+                        <animations/>
+                        <constraints>
+                            <constraint firstAttribute="width" constant="65" id="Rlp-BO-6t3"/>
+                            <constraint firstAttribute="height" constant="65" id="WbX-mP-W6s"/>
+                            <constraint firstAttribute="width" secondItem="uxE-u1-iam" secondAttribute="height" multiplier="1:1" id="quM-Wk-9zI"/>
+                        </constraints>
+                    </imageView>
+                </subviews>
+                <animations/>
+                <constraints>
+                    <constraint firstItem="uxE-u1-iam" firstAttribute="leading" secondItem="F9a-R4-EzQ" secondAttribute="leadingMargin" constant="12" id="9ZE-F6-HHe"/>
+                    <constraint firstItem="uxE-u1-iam" firstAttribute="centerY" secondItem="F9a-R4-EzQ" secondAttribute="centerY" id="Ddl-36-2Lg"/>
+                </constraints>
+            </tableViewCellContentView>
+            <animations/>
+            <point key="canvasLocation" x="508" y="337.5"/>
+        </tableViewCell>
+    </objects>
+    <resources>
+        <image name="axiom_logo.jpg" width="825" height="825"/>
+        <image name="ion-ios-star-outline_100_0_a3a3a3_none.png" width="100" height="100"/>
+        <image name="ion-ios-star_100_0_e4e400_none.png" width="100" height="100"/>
+    </resources>
+</document>
