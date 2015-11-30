@@ -7,6 +7,7 @@
 //
 
 import UIKit
+import Parse
 
 class OpportuntiesCell: UITableViewCell {
     
@@ -17,13 +18,25 @@ class OpportuntiesCell: UITableViewCell {
     @IBOutlet var opportunityTitle: UILabel!
     @IBOutlet var opportunityDateAndTime: UILabel!
     @IBOutlet var opportunityLocation: UILabel!
+    @IBOutlet var opportunitySummary: UITextView!
     
-    func refreshCellWithOpportunityData(title: String, dateAndTime: String, location: String, summary: String, picture: UIImage) {
-        opportunityImageView.image = picture
+    func refreshCellWithOpportunityData(title: String, date: NSDate, time: NSDate, frequency: String, location: String, summary: String, picture: UIImage) {
+//        opportunityImageView.image = picture
         opportunityTitle.text = title
+        opportunityImageView.image = picture
+        opportunitySummary.text = summary
         
         opportunityImageView.layer.cornerRadius = 33
         opportunityImageView.clipsToBounds = true
+        
+        if frequency != "don't repeat" {
+            let formatter = NSDateFormatter()
+            formatter.timeStyle = NSDateFormatterStyle.ShortStyle
+            
+            let dateString = formatter.stringFromDate(time)
+            
+            opportunityDateAndTime.text = frequency + " at " + dateString
+        }
     }
     
     func refreshCellWithCategoryData(icon: UIImage, categoryName: String) {
@@ -32,5 +45,24 @@ class OpportuntiesCell: UITableViewCell {
         
         categoriesImageView.layer.cornerRadius = 10
         categoriesImageView.clipsToBounds = true
+    }
+    
+    func refreshCellWithObject(object: PFObject) {
+        //        opportunityImageView.image = picture
+        opportunityTitle.text = object["title"] as? String
+//        opportunityImageView.image = picture
+        opportunitySummary.text = object["summary"] as! String
+        
+        opportunityImageView.layer.cornerRadius = 33
+        opportunityImageView.clipsToBounds = true
+        
+        if object["frequency"] as! String != "don't repeat" {
+            let formatter = NSDateFormatter()
+            formatter.timeStyle = NSDateFormatterStyle.ShortStyle
+            
+            let dateString = formatter.stringFromDate(object["time"] as! NSDate)
+            
+            opportunityDateAndTime.text = object["frequency"] as! String + " at " + dateString
+        }
     }
 }

@@ -1,8 +1,8 @@
 <?xml version="1.0" encoding="UTF-8" standalone="no"?>
-<document type="com.apple.InterfaceBuilder3.CocoaTouch.XIB" version="3.0" toolsVersion="9059" systemVersion="15B42" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES">
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.XIB" version="3.0" toolsVersion="9060" systemVersion="15B42" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES">
     <dependencies>
         <deployment identifier="iOS"/>
-        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="9049"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="9051"/>
         <capability name="Constraints to layout margins" minToolsVersion="6.0"/>
     </dependencies>
     <objects>
@@ -19,16 +19,12 @@
                         <rect key="frame" x="25" y="11" width="20" height="20"/>
                         <animations/>
                         <constraints>
-                            <constraint firstAttribute="width" constant="20" id="AmE-Aq-UNf"/>
-                            <constraint firstAttribute="height" constant="20" id="P9b-gM-iJy"/>
+                            <constraint firstAttribute="width" constant="20" id="uz4-AX-lDF"/>
                         </constraints>
                     </imageView>
                     <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Label" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="YMr-z6-iAU">
                         <rect key="frame" x="63" y="11" width="210" height="21"/>
                         <animations/>
-                        <constraints>
-                            <constraint firstAttribute="width" constant="210" id="N2d-Oe-dRP"/>
-                        </constraints>
                         <fontDescription key="fontDescription" type="system" pointSize="17"/>
                         <color key="textColor" white="0.66666666666666663" alpha="1" colorSpace="calibratedWhite"/>
                         <nil key="highlightedColor"/>
@@ -36,17 +32,16 @@
                 </subviews>
                 <animations/>
                 <constraints>
-                    <constraint firstItem="YMr-z6-iAU" firstAttribute="leading" secondItem="JMa-q5-FfY" secondAttribute="trailing" constant="18" id="1kK-MC-GOg"/>
-                    <constraint firstItem="JMa-q5-FfY" firstAttribute="leading" secondItem="boU-73-1ww" secondAttribute="leadingMargin" constant="17" id="9ZK-8o-JvT"/>
-                    <constraint firstItem="JMa-q5-FfY" firstAttribute="centerY" secondItem="boU-73-1ww" secondAttribute="centerY" id="IqL-2Q-dzi"/>
-                    <constraint firstItem="JMa-q5-FfY" firstAttribute="top" secondItem="boU-73-1ww" secondAttribute="topMargin" constant="3" id="vKC-QO-vcX"/>
-                    <constraint firstItem="YMr-z6-iAU" firstAttribute="centerY" secondItem="boU-73-1ww" secondAttribute="centerY" id="zgO-2Y-dyQ"/>
+                    <constraint firstItem="JMa-q5-FfY" firstAttribute="top" secondItem="boU-73-1ww" secondAttribute="topMargin" constant="3" id="9EZ-EQ-7HJ"/>
+                    <constraint firstItem="JMa-q5-FfY" firstAttribute="leading" secondItem="boU-73-1ww" secondAttribute="leadingMargin" constant="17" id="Ag0-CC-M06"/>
+                    <constraint firstItem="YMr-z6-iAU" firstAttribute="leading" secondItem="JMa-q5-FfY" secondAttribute="trailing" constant="18" id="MOl-fJ-UzS"/>
+                    <constraint firstItem="JMa-q5-FfY" firstAttribute="top" secondItem="YMr-z6-iAU" secondAttribute="top" id="P4Z-pm-Bsn"/>
+                    <constraint firstItem="YMr-z6-iAU" firstAttribute="centerY" secondItem="boU-73-1ww" secondAttribute="centerY" id="aUh-C1-dxo"/>
+                    <constraint firstItem="JMa-q5-FfY" firstAttribute="centerY" secondItem="YMr-z6-iAU" secondAttribute="centerY" id="adf-Jm-ZBd"/>
+                    <constraint firstAttribute="trailingMargin" secondItem="YMr-z6-iAU" secondAttribute="trailing" constant="6" id="idR-Oc-OJN"/>
                 </constraints>
             </tableViewCellContentView>
             <animations/>
-            <constraints>
-                <constraint firstAttribute="trailing" secondItem="YMr-z6-iAU" secondAttribute="trailing" constant="47" id="d1U-xn-D0y"/>
-            </constraints>
             <connections>
                 <outlet property="iconImageView" destination="JMa-q5-FfY" id="dvp-DV-dlx"/>
                 <outlet property="pickerLabel" destination="YMr-z6-iAU" id="QtA-E2-mIE"/>

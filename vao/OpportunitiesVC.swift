@@ -7,23 +7,30 @@
 //
 
 import UIKit
+import Parse
 
-class OpportunitiesVC: UIViewController, UITableViewDataSource, UITableViewDelegate, UIPickerViewDataSource, UIPickerViewDelegate {
+class OpportunitiesVC: UIViewController, UITableViewDataSource, UITableViewDelegate {
+    
+    let STORYBOARD_NAME_VOL = "Main"
+    let STORYBOARD_NAME_ORG = "Organizations"
+    let VC_IDENTIFIER = "mainScreen"
+    
+    @IBOutlet var tableview: UITableView!
     
     var myBool = false
     var screenRect : CGRect = UIScreen.mainScreen().bounds
     
-    @IBOutlet var selectedFilter: UIButton!
-    
     var picker : UIPickerView! = UIPickerView()
     let array = ["recent", "upcoming", "recommended", "bookmarked", "my opportunities"]
+    
+    var eventsArray = [EventClass]()
     
     //opportunitiesCell info
     let titlesArray = ["Axiom","Indigo","World Vision"]
     let eventImages = [UIImage(named: "axiom.jpg")!, UIImage(named: "event0.jpg")!, UIImage(named: "event1.jpg")]
     
     func tableView(tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-        return titlesArray.count
+        return eventsArray.count
     }
     
     func tableView(tableView: UITableView, cellForRowAtIndexPath indexPath: NSIndexPath) -> UITableViewCell {
@@ -34,73 +41,87 @@ class OpportunitiesVC: UIViewController, UITableViewDataSource, UITableViewDeleg
         tableView.rowHeight = 160
         tableView.registerNib(nib, forCellReuseIdentifier: "opportunitiesCell")
         cell = tableView.dequeueReusableCellWithIdentifier("opportunitiesCell", forIndexPath: indexPath) as! OpportuntiesCell
-        cell.refreshCellWithOpportunityData(titlesArray[indexPath.row], dateAndTime: "two", location: "three", summary: "four", picture: eventImages[indexPath.row]!)
+        cell.refreshCellWithOpportunityData(eventsArray[indexPath.row].title!,
+                                    date: eventsArray[indexPath.row].date!,
+                                    time: eventsArray[indexPath.row].time!,
+                                    frequency: eventsArray[indexPath.row].frequency!,
+                                    location: "",
+                                    summary: eventsArray[indexPath.row].summary!,
+                                    picture: eventsArray[indexPath.row].eventImage!)
         
         return cell
     }
     
     func tableView(tableView: UITableView, didSelectRowAtIndexPath indexPath: NSIndexPath) {
         let vc = OpportunitiesDetailVC(nibName:"OpportunitiesDetailVC", bundle: nil)
-        vc.objectId = indexPath.row
+        vc.event = eventsArray[indexPath.row]
         navigationController?.pushViewController(vc, animated: true)
     }
     
-    @IBAction func openPicker(sender: AnyObject) {
-        if picker.hidden == true {
-            picker.hidden = false
-        } else {
-            picker.hidden = true
+    func loadEvents() {
+        let query = PFQuery(className: "Event")
+        query.orderByAscending("createdAt")
+        query.findObjectsInBackgroundWithBlock {
+            (objects: [PFObject]?, error: NSError?) -> Void in
+            if let error = error {
+                print(error)
+            } else {
+                for object in objects! {
+                    
+                    let event = EventClass()
+                    event.setTitle(object["title"] as! String)
+                    event.setDate(object["date"] as! NSDate)
+                    event.setTime(object["time"] as! NSDate)
+                    event.setSummary(object["summary"] as! String)
+                    event.setFrequency(object["frequency"] as! String)
+                    
+                    event.createdBy = object["createdBy"] as! PFUser
+                    
+                    let userImageFile = object["eventImage"] as! PFFile
+                    userImageFile.getDataInBackgroundWithBlock {
+                        (imageData: NSData?, error: NSError?) -> Void in
+                        if error == nil {
+                            if let imageData = imageData {
+                                event.setEventImage(UIImage(data:imageData)!)
+                                self.eventsArray.append(event)
+                                self.tableview.reloadData()
+
+                            }
+                        }
+                    }
+                }
+                
+            }
         }
-    }
-    
-    func numberOfComponentsInPickerView(pickerView: UIPickerView) -> Int {
-        return 1
-    }
-    
-    func pickerView(pickerView: UIPickerView, numberOfRowsInComponent component: Int) -> Int {
-        return array.count
-    }
-    
-    func pickerView(pickerView: UIPickerView, titleForRow row: Int, forComponent component: Int) -> String? {
-        return array[row]
-    }
-    
-    func pickerView(pickerView: UIPickerView, didSelectRow row: Int, inComponent component: Int) {
-        selectedFilter.titleLabel?.text = array[row]
-    }
-    
-    func setPicker() {
-        picker.hidden = true
-        
-        picker.delegate = self
-        picker.dataSource = self
-        
-        picker.frame = CGRectMake(0, screenRect.size.height - picker.frame.height, screenRect.size.width, picker.frame.size.height)
-        
-        let white = UIColor.whiteColor()
-        picker.backgroundColor = white.colorWithAlphaComponent(0.9)
-        
-        self.view.addSubview(picker)
     }
     
     override func viewDidLoad() {
         super.viewDidLoad()
         // Do any additional setup after loading the view, typically from a nib.
         //checked to see if logged in
-        if myBool == false {
-//            let nib = CredentialsVC(nibName:"LogIn", bundle: nil) as CredentialsVC
-//            self.presentViewController(nib, animated: true, completion: nil)
+        
+        let currentUser = PFUser.currentUser()
+        if currentUser != nil {
+            // Do stuff with the user
+            var storyboardName : String
+            let userType = currentUser!["userTypeIsVolunteer"] as! Int
+            
+            if userType == 0 {
+                storyboardName = self.STORYBOARD_NAME_ORG
+                let storyboard = UIStoryboard(name: storyboardName, bundle: nil)
+                let vc = storyboard.instantiateViewControllerWithIdentifier(self.VC_IDENTIFIER) as UIViewController
+                self.presentViewController(vc, animated: true, completion: nil)
+            } else {
+                loadEvents()
+            }
+            
+            
         } else {
+            // Show the signup or login screen
+            let nib = CredentialsVC(nibName:"LogIn", bundle: nil) as CredentialsVC
+            self.presentViewController(nib, animated: true, completion: nil)
             
         }
-//        navigationController?.navigationBar.titleTextAttributes = [NSForegroundColorAttributeName: UIColor.whiteColor(),
-//            NSFontAttributeName: UIFont(name: "Montserrat-Regular", size: 21)!]
-//        setPicker()
-    }
-    
-    override func didReceiveMemoryWarning() {
-        super.didReceiveMemoryWarning()
-        // Dispose of any resources that can be recreated.
     }
     
 }

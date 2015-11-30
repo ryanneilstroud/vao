@@ -29,7 +29,7 @@ class OrgEventsVC: UIViewController, UITableViewDataSource, UITableViewDelegate 
         tableView.rowHeight = 160
         
         let cell = tableView.dequeueReusableCellWithIdentifier("opportunitiesCell", forIndexPath: indexPath) as! OpportuntiesCell
-        cell.refreshCellWithOpportunityData(titlesArray[indexPath.row], dateAndTime: "", location: "", summary: "", picture: eventImages[indexPath.row]!)
+//        cell.refreshCellWithOpportunityData(titlesArray[indexPath.row], dateAndTime: NSDate(), location: "", summary: "", picture: eventImages[indexPath.row]!)
         
         return cell
     }

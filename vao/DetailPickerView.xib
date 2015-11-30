@@ -1,36 +1,37 @@
 <?xml version="1.0" encoding="UTF-8" standalone="no"?>
-<document type="com.apple.InterfaceBuilder3.CocoaTouch.XIB" version="3.0" toolsVersion="9059" systemVersion="15B42" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES">
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.XIB" version="3.0" toolsVersion="9060" systemVersion="15B42" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES">
     <dependencies>
         <deployment identifier="iOS"/>
-        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="9049"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="9051"/>
     </dependencies>
     <objects>
-        <placeholder placeholderIdentifier="IBFilesOwner" id="-1" userLabel="File's Owner" customClass="NewEventVC" customModule="vao" customModuleProvider="target">
+        <placeholder placeholderIdentifier="IBFilesOwner" id="-1" userLabel="File's Owner" customClass="NewEventCollectSelectionVC" customModule="vao" customModuleProvider="target">
             <connections>
-                <outlet property="view" destination="TzQ-hX-FaU" id="bzR-q5-549"/>
+                <outlet property="picker" destination="6vq-Un-8ge" id="5g8-xb-AGn"/>
+                <outlet property="view" destination="iN0-l3-epB" id="SBx-mG-OoD"/>
             </connections>
         </placeholder>
         <placeholder placeholderIdentifier="IBFirstResponder" id="-2" customClass="UIResponder"/>
-        <view contentMode="scaleToFill" id="TzQ-hX-FaU">
+        <view contentMode="scaleToFill" id="iN0-l3-epB">
             <rect key="frame" x="0.0" y="0.0" width="600" height="600"/>
-            <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+            <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
             <subviews>
-                <datePicker contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" datePickerMode="date" minuteInterval="1" translatesAutoresizingMaskIntoConstraints="NO" id="UWH-xI-fvt">
-                    <rect key="frame" x="0.0" y="384" width="600" height="216"/>
+                <pickerView contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="6vq-Un-8ge">
+                    <rect key="frame" x="0.0" y="192" width="600" height="216"/>
                     <animations/>
-                    <date key="date" timeIntervalSinceReferenceDate="469387227.51349801">
-                        <!--2015-11-16 17:20:27 +0000-->
-                    </date>
-                </datePicker>
+                    <connections>
+                        <outlet property="dataSource" destination="-1" id="B9Y-ob-KGy"/>
+                        <outlet property="delegate" destination="-1" id="vab-mm-ibB"/>
+                    </connections>
+                </pickerView>
             </subviews>
             <animations/>
-            <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+            <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="calibratedWhite"/>
             <constraints>
-                <constraint firstAttribute="trailing" secondItem="UWH-xI-fvt" secondAttribute="trailing" id="603-5Z-Aot"/>
-                <constraint firstItem="UWH-xI-fvt" firstAttribute="leading" secondItem="TzQ-hX-FaU" secondAttribute="leading" id="cQF-Yc-Zny"/>
-                <constraint firstAttribute="bottom" secondItem="UWH-xI-fvt" secondAttribute="bottom" id="tOo-2y-dPI"/>
+                <constraint firstItem="6vq-Un-8ge" firstAttribute="centerY" secondItem="iN0-l3-epB" secondAttribute="centerY" id="19E-ZQ-s7f"/>
+                <constraint firstItem="6vq-Un-8ge" firstAttribute="leading" secondItem="iN0-l3-epB" secondAttribute="leading" id="2mC-zH-zYa"/>
+                <constraint firstAttribute="trailing" secondItem="6vq-Un-8ge" secondAttribute="trailing" id="Tqr-B5-6lM"/>
             </constraints>
-            <point key="canvasLocation" x="506" y="354"/>
         </view>
     </objects>
 </document>

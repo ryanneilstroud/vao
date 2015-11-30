@@ -7,23 +7,31 @@
 //
 
 import UIKit
+import Parse
 
 class OrgProfileVC: UIViewController, UITableViewDataSource, UITableViewDelegate {
-
-    var profilePic : UIImage!
+    
+    var profilePic : UIImage?
     var orgNumberOfProjects : Int!
     var orgNumberOfEvents : Int!
     var orgRatingScore : Double!
     
+    var orgId = ""
+    
+    var eventIds = [String]()
+    var projectIds = [String]()
+    
+    var didReload: Bool!
+    
     let about = [
         ("location", "Hong Kong"),
-        ("languages", "English"),
-        ("type", "project"),
-        ("tags", "youth worker, outgoing, Christian, committed")
+        ("languages", "English")
     ]
+//        ("tags", "youth worker, outgoing, Christian, committed")
+    
     
     let iconImagesArray = [UIImage(named: "ion-ios-telephone-outline_256_0_c3c3c3_none.png"), UIImage(named: "ion-ios-email-outline_256_0_c3c3c3_none.png"), UIImage(named: "ion-ios-world-outline_256_0_c3c3c3_none.png")]
-    let iconLabelArray = ["555 1234", "axiomyouth@gmail.com", "www.axiom.com"]
+    var iconLabelArray = ["", "", ""]
     
     func numberOfSectionsInTableView(tableView: UITableView) -> Int {
         return 3
@@ -33,13 +41,23 @@ class OrgProfileVC: UIViewController, UITableViewDataSource, UITableViewDelegate
         if section == 0 {
             return 1
         } else if section == 1 {
-            return 4
+            return about.count
         } else {
             return 3
         }
     }
     
     func tableView(tableView: UITableView, cellForRowAtIndexPath indexPath: NSIndexPath) -> UITableViewCell {
+        
+        if didReload == false {
+            didReload = true
+            if orgId == "" {
+                getCurrentUserData(tableView, organization: PFUser.currentUser()!)
+            } else {
+                getOrgData(tableView)
+            }
+        }
+        
         if indexPath.section == 0 {
             let nib = UINib(nibName:"ProfileSummary", bundle: nil);
             
@@ -52,7 +70,11 @@ class OrgProfileVC: UIViewController, UITableViewDataSource, UITableViewDelegate
             cell.eventsButton.addTarget(self, action: "checkButtonClick:", forControlEvents: .TouchUpInside)
             cell.ratingsButton.addTarget(self, action: "checkButtonClick:", forControlEvents: .TouchUpInside)
             
-            cell.refreshProfileSummaryCellWithData(profilePic, userProjectCount: orgNumberOfProjects, userEventCount: orgNumberOfEvents, userRating: orgRatingScore)
+            if profilePic != nil {
+                cell.refreshProfileSummaryCellWithData(profilePic!, userProjectCount: orgNumberOfProjects, userEventCount: orgNumberOfEvents, userRating: orgRatingScore)
+            } else {
+                cell.refreshProfileSummaryCellWithData(orgNumberOfProjects, userEventCount: orgNumberOfEvents, userRating: orgRatingScore)
+            }
             
             return cell
         } else if indexPath.section == 1 {
@@ -96,17 +118,92 @@ class OrgProfileVC: UIViewController, UITableViewDataSource, UITableViewDelegate
     
     func checkButtonClick(sender:UIButton!) {
         let vc = SummaryVC(nibName:"Summary", bundle: nil)
-        vc.profileButtonTag = sender.tag
+        
+        if sender.tag == 0 {
+            vc.objectIds = projectIds
+            vc.target = 0
+        } else if sender.tag == 1 {
+            vc.objectIds = eventIds
+            vc.target = 1
+        } else {
+        
+        }
+        
         navigationController?.pushViewController(vc, animated: true)
+
+    }
+    
+    func getOrgData(tableview: UITableView) {
+        
+        let query = PFUser.query()
+        query!.getObjectInBackgroundWithId(orgId) {
+            (object: PFObject?, error: NSError?) -> Void in
+            if error == nil && object != nil {
+                print("object -> ", object)
+                self.getCurrentUserData(tableview, organization: object!)
+            } else {
+                print(error)
+            }            
+        }
+    }
+    
+    func getCurrentUserData(tableView: UITableView, organization: PFObject) {
+        
+        navigationItem.title = organization["fullName"] != nil ? organization["fullName"] as! String : ""
+        
+        iconLabelArray[0] = organization["phoneNumber"] != nil ? organization["phoneNumber"] as! String : ""
+        iconLabelArray[1] = organization["email"] != nil ? organization["email"] as! String : ""
+        iconLabelArray[2] = organization["website"] != nil ? organization["website"] as! String : ""
+        
+        let userImageFile = organization["orgImage"] as! PFFile
+        userImageFile.getDataInBackgroundWithBlock {
+            (imageData: NSData?, error: NSError?) -> Void in
+            if error == nil {
+                if let imageData = imageData {
+                    self.profilePic = UIImage(data:imageData)
+                    
+                    tableView.reloadData()
+                }
+            }
+        }
+        
+        let eventsQuery = PFQuery(className: "Event")
+        eventsQuery.whereKey("createdBy", equalTo: organization)
+        eventsQuery.findObjectsInBackgroundWithBlock{
+            (objects: [PFObject]?, error: NSError?) -> Void in
+            
+            if error == nil {
+                // The find succeeded.
+                // Do something with the found objects
+                if let objects = objects {
+                    
+                    for object in objects {
+                        print(object.objectId)
+                        if object["frequency"] as! String == "don't repeat" {
+                            self.eventIds.append(object.objectId!)
+                            self.orgNumberOfEvents = self.eventIds.count
+                        } else {
+                            self.projectIds.append(object.objectId!)
+                            self.orgNumberOfProjects = self.projectIds.count
+                        }
+                    }
+                    tableView.reloadData()
+                }
+            } else {
+                // Log details of the failure
+                print("Error: \(error!) \(error!.userInfo)")
+            }
+        }
+        
     }
     
     override func viewDidLoad() {
-        navigationItem.title = "Axiom"
+        didReload = false
         
-        profilePic = UIImage(named: "axiom_logo.jpg")
-        orgNumberOfProjects = 10
-        orgNumberOfEvents = 5
-        orgRatingScore = 8.5
+        orgNumberOfProjects = 0
+        orgNumberOfEvents = 0
+        orgRatingScore = 0
+        
     }
 
 }

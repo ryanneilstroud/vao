@@ -13,13 +13,21 @@ class NewEventCell: UITableViewCell {
 
     @IBOutlet var pickerLabel: UILabel!
     @IBOutlet var iconImageView: UIImageView!
-    @IBOutlet var mapView: MKMapView!
     
-    @IBAction func pickStartDate(sender: AnyObject) {
-    }
-
+    @IBOutlet var titleTextField: UITextField!
+    @IBOutlet var eventImageButton: UIButton!
+    
     func refreshCellWithTitle() {
     
+    }
+    
+    func refreshCellWithEventImage(_image: UIImage) {
+        eventImageButton.setImage(_image, forState: .Normal)
+    }
+    
+    func refreshCellWithEventImageAndText(_image: UIImage, _text: String) {
+        eventImageButton.setImage(_image, forState: .Normal)
+        titleTextField.text = _text
     }
     
     func refreshCellWithButtonLabel(_label: String, _icon: UIImage) {

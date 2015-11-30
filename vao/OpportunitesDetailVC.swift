@@ -7,10 +7,11 @@
 //
 
 import UIKit
+import Parse
 
 class OpportunitiesDetailVC: UIViewController, UITableViewDataSource, UITableViewDelegate {
     
-    var objectId = 0
+    var event = EventClass()
     var orgInvited = false
     
     @IBOutlet var requestIntivationButton: UIButton!
@@ -26,7 +27,8 @@ class OpportunitiesDetailVC: UIViewController, UITableViewDataSource, UITableVie
     
     let buttonTextArray = ["see friends going","join"]
 
-    let timeAndDate = ["Friday, 13 November","6:00pm to 10:00pm","every week"]
+    var timeAndDate = [String]()
+    
     let timeAndDateIcons = [UIImage(named: "ion-ios-calendar-outline_256_0_c3c3c3_none.png")!,
                                 UIImage(named: "ion-ios-clock-outline_256_0_c3c3c3_none.png")!,
                                 UIImage(named:"pe-7s-repeat_256_0_c3c3c3_none.png")]
@@ -42,9 +44,10 @@ class OpportunitiesDetailVC: UIViewController, UITableViewDataSource, UITableVie
     
     @IBAction func handleVolunteerInvitation(sender: AnyObject) {
     }
+    
     func tableView(tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
         if section == 0 {
-            return name.count
+            return 1
         } else if section == 1 {
             return timeAndDate.count
         } else {
@@ -64,7 +67,19 @@ class OpportunitiesDetailVC: UIViewController, UITableViewDataSource, UITableVie
             cell.eventHostButton.addTarget(self, action: "checkButtonClick:", forControlEvents: .TouchUpInside)
             cell.selectionStyle = .None
             
-            cell.refreshPhotoCoverWithData(eventImages[objectId]!, title: titlesArray[objectId], host: titlesArray[objectId])
+            
+            let user = PFUser.query()
+            user!.whereKey("objectId", equalTo:event.createdBy.objectId!)
+            user?.findObjectsInBackgroundWithBlock {
+                (results: [PFObject]?, error: NSError?) -> Void in
+                if error == nil {
+                    print("myObject = ", results)
+                    cell.refreshPhotoCoverWithData(self.event.eventImage!, title: self.event.title!, host: results![0]["fullName"] as! String)
+                } else {
+                    cell.refreshPhotoCoverWithData(self.event.eventImage!, title: self.event.title!, host: "")
+
+                }
+            }
             
             return cell
         }
@@ -97,7 +112,7 @@ class OpportunitiesDetailVC: UIViewController, UITableViewDataSource, UITableVie
             
             tableView.rowHeight = 130
             
-            let nib = UINib(nibName: "MapView", bundle: nil)
+            let nib = UINib(nibName: "MapViewCell", bundle: nil)
             tableView.registerNib(nib, forCellReuseIdentifier: "mapCell")
 
             cell = tableView.dequeueReusableCellWithIdentifier("mapCell", forIndexPath: indexPath) as! MapViewCell
@@ -129,7 +144,7 @@ class OpportunitiesDetailVC: UIViewController, UITableViewDataSource, UITableVie
             cell = tableView.dequeueReusableCellWithIdentifier("textviewCell", forIndexPath: indexPath) as! GenericLabelTextviewCell
             cell.selectionStyle = .None
 
-            cell.refreshCellWithTextviewText("test")
+            cell.refreshCellWithTextviewText(event.summary!)
             
             return cell
         } else if indexPath.section == 6 {
@@ -184,13 +199,28 @@ class OpportunitiesDetailVC: UIViewController, UITableViewDataSource, UITableVie
     
     func checkButtonClick(sender:UIButton!) {
         let vc = OrgProfileVC(nibName:"OrgProfileView", bundle: nil)
+        vc.orgId = event.createdBy.objectId!
         navigationController?.pushViewController(vc, animated: true)
     }
     
     override func viewDidLoad() {
         super.viewDidLoad()
         // Do any additional setup after loading the view, typically from a nib.
-        navigationItem.title = titlesArray[objectId]
+        navigationItem.title = event.title
+        
+        let formatter = NSDateFormatter()
+        formatter.dateStyle = NSDateFormatterStyle.LongStyle
+        
+        let dateString = formatter.stringFromDate(event.date!)
+        timeAndDate.append(dateString)
+        
+        let timeFormatter = NSDateFormatter()
+        timeFormatter.timeStyle = NSDateFormatterStyle.ShortStyle
+        
+        let timeString = timeFormatter.stringFromDate(event.time!)
+        timeAndDate.append(timeString)
+        timeAndDate.append(event.frequency!)
+        
         
 //        requestIntivationButton.translatesAutoresizingMaskIntoConstraints = true
 //        requestIntivationButton.frame = CGRectMake(0, screenRect.height - 100, screenRect.width, 50)

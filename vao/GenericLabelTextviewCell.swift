@@ -13,6 +13,10 @@ class GenericLabelTextviewCell: UITableViewCell {
     @IBOutlet var textview: UITextView!
     
     func refreshCellWithTextviewText(multiLineText: String) {
-        
+        textview.text = multiLineText
+    }
+    
+    func refreshCellWithEmptyCell() {
+        textview.editable = true
     }
 }

@@ -7,6 +7,7 @@
 //
 
 import UIKit
+import Parse
 
 class ProfileVC: UIViewController, UITableViewDataSource, UITableViewDelegate {
         
@@ -16,6 +17,12 @@ class ProfileVC: UIViewController, UITableViewDataSource, UITableViewDelegate {
     var userRatingScore : Double!
     
     var orgIsViewing = false
+    var volId = ""
+    
+    var eventIds = [String]()
+    var projectIds = [String]()
+    
+    var didReload: Bool!
     
     let data = [
         ("gender", "male"),
@@ -23,10 +30,8 @@ class ProfileVC: UIViewController, UITableViewDataSource, UITableViewDelegate {
         ("religion", "Christian")
     ]
     
-    let contact = [
-        ("phone", "5631 2729"),
-        ("email", "ryanstroud75@gmail.com")
-    ]
+    let iconImagesArray = [UIImage(named: "ion-ios-telephone-outline_256_0_c3c3c3_none.png"), UIImage(named: "ion-ios-email-outline_256_0_c3c3c3_none.png")]
+    var iconLabelArray = ["", ""]
     
     func numberOfSectionsInTableView(tableView: UITableView) -> Int {
         if orgIsViewing {
@@ -44,13 +49,19 @@ class ProfileVC: UIViewController, UITableViewDataSource, UITableViewDelegate {
         } else if section == 2 {
             return 1
         } else if section == 3 {
-            return contact.count;
+            return iconImagesArray.count;
         } else {
             return 1
         }
     }
     
     func tableView(tableView: UITableView, cellForRowAtIndexPath indexPath: NSIndexPath) -> UITableViewCell {
+        
+        if didReload == false {
+            didReload = true
+            getUserData(tableView)
+        }
+        
         if indexPath.section == 0 {
             var cell : AttributeValueCells!
             let nib = UINib(nibName:"ProfileSummary", bundle: nil);
@@ -64,7 +75,11 @@ class ProfileVC: UIViewController, UITableViewDataSource, UITableViewDelegate {
             cell.eventsButton.addTarget(self, action: "checkButtonClick:", forControlEvents: .TouchUpInside)
             cell.ratingsButton.addTarget(self, action: "checkButtonClick:", forControlEvents: .TouchUpInside)
 
-            cell.refreshProfileSummaryCellWithData(profilePic, userProjectCount: userNumberOfProjects, userEventCount: userNumberOfEvents, userRating: userRatingScore)
+            if profilePic != nil {
+                cell.refreshProfileSummaryCellWithData(profilePic!, userProjectCount: userNumberOfProjects, userEventCount: userNumberOfEvents, userRating: userRatingScore)
+            } else {
+                cell.refreshProfileSummaryCellWithData(userNumberOfProjects, userEventCount: userNumberOfEvents, userRating: userRatingScore)
+            }
             
             return cell
         } else if indexPath.section == 1 {
@@ -91,14 +106,13 @@ class ProfileVC: UIViewController, UITableViewDataSource, UITableViewDelegate {
             
             return cell
         } else if indexPath.section == 3 {
-            var cell : AttributeValueCells!
-            let nib = UINib(nibName:"AttributeValue", bundle: nil);
+            let nib = UINib(nibName:"IconLabelCell", bundle: nil);
             
             tableView.rowHeight = 50
-            tableView.registerNib(nib, forCellReuseIdentifier: "details")
-            cell = tableView.dequeueReusableCellWithIdentifier("details", forIndexPath: indexPath) as! AttributeValueCells;
-            let (attr, value) = contact[indexPath.row]
-            cell.refreshProfileAboutCellWithData(attr, attributeValue: value)
+            tableView.registerNib(nib, forCellReuseIdentifier: "cell")
+            let cell = tableView.dequeueReusableCellWithIdentifier("cell", forIndexPath: indexPath) as! IconLabelCell;
+            
+            cell.refreshCellWithData(iconImagesArray[indexPath.row]!, text: iconLabelArray[indexPath.row])
             return cell
         } else {
             var cell : SimpleButtonCell!
@@ -126,7 +140,17 @@ class ProfileVC: UIViewController, UITableViewDataSource, UITableViewDelegate {
     
     func checkButtonClick(sender:UIButton!) {
         let vc = SummaryVC(nibName:"Summary", bundle: nil)
-        vc.profileButtonTag = sender.tag
+        
+        if sender.tag == 0 {
+            vc.objectIds = projectIds
+            vc.target = 0
+        } else if sender.tag == 1 {
+            vc.objectIds = eventIds
+            vc.target = 1
+        } else {
+            
+        }
+        
         navigationController?.pushViewController(vc, animated: true)
     }
     
@@ -142,16 +166,37 @@ class ProfileVC: UIViewController, UITableViewDataSource, UITableViewDelegate {
         }
     }
     
+    func getUserData(tableView: UITableView) {
+        
+        let volunteer = PFUser.currentUser()
+        
+        navigationItem.title = volunteer!["fullName"] != nil ? volunteer!["fullName"] as! String : ""
+        
+        iconLabelArray[0] = volunteer!["phoneNumber"] != nil ? volunteer!["phoneNumber"] as! String : ""
+        iconLabelArray[1] = volunteer!["email"] != nil ? volunteer!["email"] as! String : ""
+        
+        let userImageFile = volunteer!["orgImage"] as! PFFile
+        userImageFile.getDataInBackgroundWithBlock {
+            (imageData: NSData?, error: NSError?) -> Void in
+            if error == nil {
+                if let imageData = imageData {
+                    self.profilePic = UIImage(data:imageData)
+                    
+                    tableView.reloadData()
+                }
+            }
+        }
+
+    }
+    
     override func viewDidLoad() {
         super.viewDidLoad()
         // Do any additional setup after loading the view, typically from a nib.
-        
-        navigationItem.title = "Ryan Neil Stroud"
-        
-        profilePic = UIImage(named: "1.jpg")
-        userNumberOfProjects = 10
-        userNumberOfEvents = 5
-        userRatingScore = 8.5
+        didReload = false
+
+        userNumberOfProjects = 0
+        userNumberOfEvents = 0
+        userRatingScore = 0
         
     }
     

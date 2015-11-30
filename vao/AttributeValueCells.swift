@@ -32,6 +32,12 @@ class AttributeValueCells: UITableViewCell {
         profilePic.clipsToBounds = true;
     }
     
+    func refreshProfileSummaryCellWithData(userProjectCount: Int, userEventCount: Int, userRating: Double) {
+        projectCount.text = String(userProjectCount)
+        eventCount.text = String(userEventCount)
+        ratingScore.text = String(userRating)
+    }
+    
     func refreshProfileAboutCellWithData(attributeName: String, attributeValue: String) {
         labelAttribute.text = attributeName
         labelValue.text = attributeValue

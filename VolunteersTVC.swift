@@ -7,6 +7,7 @@
 //
 
 import UIKit
+import Parse
 
 class VolunteersTVC: UITableViewCell {
 
@@ -23,5 +24,23 @@ class VolunteersTVC: UITableViewCell {
         
         volunteerFullName.text = _fullName
         
+    }
+    
+    func refreshCellWithVolunteer(_volunteer: PFObject) {
+        
+        let userImageFile = _volunteer["orgImage"] as! PFFile
+        userImageFile.getDataInBackgroundWithBlock {
+            (imageData: NSData?, error: NSError?) -> Void in
+            if error == nil {
+                if let imageData = imageData {
+                    self.volunteerProfilePictureImageView.image = UIImage(data:imageData)
+                }
+            }
+        }
+        
+        volunteerProfilePictureImageView.layer.cornerRadius = 35
+        volunteerProfilePictureImageView.clipsToBounds = true
+        
+        volunteerFullName.text = _volunteer["fullName"] as? String
     }
 }

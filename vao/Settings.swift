@@ -7,6 +7,7 @@
 //
 
 import UIKit
+import Parse
 
 class Settings: UIViewController, UITableViewDataSource, UITableViewDelegate {
     
@@ -59,11 +60,20 @@ class Settings: UIViewController, UITableViewDataSource, UITableViewDelegate {
     func tableView(tableView: UITableView, didSelectRowAtIndexPath indexPath: NSIndexPath) {
         if indexPath.section == 0 {
             if indexPath.row == 0 {
+                //edit profile
                 
+                if PFUser.currentUser()!["userTypeIsVolunteer"] as! Bool == false {
+                    let vc = OrgEditProfileVC(nibName: "EditProfileView", bundle: nil)
+                    navigationController?.pushViewController(vc, animated: true)
+                } else {
+                    let vc = EditProfileVC(nibName: "EditProfileView", bundle: nil)
+                    navigationController?.pushViewController(vc, animated: true)
+                }
             } else if indexPath.row == 1 {
             
             }
         } else if indexPath.section == 1 {
+            PFUser.logOut()
             let nib = CredentialsVC(nibName:"LogIn", bundle: nil) as CredentialsVC
             self.presentViewController(nib, animated: true, completion: nil)
         }

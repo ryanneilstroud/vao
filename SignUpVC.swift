@@ -7,12 +7,17 @@
 //
 
 import UIKit
+import Parse
 
 class SignUpVC: UIViewController, UITextFieldDelegate {
     
     let screenRect : CGRect = UIScreen.mainScreen().bounds
     
     var volunteersTabIsSelected = true
+    
+    let STORYBOARD_NAME_VOL = "Main"
+    let STORYBOARD_NAME_ORG = "Organizations"
+    let VC_IDENTIFIER = "mainScreen"
     
     @IBOutlet var fullNameTextField: UITextField!
     @IBOutlet var emailTextField: UITextField!
@@ -25,16 +30,6 @@ class SignUpVC: UIViewController, UITextFieldDelegate {
     @IBOutlet var pointerImageView: UIImageView!
     @IBOutlet var signUpButton: UIButton!
     
-//    func textFieldShouldReturn(textField: UITextField) -> Bool {
-//        if textField == emailTextField {
-//            passwordTextField.becomeFirstResponder()
-//        } else if textField == passwordTextField {
-//            passwordTextField.resignFirstResponder()
-//            attemptLogIn()
-//        }
-//        return true
-//    }
-    
     @IBAction func displayVolunteerSignUp(sender: AnyObject) {
         volunteersTabIsSelected = true
         fullNameTextField.placeholder = "full name"
@@ -43,16 +38,86 @@ class SignUpVC: UIViewController, UITextFieldDelegate {
     
     @IBAction func displayOrganizationSignUp(sender: AnyObject) {
         volunteersTabIsSelected = false
-        fullNameTextField.placeholder = "Organization's Name"
+        fullNameTextField.placeholder = "organization's name"
         moveImage()
     }
     
     @IBAction func signUp(sender: AnyObject) {
-    
+        if checkFullName() == true && checkEmail() == true && checkPassword().0 == true {
+            signUpWithParse()
+            print("true: ", checkFullName(), checkEmail(), checkPassword())
+        } else {
+            print("one or more are false")
+        }
     }
     
     @IBAction func cancelSignUp(sender: AnyObject) {
         self.dismissViewControllerAnimated(true, completion: nil)
+    }
+    
+    func checkFullName() -> Bool {
+        if fullNameTextField.text?.characters.count < 3 {
+            //input name
+            return false
+        } else {
+            //good to go!
+            return true
+        }
+    }
+    
+    func checkPassword() -> (Bool, String) {
+        if passwordTextField.text?.characters.count < 8 {
+            //needs longer password
+            return (false, "password too short")
+        } else if passwordTextField.text != confirmPasswordTextField.text {
+            //passwords don't match
+            return (false, "passwords don't match")
+        } else {
+            return (true, "success")
+        }
+    }
+    
+    func checkEmail() -> Bool {
+        let emailRegEx = "^[a-zA-Z0-9.!#$%&'*+/=?^_`{|}~-]+@[a-zA-Z0-9](?:[a-zA-Z0-9-]{0,61}[a-zA-Z0-9])?(?:\\.[a-zA-Z0-9](?:[a-zA-Z0-9-]{0,61}[a-zA-Z0-9])?)*$"
+        
+        let emailTest = NSPredicate(format:"SELF MATCHES %@", emailRegEx)
+        return (emailTest.evaluateWithObject(emailTextField.text))
+    }
+    
+    func signUpWithParse() {
+        
+        let user = PFUser()
+        user.username = emailTextField.text
+        user.password = passwordTextField.text
+        user.email = user.username
+        // other fields can be set just like with PFObject
+        user["fullName"] = fullNameTextField.text
+        
+        user["userTypeIsVolunteer"] = volunteersTabIsSelected
+        
+        user.signUpInBackgroundWithBlock {
+            (succeeded: Bool, error: NSError?) -> Void in
+            if let error = error {
+                let errorString = error.userInfo["error"] as? NSString
+                // Show the errorString somewhere and let the user try again.
+                print(errorString)
+            } else {
+                // Hooray! Let them use the app now.
+                
+                var storyboardName : String
+                
+                if self.volunteersTabIsSelected == true {
+                    storyboardName = self.STORYBOARD_NAME_VOL
+                } else {
+                    storyboardName = self.STORYBOARD_NAME_ORG
+                }
+                
+                let storyboard = UIStoryboard(name: storyboardName, bundle: nil)
+                let vc = storyboard.instantiateViewControllerWithIdentifier(self.VC_IDENTIFIER) as UIViewController
+                self.presentViewController(vc, animated: true, completion: nil)
+
+            }
+        }
     }
     
     func respondToSwipeGesture(gesture: UIGestureRecognizer) {

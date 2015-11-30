@@ -7,11 +7,17 @@
 //
 
 import UIKit
+import Parse
 
 class SummaryVC: UIViewController, UITableViewDataSource, UITableViewDelegate {
     
-    var profileButtonTag : Int = 0
+    var target : Int = 0
+    var objectIds = [String]()
     let vcTitlesArray = ["Projects","Events","Reviews"]
+    
+    var objects = [PFObject]()
+    
+    var didReload = false
     
     //opportunitiesCell info
     let titlesArray = ["Indigo","World Vision"]
@@ -21,17 +27,19 @@ class SummaryVC: UIViewController, UITableViewDataSource, UITableViewDelegate {
     let projectImage = UIImage(named: "axiom.jpg")!
     
     func tableView(tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-        if profileButtonTag == 0 {
-            return 1
-        } else if profileButtonTag == 1 {
-            return titlesArray.count
-        } else {
-            return 3
+        
+        if didReload == false {
+            didReload = true
+            getUserData(tableView)
         }
+        
+        return objects.count
     }
     
     func tableView(tableView: UITableView, cellForRowAtIndexPath indexPath: NSIndexPath) -> UITableViewCell {
-        if profileButtonTag == 0 {
+        
+        if target == 0 {
+            navigationItem.title = "Projects"
             var cell : OpportuntiesCell!
             
             let nib = UINib(nibName:"OpportunitiesCell", bundle: nil);
@@ -39,9 +47,11 @@ class SummaryVC: UIViewController, UITableViewDataSource, UITableViewDelegate {
             tableView.rowHeight = 160
             tableView.registerNib(nib, forCellReuseIdentifier: "opportunitiesCell")
             cell = tableView.dequeueReusableCellWithIdentifier("opportunitiesCell", forIndexPath: indexPath) as! OpportuntiesCell
-            cell.refreshCellWithOpportunityData(project, dateAndTime: "", location: "", summary: "", picture: projectImage)
+//            cell.refreshCellWithOpportunityData(project, dateAndTime: NSDate(), location: "", summary: "", picture: projectImage)
+            cell.refreshCellWithObject(objects[indexPath.row])
             return cell
-        } else if profileButtonTag == 1 {
+        } else if target == 1 {
+            navigationItem.title = "Events"
             var cell : OpportuntiesCell!
             
             let nib = UINib(nibName:"OpportunitiesCell", bundle: nil);
@@ -49,7 +59,8 @@ class SummaryVC: UIViewController, UITableViewDataSource, UITableViewDelegate {
             tableView.rowHeight = 160
             tableView.registerNib(nib, forCellReuseIdentifier: "opportunitiesCell")
             cell = tableView.dequeueReusableCellWithIdentifier("opportunitiesCell", forIndexPath: indexPath) as! OpportuntiesCell
-            cell.refreshCellWithOpportunityData(titlesArray[indexPath.row], dateAndTime: "", location: "", summary: "", picture: eventImages[indexPath.row]!)
+//            cell.refreshCellWithOpportunityData(titlesArray[indexPath.row], dateAndTime: NSDate(), location: "", summary: "", picture: eventImages[indexPath.row]!)
+            cell.refreshCellWithObject(objects[indexPath.row])
             return cell
 
         } else {
@@ -64,11 +75,29 @@ class SummaryVC: UIViewController, UITableViewDataSource, UITableViewDelegate {
         }
     }
     
+    func getUserData(tableview: UITableView) {
+        print("test")
+        for objectId in objectIds {
+            let query = PFQuery(className: "Event")
+            query.getObjectInBackgroundWithId(objectId) {
+                (object: PFObject?, error: NSError?) -> Void in
+                if error == nil && object != nil {
+                    print(object)
+                    self.objects.append(object!)
+                    tableview.reloadData()
+                    print("refreshed")
+                } else {
+                    print(error)
+                }
+            }
+        }
+    }
+    
     override func viewDidLoad() {
         super.viewDidLoad()
         // Do any additional setup after loading the view, typically from a nib.
-        NSLog("profileButtonTag = %d", profileButtonTag)
-        navigationItem.title = vcTitlesArray[profileButtonTag]
+//        NSLog("profileButtonTag = %d", profileButtonTag)
+//        navigationItem.title = vcTitlesArray[profileButtonTag]
     }
     
     override func didReceiveMemoryWarning() {
