@@ -34,4 +34,10 @@ class EditCell: UITableViewCell {
         editIconTextField.keyboardType = _keyboardType
         self.selectionStyle = UITableViewCellSelectionStyle.None
     }
+    
+    func refreshCellWithSecureDataOptions(_icon: UIImage, _secureTextEntry: Bool, _placeHolder:String) {
+        iconImageView.image = _icon
+        editIconTextField.secureTextEntry = _secureTextEntry
+        editIconTextField.placeholder = _placeHolder
+    }
 }

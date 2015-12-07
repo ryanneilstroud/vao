@@ -11,7 +11,7 @@ import Parse
 
 class Settings: UIViewController, UITableViewDataSource, UITableViewDelegate {
     
-    let accountArray : [String] = ["Edit Profile","Change Password"]
+    let accountArray : [String] = ["Edit Profile","Change Password","Change Email"]
     let otherArray : [String] = ["Log Out"]
     
     func numberOfSectionsInTableView(tableView: UITableView) -> Int {
@@ -53,24 +53,28 @@ class Settings: UIViewController, UITableViewDataSource, UITableViewDelegate {
         if section == 0 {
             return "account"
         } else {
-            return " "
+            return nil
         }
     }
     
     func tableView(tableView: UITableView, didSelectRowAtIndexPath indexPath: NSIndexPath) {
+        
         if indexPath.section == 0 {
-            if indexPath.row == 0 {
-                //edit profile
-                
+            switch (indexPath.row) {
+            case 0:
                 if PFUser.currentUser()!["userTypeIsVolunteer"] as! Bool == false {
-                    let vc = OrgEditProfileVC(nibName: "EditProfileView", bundle: nil)
+                    let vc = OrgEditProfileVC(nibName: "ProfileView", bundle: nil)
                     navigationController?.pushViewController(vc, animated: true)
                 } else {
-                    let vc = EditProfileVC(nibName: "EditProfileView", bundle: nil)
+                    let vc = EditProfileVC(nibName: "ProfileView", bundle: nil)
                     navigationController?.pushViewController(vc, animated: true)
                 }
-            } else if indexPath.row == 1 {
-            
+            case 1, 2:
+                let vc = ChangePrivateData(nibName: "TableView", bundle: nil)
+                vc.viewIndentifier = indexPath.row
+                navigationController?.pushViewController(vc, animated: true)
+            default:
+                break
             }
         } else if indexPath.section == 1 {
             PFUser.logOut()

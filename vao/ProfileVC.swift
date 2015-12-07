@@ -11,13 +11,13 @@ import Parse
 
 class ProfileVC: UIViewController, UITableViewDataSource, UITableViewDelegate {
         
-    var profilePic : UIImage!
+    var profilePic : UIImage?
     var userNumberOfProjects : Int!
     var userNumberOfEvents : Int!
     var userRatingScore : Double!
     
     var orgIsViewing = false
-    var volId = ""
+    var volObject: PFObject!
     
     var eventIds = [String]()
     var projectIds = [String]()
@@ -168,25 +168,42 @@ class ProfileVC: UIViewController, UITableViewDataSource, UITableViewDelegate {
     
     func getUserData(tableView: UITableView) {
         
-        let volunteer = PFUser.currentUser()
-        
-        navigationItem.title = volunteer!["fullName"] != nil ? volunteer!["fullName"] as! String : ""
-        
-        iconLabelArray[0] = volunteer!["phoneNumber"] != nil ? volunteer!["phoneNumber"] as! String : ""
-        iconLabelArray[1] = volunteer!["email"] != nil ? volunteer!["email"] as! String : ""
-        
-        let userImageFile = volunteer!["orgImage"] as! PFFile
-        userImageFile.getDataInBackgroundWithBlock {
-            (imageData: NSData?, error: NSError?) -> Void in
-            if error == nil {
-                if let imageData = imageData {
-                    self.profilePic = UIImage(data:imageData)
-                    
-                    tableView.reloadData()
+        if orgIsViewing == true {
+            iconLabelArray[0] = volObject["phoneNumber"] as! String
+            iconLabelArray[1] = volObject["email"] as! String
+            
+            let userImageFile = volObject["orgImage"] as! PFFile
+            userImageFile.getDataInBackgroundWithBlock {
+                (imageData: NSData?, error: NSError?) -> Void in
+                if error == nil {
+                    if let imageData = imageData {
+                        self.profilePic = UIImage(data:imageData)
+                        
+                        tableView.reloadData()
+                    }
+                }
+            }
+            
+        } else {
+            let volunteer = PFUser.currentUser()
+            
+            navigationItem.title = volunteer!["fullName"] != nil ? volunteer!["fullName"] as! String : ""
+            
+            iconLabelArray[0] = volunteer!["phoneNumber"] != nil ? volunteer!["phoneNumber"] as! String : ""
+            iconLabelArray[1] = volunteer!["email"] != nil ? volunteer!["email"] as! String : ""
+            
+            let userImageFile = volunteer!["orgImage"] as! PFFile
+            userImageFile.getDataInBackgroundWithBlock {
+                (imageData: NSData?, error: NSError?) -> Void in
+                if error == nil {
+                    if let imageData = imageData {
+                        self.profilePic = UIImage(data:imageData)
+                        
+                        tableView.reloadData()
+                    }
                 }
             }
         }
-
     }
     
     override func viewDidLoad() {

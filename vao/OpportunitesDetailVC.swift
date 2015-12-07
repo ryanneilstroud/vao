@@ -8,6 +8,7 @@
 
 import UIKit
 import Parse
+import ParseFacebookUtilsV4
 
 class OpportunitiesDetailVC: UIViewController, UITableViewDataSource, UITableViewDelegate {
     
@@ -155,7 +156,7 @@ class OpportunitiesDetailVC: UIViewController, UITableViewDataSource, UITableVie
             tableView.rowHeight = 40
             tableView.registerNib(nib, forCellReuseIdentifier: "cell")
             cell = tableView.dequeueReusableCellWithIdentifier("cell", forIndexPath: indexPath) as! SimpleButtonCell
-            cell.selectionStyle = .None
+//            cell.selectionStyle = .None
 
             cell.refreshCellWithButtonData(buttonTextArray[0])
             
@@ -198,9 +199,25 @@ class OpportunitiesDetailVC: UIViewController, UITableViewDataSource, UITableVie
     }
     
     func checkButtonClick(sender:UIButton!) {
-        let vc = OrgProfileVC(nibName:"OrgProfileView", bundle: nil)
+        let vc = OrgProfileVC(nibName:"ProfileView", bundle: nil)
         vc.orgId = event.createdBy.objectId!
         navigationController?.pushViewController(vc, animated: true)
+    }
+    
+    func tableView(tableView: UITableView, didSelectRowAtIndexPath indexPath: NSIndexPath) {
+        if indexPath.section == 6 {
+            let user = PFUser.currentUser()
+            if !PFFacebookUtils.isLinkedWithUser(user!) {
+                PFFacebookUtils.linkUserInBackground(user!, withReadPermissions: nil, block: {
+                    (succeeded: Bool?, error: NSError?) -> Void in
+                    if succeeded == true {
+                        print("Woohoo, the user is linked with Facebook!")
+                    } else {
+                        print(error)
+                    }
+                })
+            }
+        }
     }
     
     override func viewDidLoad() {
@@ -220,12 +237,6 @@ class OpportunitiesDetailVC: UIViewController, UITableViewDataSource, UITableVie
         let timeString = timeFormatter.stringFromDate(event.time!)
         timeAndDate.append(timeString)
         timeAndDate.append(event.frequency!)
-        
-        
-//        requestIntivationButton.translatesAutoresizingMaskIntoConstraints = true
-//        requestIntivationButton.frame = CGRectMake(0, screenRect.height - 100, screenRect.width, 50)
-        
-        
     }
     
     override func didReceiveMemoryWarning() {

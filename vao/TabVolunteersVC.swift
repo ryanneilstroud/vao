@@ -47,9 +47,10 @@ class TabVolunteersVC: UIViewController, UITableViewDataSource, UITableViewDeleg
     }
     
     func tableView(tableView: UITableView, didSelectRowAtIndexPath indexPath: NSIndexPath) {
-//        let vc = ProfileVC(nibName:"ProfileView", bundle: nil)
-//        vc.orgIsViewing = true
-//        navigationController?.pushViewController(vc, animated: true)
+        let vc = ProfileVC(nibName:"ProfileView", bundle: nil)
+        vc.orgIsViewing = true
+        vc.volObject = volunteers[indexPath.row]
+        navigationController?.pushViewController(vc, animated: true)
     }
     
     func getVolunteerData(tableview: UITableView) {

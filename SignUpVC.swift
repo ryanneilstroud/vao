@@ -93,6 +93,14 @@ class SignUpVC: UIViewController, UITextFieldDelegate {
         // other fields can be set just like with PFObject
         user["fullName"] = fullNameTextField.text
         
+        let imageData = UIImageJPEGRepresentation(UIImage(named: "pe-7s-user_256_0_606060_none.png")!, 0.5)
+        let imageFile = PFFile(name:"image.png", data:imageData!)
+        
+        user["orgImage"] = imageFile
+        
+        user["phoneNumber"] = ""
+        user["website"] = ""
+        
         user["userTypeIsVolunteer"] = volunteersTabIsSelected
         
         user.signUpInBackgroundWithBlock {
