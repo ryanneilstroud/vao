@@ -8,6 +8,7 @@
 
 import UIKit
 import Parse
+import MapKit
 
 class EventClass {
 
@@ -17,9 +18,9 @@ class EventClass {
     var frequency: String?
     var summary: String?
     var eventImage: UIImage?
+    var location: CLLocationCoordinate2D?
     
     var createdBy: PFUser!
-//    var location
     
     func setTitle(_title: String){
         title = _title

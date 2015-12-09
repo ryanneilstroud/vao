@@ -11,7 +11,7 @@ import Parse
 
 class EditProfileVC: UIViewController, UITableViewDataSource, UITableViewDelegate, UITextFieldDelegate, UIImagePickerControllerDelegate, UINavigationControllerDelegate {
     
-    @IBOutlet var tableview: UITableView!
+    var tableview: UITableView?
     
     var currentUser = PFUser.currentUser()
     var imagePicker : UIImagePickerController!
@@ -41,6 +41,10 @@ class EditProfileVC: UIViewController, UITableViewDataSource, UITableViewDelegat
     
     func tableView(tableView: UITableView, cellForRowAtIndexPath indexPath: NSIndexPath) -> UITableViewCell {
         
+        print("hello!")
+        
+        tableview = tableView
+        
         if indexPath.section == 0 {
             let nib = UINib(nibName: "TextFieldCell", bundle: nil)
             
@@ -53,8 +57,10 @@ class EditProfileVC: UIViewController, UITableViewDataSource, UITableViewDelegat
             cell.titleTextField.addTarget(self, action: "textFieldDidChange:", forControlEvents: UIControlEvents.EditingChanged)
             
             if orgImage != nil {
+                print("not nil ",orgImage)
                 cell.refreshCellWithEventImageAndText(orgImage!, _text: name)
             } else {
+                print("nil")
                 cell.titleTextField.text = name
             }
             
@@ -110,10 +116,10 @@ class EditProfileVC: UIViewController, UITableViewDataSource, UITableViewDelegat
         imagePicker.dismissViewControllerAnimated(true, completion: nil)
         orgImage = info[UIImagePickerControllerOriginalImage] as? UIImage
         
-        self.tableview.beginUpdates()
+        self.tableview!.beginUpdates()
         let indexPath = NSIndexPath(forItem: 0, inSection: 0)
-        self.tableview.reloadRowsAtIndexPaths([indexPath], withRowAnimation: .None)
-        self.tableview.endUpdates()
+        self.tableview!.reloadRowsAtIndexPaths([indexPath], withRowAnimation: .None)
+        self.tableview!.endUpdates()
     }
     
     func textFieldDidChange(textField: UITextField) {
@@ -124,6 +130,29 @@ class EditProfileVC: UIViewController, UITableViewDataSource, UITableViewDelegat
         } else {
             name = textField.text!
         }
+    }
+    
+    func loadUserData() {
+        name = currentUser?["fullName"] != nil ? currentUser!["fullName"] as! String : ""
+        
+        let number = currentUser?["phoneNumber"] != nil ? currentUser!["phoneNumber"] : ""
+        let mail = currentUser?.email != nil ? currentUser!.email! : ""
+        
+        if let userImageFile = currentUser!["orgImage"] as? PFFile {
+            userImageFile.getDataInBackgroundWithBlock {
+                (imageData: NSData?, error: NSError?) -> Void in
+                if error == nil {
+                    if let imageData = imageData {
+                        print("not nil")
+                        self.orgImage = UIImage(data:imageData)
+                        self.tableview!.reloadData()
+                    }
+                }
+            }
+        }
+        
+        iconTextFieldText[0] = number as! String
+        iconTextFieldText[1] = mail
     }
     
     func saveUserData() {
@@ -140,7 +169,25 @@ class EditProfileVC: UIViewController, UITableViewDataSource, UITableViewDelegat
         currentUser?.email = iconTextFieldText[1]
         currentUser?.username = iconTextFieldText[1]
     
-        currentUser?.saveInBackground()
+        currentUser?.saveInBackgroundWithBlock {
+            (success: Bool, error: NSError?) -> Void in
+            if (success) {
+                // The object has been saved.
+                let alert = UIAlertController(title: "saved!", message: nil, preferredStyle: UIAlertControllerStyle.Alert)
+                self.presentViewController(alert, animated: true, completion: nil)
+                
+                let delay = 0.5 * Double(NSEC_PER_SEC)
+                let time = dispatch_time(DISPATCH_TIME_NOW, Int64(delay))
+                dispatch_after(time, dispatch_get_main_queue(), {
+                    alert.dismissViewControllerAnimated(true, completion: {(Bool) in
+                        self.navigationController?.popViewControllerAnimated(true)
+                    })
+                })
+            } else {
+                // There was a problem, check error.description
+            }
+
+        }
     }
     
     override func viewDidLoad() {
@@ -150,22 +197,6 @@ class EditProfileVC: UIViewController, UITableViewDataSource, UITableViewDelegat
         imagePicker = UIImagePickerController()
         imagePicker.delegate = self
         
-        name = currentUser?["fullName"] != nil ? currentUser!["fullName"] as! String : ""
-
-        let number = currentUser?["phoneNumber"] != nil ? currentUser!["phoneNumber"] : ""
-        let mail = currentUser?.email != nil ? currentUser!.email! : ""
-//
-//        let userImageFile = currentUser!["orgImage"] as! PFFile
-//        userImageFile.getDataInBackgroundWithBlock {
-//            (imageData: NSData?, error: NSError?) -> Void in
-//            if error == nil {
-//                if let imageData = imageData {
-//                    self.orgImage = UIImage(data:imageData)
-//                }
-//            }
-//        }
-        
-        iconTextFieldText[0] = number as! String
-        iconTextFieldText[1] = mail
+        loadUserData()
     }
 }

@@ -26,6 +26,7 @@ class NewEventCell: UITableViewCell {
     }
     
     func refreshCellWithEventImageAndText(_image: UIImage, _text: String) {
+        print("test")
         eventImageButton.setImage(_image, forState: .Normal)
         titleTextField.text = _text
     }

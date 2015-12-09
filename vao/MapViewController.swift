@@ -9,9 +9,18 @@
 import UIKit
 import MapKit
 
+protocol SendToMapViewController: class {
+    func didReceiveAtMapViewController(_data: EventClass)
+}
+
 class MapViewController: UIViewController, UISearchBarDelegate {
     
     @IBOutlet var mapView: MKMapView!
+    
+    var location: CLLocationCoordinate2D?
+    
+    weak var delegate: SendToMapViewController? = nil
+    var event: EventClass!
     
     var searchController:UISearchController!
     var annotation:MKAnnotation!
@@ -29,6 +38,12 @@ class MapViewController: UIViewController, UISearchBarDelegate {
         let searchButton = UIBarButtonItem(barButtonSystemItem: .Search, target: self, action: "searchLocation")
         navigationItem.rightBarButtonItem = searchButton
         
+    }
+    
+    override func viewWillDisappear(animated: Bool) {
+        
+        event.location = self.location
+        delegate?.didReceiveAtMapViewController(event)
     }
     
     func searchLocation() {
@@ -61,7 +76,10 @@ class MapViewController: UIViewController, UISearchBarDelegate {
             //3
             self.pointAnnotation = MKPointAnnotation()
             self.pointAnnotation.title = searchBar.text
-            self.pointAnnotation.coordinate = CLLocationCoordinate2D(latitude: localSearchResponse!.boundingRegion.center.latitude, longitude:     localSearchResponse!.boundingRegion.center.longitude)
+            
+            self.location = CLLocationCoordinate2D(latitude: localSearchResponse!.boundingRegion.center.latitude, longitude: localSearchResponse!.boundingRegion.center.longitude)
+            
+            self.pointAnnotation.coordinate = self.location!
             
             
             self.pinAnnotationView = MKPinAnnotationView(annotation: self.pointAnnotation, reuseIdentifier: nil)

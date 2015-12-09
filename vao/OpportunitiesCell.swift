@@ -48,7 +48,6 @@ class OpportuntiesCell: UITableViewCell {
     }
     
     func refreshCellWithObject(object: PFObject) {
-        //        opportunityImageView.image = picture
         opportunityTitle.text = object["title"] as? String
 //        opportunityImageView.image = picture
         opportunitySummary.text = object["summary"] as! String

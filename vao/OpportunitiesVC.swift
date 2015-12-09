@@ -25,10 +25,6 @@ class OpportunitiesVC: UIViewController, UITableViewDataSource, UITableViewDeleg
     
     var eventsArray = [EventClass]()
     
-    //opportunitiesCell info
-    let titlesArray = ["Axiom","Indigo","World Vision"]
-    let eventImages = [UIImage(named: "axiom.jpg")!, UIImage(named: "event0.jpg")!, UIImage(named: "event1.jpg")]
-    
     func tableView(tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
         return eventsArray.count
     }
@@ -76,18 +72,24 @@ class OpportunitiesVC: UIViewController, UITableViewDataSource, UITableViewDeleg
                     event.setFrequency(object["frequency"] as! String)
                     
                     event.createdBy = object["createdBy"] as! PFUser
-                    
-                    let userImageFile = object["eventImage"] as! PFFile
-                    userImageFile.getDataInBackgroundWithBlock {
-                        (imageData: NSData?, error: NSError?) -> Void in
-                        if error == nil {
-                            if let imageData = imageData {
-                                event.setEventImage(UIImage(data:imageData)!)
-                                self.eventsArray.append(event)
-                                self.tableview.reloadData()
-
+                                        
+                    if let userImageFile = object["eventImage"] as? PFFile {
+                        print("good!")
+                        userImageFile.getDataInBackgroundWithBlock {
+                            (imageData: NSData?, error: NSError?) -> Void in
+                            if error == nil {
+                                if let imageData = imageData {
+                                    event.setEventImage(UIImage(data:imageData)!)
+                                    self.eventsArray.append(event)
+                                    self.tableview.reloadData()
+                                }
                             }
                         }
+                    } else {
+                        print("nil")
+                        event.setEventImage(UIImage(named: "pe-7s-user_256_0_606060_none.png")!)
+                        self.eventsArray.append(event)
+                        self.tableview.reloadData()
                     }
                 }
                 

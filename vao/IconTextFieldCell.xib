@@ -19,8 +19,7 @@
                         <rect key="frame" x="25" y="11" width="20" height="20"/>
                         <animations/>
                         <constraints>
-                            <constraint firstAttribute="height" constant="20" id="CBs-VQ-fIu"/>
-                            <constraint firstAttribute="width" constant="20" id="dCL-P3-faa"/>
+                            <constraint firstAttribute="width" constant="20" id="6Ig-Q4-RoH"/>
                         </constraints>
                     </imageView>
                     <textField opaque="NO" clipsSubviews="YES" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="center" textAlignment="natural" minimumFontSize="17" clearButtonMode="whileEditing" translatesAutoresizingMaskIntoConstraints="NO" id="wcH-rq-aUC">
@@ -32,12 +31,13 @@
                 </subviews>
                 <animations/>
                 <constraints>
-                    <constraint firstAttribute="trailingMargin" secondItem="wcH-rq-aUC" secondAttribute="trailing" constant="7" id="EIa-oV-aMz"/>
-                    <constraint firstItem="wcH-rq-aUC" firstAttribute="centerY" secondItem="boU-73-1ww" secondAttribute="centerY" id="Eby-oV-tRv"/>
-                    <constraint firstItem="JMa-q5-FfY" firstAttribute="leading" secondItem="boU-73-1ww" secondAttribute="leadingMargin" constant="17" id="HdN-mp-FAw"/>
-                    <constraint firstItem="JMa-q5-FfY" firstAttribute="centerY" secondItem="boU-73-1ww" secondAttribute="centerY" id="a4w-0y-Aaw"/>
-                    <constraint firstItem="wcH-rq-aUC" firstAttribute="top" secondItem="boU-73-1ww" secondAttribute="topMargin" constant="-1" id="avp-2w-RxW"/>
-                    <constraint firstItem="wcH-rq-aUC" firstAttribute="leading" secondItem="JMa-q5-FfY" secondAttribute="trailing" constant="8" symbolic="YES" id="rph-2S-rWH"/>
+                    <constraint firstItem="wcH-rq-aUC" firstAttribute="centerY" secondItem="boU-73-1ww" secondAttribute="centerY" id="3Oc-md-B6U"/>
+                    <constraint firstItem="wcH-rq-aUC" firstAttribute="top" secondItem="boU-73-1ww" secondAttribute="topMargin" constant="-1" id="A7X-wM-ByP"/>
+                    <constraint firstAttribute="trailingMargin" secondItem="wcH-rq-aUC" secondAttribute="trailing" constant="7" id="C6j-bi-Sqx"/>
+                    <constraint firstItem="wcH-rq-aUC" firstAttribute="leading" secondItem="JMa-q5-FfY" secondAttribute="trailing" constant="8" symbolic="YES" id="Hya-SF-sfu"/>
+                    <constraint firstItem="JMa-q5-FfY" firstAttribute="centerY" secondItem="boU-73-1ww" secondAttribute="centerY" id="NSA-BF-ONQ"/>
+                    <constraint firstItem="JMa-q5-FfY" firstAttribute="top" secondItem="boU-73-1ww" secondAttribute="topMargin" constant="3" id="flI-xG-ZWm"/>
+                    <constraint firstItem="JMa-q5-FfY" firstAttribute="leading" secondItem="boU-73-1ww" secondAttribute="leadingMargin" constant="17" id="ka0-CX-0qa"/>
                 </constraints>
             </tableViewCellContentView>
             <animations/>

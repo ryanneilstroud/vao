@@ -269,10 +269,10 @@
                         <animations/>
                         <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                         <constraints>
-                            <constraint firstAttribute="trailing" secondItem="c9u-Xi-Tg2" secondAttribute="trailing" id="6L0-ln-99k"/>
-                            <constraint firstItem="c9u-Xi-Tg2" firstAttribute="leading" secondItem="Hfa-wQ-3Xo" secondAttribute="leading" id="JLz-Nu-xYI"/>
-                            <constraint firstItem="c9u-Xi-Tg2" firstAttribute="bottom" secondItem="bzb-gR-5mg" secondAttribute="top" id="jud-jg-uwu"/>
-                            <constraint firstItem="c9u-Xi-Tg2" firstAttribute="top" secondItem="Hfa-wQ-3Xo" secondAttribute="top" id="sCk-Lw-oqK"/>
+                            <constraint firstItem="c9u-Xi-Tg2" firstAttribute="leading" secondItem="Hfa-wQ-3Xo" secondAttribute="leading" id="AGf-dM-cjx"/>
+                            <constraint firstItem="c9u-Xi-Tg2" firstAttribute="bottom" secondItem="bzb-gR-5mg" secondAttribute="top" id="X37-35-xa9"/>
+                            <constraint firstItem="c9u-Xi-Tg2" firstAttribute="top" secondItem="Hfa-wQ-3Xo" secondAttribute="top" id="cQF-CQ-kZh"/>
+                            <constraint firstAttribute="trailing" secondItem="c9u-Xi-Tg2" secondAttribute="trailing" id="yaG-fg-wCI"/>
                         </constraints>
                     </view>
                     <navigationItem key="navigationItem" title="New Event" id="l74-b7-uz0">
@@ -429,10 +429,10 @@
                         <animations/>
                         <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                         <constraints>
-                            <constraint firstAttribute="trailing" secondItem="8ou-Qm-cvV" secondAttribute="trailing" id="5G0-KZ-YX8"/>
-                            <constraint firstItem="8ou-Qm-cvV" firstAttribute="top" secondItem="rPl-2A-0VQ" secondAttribute="top" id="KEh-n7-XiA"/>
-                            <constraint firstItem="8ou-Qm-cvV" firstAttribute="leading" secondItem="rPl-2A-0VQ" secondAttribute="leading" id="Phe-GM-sdw"/>
-                            <constraint firstItem="8ou-Qm-cvV" firstAttribute="bottom" secondItem="6pj-Hd-ubN" secondAttribute="top" id="Uli-QF-b6k"/>
+                            <constraint firstItem="8ou-Qm-cvV" firstAttribute="bottom" secondItem="6pj-Hd-ubN" secondAttribute="top" id="7AF-xh-V3y"/>
+                            <constraint firstItem="8ou-Qm-cvV" firstAttribute="top" secondItem="rPl-2A-0VQ" secondAttribute="top" id="DVa-68-ZIC"/>
+                            <constraint firstItem="8ou-Qm-cvV" firstAttribute="leading" secondItem="rPl-2A-0VQ" secondAttribute="leading" id="GKe-Sn-2HA"/>
+                            <constraint firstAttribute="trailing" secondItem="8ou-Qm-cvV" secondAttribute="trailing" id="Led-By-Gnh"/>
                         </constraints>
                     </view>
                     <navigationItem key="navigationItem" title="Events" id="4qm-Qy-lb2">

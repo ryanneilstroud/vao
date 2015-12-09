@@ -8,10 +8,13 @@
 
 import UIKit
 import Parse
+import MapKit
 
-class NewEventVC: UIViewController, UITableViewDataSource, UITableViewDelegate, UITextFieldDelegate, UITextViewDelegate, UIImagePickerControllerDelegate, UINavigationControllerDelegate, SendToB {
+class NewEventVC: UIViewController, UITableViewDataSource, UITableViewDelegate, UITextFieldDelegate, UITextViewDelegate, UIImagePickerControllerDelegate, UINavigationControllerDelegate, SendToB, SendToMapViewController {
 
     @IBOutlet var tableview: UITableView!
+    
+    var activeTextView: UITextView?
     
     var event = EventClass()
     
@@ -19,39 +22,76 @@ class NewEventVC: UIViewController, UITableViewDataSource, UITableViewDelegate, 
     var aboutTextViewText = ""
     var imagePicker : UIImagePickerController!
     var image: UIImage?
-    
+        
     var buttonLabelArray : [String] = ["date","time","don't repeat"]
     let iconImageArray : [UIImage] = [UIImage(named: "ion-ios-calendar-outline_256_0_c3c3c3_none.png")!, UIImage(named: "ion-ios-clock-outline_256_0_c3c3c3_none.png")!, UIImage(named: "pe-7s-repeat_256_0_c3c3c3_none.png")!]
     
     @IBAction func addEvent(sender: AnyObject) {
         let orgEvent = PFObject(className: "Event")
-        orgEvent["title"] = event.title
-        orgEvent["date"] = event.date
-        orgEvent["time"] = event.time
-        orgEvent["frequency"] = event.frequency
-        orgEvent["summary"] = event.summary
         
-        if event.eventImage != nil {
-            let imageData = UIImageJPEGRepresentation(event.eventImage!, 0.5)
-            let imageFile = PFFile(name:"eventPhoto.png", data:imageData!)
+        if event.title == nil || event.title == "" {
+            createAndDisplayAlert("oh no!", _message: "you must have a title for your event")
+        } else if event.date == nil {
+            createAndDisplayAlert("oh no!", _message: "you must have a date for your event")
+        } else if event.time == nil {
+            createAndDisplayAlert("oh no!", _message: "you must have a time for your event")
+        } else {
+            orgEvent["title"] = event.title
+            orgEvent["date"] = event.date
+            orgEvent["time"] = event.time
+            orgEvent["frequency"] = event.frequency == nil ? "don't repeat" : event.frequency
+            orgEvent["summary"] = event.summary == nil ? "" : event.summary
             
-            orgEvent["eventImage"] = imageFile
-        }
-        
-        orgEvent["createdBy"] = PFUser.currentUser()
-        orgEvent.saveInBackgroundWithBlock {
-            (success: Bool, error: NSError?) -> Void in
-            if (success) {
-                print(success)
-                self.dismissViewControllerAnimated(true, completion: nil)
-            } else {
-                print(error)
+            if event.location != nil {
+                orgEvent["location"] = PFGeoPoint(latitude: event.location!.latitude, longitude: event.location!.longitude)
+            }
+            
+            if event.eventImage != nil {
+                let imageData = UIImageJPEGRepresentation(event.eventImage!, 0.5)
+                let imageFile = PFFile(name:"eventPhoto.png", data:imageData!)
+                
+                orgEvent["eventImage"] = imageFile
+            }
+            
+            orgEvent["createdBy"] = PFUser.currentUser()
+            orgEvent.saveInBackgroundWithBlock {
+                (success: Bool, error: NSError?) -> Void in
+                if (success) {
+                    print(success)
+                    let alert = UIAlertController(title: "saved!", message: nil, preferredStyle: UIAlertControllerStyle.Alert)
+                    self.presentViewController(alert, animated: true, completion: nil)
+                    
+                    let delay = 0.5 * Double(NSEC_PER_SEC)
+                    let time = dispatch_time(DISPATCH_TIME_NOW, Int64(delay))
+                    dispatch_after(time, dispatch_get_main_queue(), {
+                        alert.dismissViewControllerAnimated(true, completion: {(Bool) in
+                            self.dismissViewControllerAnimated(true, completion: nil)
+                        })
+                    })
+                    
+                } else {
+                    print(error)
+                }
             }
         }
     }
     
+    func createAndDisplayAlert(_title: String, _message: String) {
+        let alert = UIAlertController(title: _title, message: _message, preferredStyle: UIAlertControllerStyle.Alert)
+        alert.addAction(UIAlertAction(title: "okay", style: UIAlertActionStyle.Default, handler: nil))
+        self.presentViewController(alert, animated: true, completion: nil)
+    }
+    
     @IBAction func cancelEventCreation(sender: AnyObject) {
         self.dismissViewControllerAnimated(true, completion: nil)
+    }
+    
+    func didReceiveAtMapViewController(_data: EventClass) {
+        print(_data.location)
+        
+        event = _data
+        
+        tableview.reloadData()
     }
     
     func didReceiveAtB(_data: EventClass) {
@@ -93,12 +133,17 @@ class NewEventVC: UIViewController, UITableViewDataSource, UITableViewDelegate, 
             return 1
         } else if section == 1 {
             return buttonLabelArray.count
+        } else if section == 3 {
+            return 2
         } else {
             return 1
         }
     }
     
     func tableView(tableView: UITableView, cellForRowAtIndexPath indexPath: NSIndexPath) -> UITableViewCell {
+        
+        tableView.keyboardDismissMode = UIScrollViewKeyboardDismissMode.OnDrag
+        tableView.scrollEnabled = true
         
         if indexPath.section == 0 {
             let nib = UINib(nibName: "TextFieldCell", bundle: nil)
@@ -108,6 +153,7 @@ class NewEventVC: UIViewController, UITableViewDataSource, UITableViewDelegate, 
             let cell : NewEventCell = tableView.dequeueReusableCellWithIdentifier("textfieldCell", forIndexPath: indexPath) as! NewEventCell
             cell.eventImageButton.addTarget(self, action: "getPicture", forControlEvents: .TouchUpInside)
             cell.titleTextField.delegate = self
+            cell.titleTextField.addTarget(self, action: "textFieldDidChange:", forControlEvents: UIControlEvents.EditingChanged)
             
             if image != nil {
                 cell.refreshCellWithEventImage(image!)
@@ -122,32 +168,45 @@ class NewEventVC: UIViewController, UITableViewDataSource, UITableViewDelegate, 
             let cell : NewEventCell = tableView.dequeueReusableCellWithIdentifier("pickerCell", forIndexPath: indexPath) as! NewEventCell
             cell.refreshCellWithButtonLabel(buttonLabelArray[indexPath.row], _icon: iconImageArray[indexPath.row])
             
-            
-            
             return cell
         } else if indexPath.section == 2 {
             let nib = UINib(nibName: "PickerCell", bundle: nil)
             
             tableView.registerNib(nib, forCellReuseIdentifier: "pickerCell")
-
+            
             let cell : NewEventCell = tableView.dequeueReusableCellWithIdentifier("pickerCell", forIndexPath: indexPath) as! NewEventCell
-            cell.refreshCellWithButtonLabel("location", _icon: UIImage(named: "ion-ios-location-outline_256_0_c3c3c3_none.png")!)
+            cell.refreshCellWithButtonLabel("category", _icon: UIImage(named: "lsf-category_128_0_c3c3c3_none.png")!)
             
             return cell
         } else if indexPath.section == 3 {
-            let nib = UINib(nibName: "MapViewCell", bundle: nil)
-            
-            tableView.registerNib(nib, forCellReuseIdentifier: "mapCell")
-            let cell : MapViewCell = tableView.dequeueReusableCellWithIdentifier("mapCell", forIndexPath: indexPath) as! MapViewCell
-            cell.refreshCellWithMapData()
-            
-            return cell
+            if indexPath.row == 0 {
+                let nib = UINib(nibName: "PickerCell", bundle: nil)
+                
+                tableView.registerNib(nib, forCellReuseIdentifier: "pickerCell")
+                
+                let cell : NewEventCell = tableView.dequeueReusableCellWithIdentifier("pickerCell", forIndexPath: indexPath) as! NewEventCell
+                cell.refreshCellWithButtonLabel("location", _icon: UIImage(named: "ion-ios-location-outline_256_0_c3c3c3_none.png")!)
+                
+                return cell
+            } else {
+                let nib = UINib(nibName: "MapViewCell", bundle: nil)
+                
+                tableView.registerNib(nib, forCellReuseIdentifier: "mapCell")
+                let cell : MapViewCell = tableView.dequeueReusableCellWithIdentifier("mapCell", forIndexPath: indexPath) as! MapViewCell
+                
+                if event.location != nil {
+                    cell.refreshCellWithMapData(event.location!)
+                }
+                
+                return cell
+            }
         } else if indexPath.section == 4 {
             let nib = UINib(nibName: "GenericLabelTextviewCell", bundle: nil)
             
             tableView.registerNib(nib, forCellReuseIdentifier: "textviewCell")
             let cell = tableView.dequeueReusableCellWithIdentifier("textviewCell", forIndexPath: indexPath) as! GenericLabelTextviewCell
             cell.textview.delegate = self
+
             cell.refreshCellWithEmptyCell()
             return cell
         } else {
@@ -162,23 +221,17 @@ class NewEventVC: UIViewController, UITableViewDataSource, UITableViewDelegate, 
         if indexPath.section == 0 {
             return 100
         } else if indexPath.section == 1 {
-            return 45
+            return 43
         } else if indexPath.section == 2 {
-            return 45
+            return 43
+        } else if indexPath.section == 3 {
+            if indexPath.row == 0 {
+                return 43
+            } else {
+                return 200
+            }
         } else {
             return 200
-        }
-    }
-    
-    func tableView(tableView: UITableView, titleForHeaderInSection section: Int) -> String? {
-        if section == 0 {
-            return nil
-        } else if section == 1 {
-            return " "
-        } else if section == 2 {
-            return " "
-        } else {
-            return nil
         }
     }
     
@@ -204,21 +257,31 @@ class NewEventVC: UIViewController, UITableViewDataSource, UITableViewDelegate, 
                 navigationController?.pushViewController(vc, animated: true)
             }
         
-        } else if indexPath.section == 2 {
+        } else if indexPath.section == 3 {
             let vc = MapViewController(nibName: "MapView", bundle: nil)
+            vc.delegate = self
+            vc.event = event
             navigationController?.pushViewController(vc, animated: true)
         }
         
     }
     
-    func textFieldDidEndEditing(textField: UITextField) {
+    func textFieldDidChange(textField: UITextField) {
         titleTextFieldText = textField.text!
         event.setTitle(titleTextFieldText)
     }
     
-    func textViewDidEndEditing(textView: UITextView) {
+    func textViewDidChange(textView: UITextView) {
         aboutTextViewText = textView.text!
         event.setSummary(aboutTextViewText)
+    }
+    
+    func textViewDidBeginEditing(textView: UITextView) {
+        activeTextView = textView
+    }
+    
+    func textViewDidEndEditing(textView: UITextView) {
+        activeTextView = nil
     }
     
     func getPicture() {
@@ -239,17 +302,37 @@ class NewEventVC: UIViewController, UITableViewDataSource, UITableViewDelegate, 
         self.tableview.endUpdates()
     }
     
+    func keyboardWillShow(notification: NSNotification) {
+        
+        if activeTextView != nil {
+            var info = notification.userInfo!
+            let keyboardFrame: CGRect = (info[UIKeyboardFrameEndUserInfoKey] as! NSValue).CGRectValue()
+            
+            UIView.animateWithDuration(0.1, animations: { () -> Void in
+                self.tableview.frame.origin.y = self.tableview.frame.origin.y - keyboardFrame.size.height + 20
+            })
+        }
+    }
+    
+    func keyboardWillHide(notification: NSNotification) {
+        
+        UIView.animateWithDuration(0.1, animations: { () -> Void in
+            self.tableview.frame.origin.y = 0
+        })
+        
+    }
+    
     override func viewDidLoad() {
         imagePicker = UIImagePickerController()
         imagePicker.delegate = self
-
     }
     
-//    func formatCell(_tableview: UITableView, _nibName: String, _cellName: String, _cell: UITableViewCell) -> UITableViewCell {
-//        let nib = UINib(nibName: _nibName, bundle: nil)
-//        
-//        _tableview.registerNib(nib, forCellReuseIdentifier: _cellName)
-//        let cell = _tableview.dequeueReusableCellWithIdentifier(_cellName)
-//        return cell!
-//    }
+    override func viewWillAppear(animated: Bool) {
+        NSNotificationCenter.defaultCenter().addObserver(self, selector: Selector("keyboardWillShow:"), name:UIKeyboardDidShowNotification, object: nil)
+        NSNotificationCenter.defaultCenter().addObserver(self, selector: Selector("keyboardWillHide:"), name:UIKeyboardWillHideNotification, object: nil)
+    }
+    
+    override func viewWillDisappear(animated: Bool) {
+        NSNotificationCenter.defaultCenter().removeObserver(self)
+    }
 }

@@ -24,6 +24,8 @@ class ProfileVC: UIViewController, UITableViewDataSource, UITableViewDelegate {
     
     var didReload: Bool!
     
+    var tableview: UITableView!
+    
     let data = [
         ("gender", "male"),
         ("age", "22"),
@@ -57,10 +59,7 @@ class ProfileVC: UIViewController, UITableViewDataSource, UITableViewDelegate {
     
     func tableView(tableView: UITableView, cellForRowAtIndexPath indexPath: NSIndexPath) -> UITableViewCell {
         
-        if didReload == false {
-            didReload = true
-            getUserData(tableView)
-        }
+        tableview = tableView
         
         if indexPath.section == 0 {
             var cell : AttributeValueCells!
@@ -166,7 +165,7 @@ class ProfileVC: UIViewController, UITableViewDataSource, UITableViewDelegate {
         }
     }
     
-    func getUserData(tableView: UITableView) {
+    func getUserData() {
         
         if orgIsViewing == true {
             iconLabelArray[0] = volObject["phoneNumber"] as! String
@@ -179,7 +178,7 @@ class ProfileVC: UIViewController, UITableViewDataSource, UITableViewDelegate {
                     if let imageData = imageData {
                         self.profilePic = UIImage(data:imageData)
                         
-                        tableView.reloadData()
+                        self.tableview.reloadData()
                     }
                 }
             }
@@ -199,7 +198,7 @@ class ProfileVC: UIViewController, UITableViewDataSource, UITableViewDelegate {
                     if let imageData = imageData {
                         self.profilePic = UIImage(data:imageData)
                         
-                        tableView.reloadData()
+                        self.tableview.reloadData()
                     }
                 }
             }
@@ -215,6 +214,10 @@ class ProfileVC: UIViewController, UITableViewDataSource, UITableViewDelegate {
         userNumberOfEvents = 0
         userRatingScore = 0
         
+    }
+    
+    override func viewDidAppear(animated: Bool) {
+        getUserData()
     }
     
     override func didReceiveMemoryWarning() {

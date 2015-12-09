@@ -26,6 +26,10 @@ class NewEventCollectSelectionVC: UIViewController, UIPickerViewDataSource, UIPi
     override func viewDidLoad() {
         if datePickerMode != nil {
             datePicker.datePickerMode = datePickerMode!
+            
+            if datePickerMode == UIDatePickerMode.Date {
+                
+            }
         }
     }
     
