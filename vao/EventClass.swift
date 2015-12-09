@@ -19,6 +19,7 @@ class EventClass {
     var summary: String?
     var eventImage: UIImage?
     var location: CLLocationCoordinate2D?
+    var locationName: String?
     
     var createdBy: PFUser!
     
@@ -45,16 +46,4 @@ class EventClass {
     func setSummary(_summary: String) {
         summary = _summary
     }
-    
-//    func getDate() -> NSDate {
-//        return date!
-//    }
-//    
-//    func getTime() -> NSDate {
-//        return time!
-//    }
-//    
-//    func getFrequency() -> String {
-//        return frequency
-//    }
 }

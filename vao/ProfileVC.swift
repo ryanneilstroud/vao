@@ -156,9 +156,9 @@ class ProfileVC: UIViewController, UITableViewDataSource, UITableViewDelegate {
     func tableView(tableView: UITableView, didSelectRowAtIndexPath indexPath: NSIndexPath) {
         if indexPath.section == 3 {
             if indexPath.row == 0 {
-                UIApplication.sharedApplication().openURL(NSURL(string:"telprompt:56312729")!)
+                UIApplication.sharedApplication().openURL(NSURL(string:"telprompt:" + iconLabelArray[0])!)
             } else if indexPath.row == 1 {
-                let email = "foo@bar.com"
+                let email = iconLabelArray[1]
                 let url = NSURL(string: "mailto:\(email)")
                 UIApplication.sharedApplication().openURL(url!)
             }

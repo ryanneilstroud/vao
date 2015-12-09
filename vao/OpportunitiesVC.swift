@@ -8,6 +8,7 @@
 
 import UIKit
 import Parse
+import MapKit
 
 class OpportunitiesVC: UIViewController, UITableViewDataSource, UITableViewDelegate {
     
@@ -41,7 +42,7 @@ class OpportunitiesVC: UIViewController, UITableViewDataSource, UITableViewDeleg
                                     date: eventsArray[indexPath.row].date!,
                                     time: eventsArray[indexPath.row].time!,
                                     frequency: eventsArray[indexPath.row].frequency!,
-                                    location: "",
+                                    location: eventsArray[indexPath.row].locationName!,
                                     summary: eventsArray[indexPath.row].summary!,
                                     picture: eventsArray[indexPath.row].eventImage!)
         
@@ -71,6 +72,15 @@ class OpportunitiesVC: UIViewController, UITableViewDataSource, UITableViewDeleg
                     event.setSummary(object["summary"] as! String)
                     event.setFrequency(object["frequency"] as! String)
                     
+                    event.locationName = object["locationName"] as? String
+                    let loc = object["location"] as? PFGeoPoint
+                    
+                    let latitude: CLLocationDegrees = loc!.latitude
+                    let longtitude: CLLocationDegrees = loc!.longitude
+                    
+                    let newLoc: CLLocationCoordinate2D = CLLocationCoordinate2D(latitude: latitude, longitude: longtitude)
+                    event.location = newLoc
+
                     event.createdBy = object["createdBy"] as! PFUser
                                         
                     if let userImageFile = object["eventImage"] as? PFFile {
@@ -86,7 +96,6 @@ class OpportunitiesVC: UIViewController, UITableViewDataSource, UITableViewDeleg
                             }
                         }
                     } else {
-                        print("nil")
                         event.setEventImage(UIImage(named: "pe-7s-user_256_0_606060_none.png")!)
                         self.eventsArray.append(event)
                         self.tableview.reloadData()

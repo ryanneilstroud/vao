@@ -10,25 +10,16 @@ import UIKit
 import Parse
 
 class TabVolunteersVC: UIViewController, UITableViewDataSource, UITableViewDelegate {
-
-    let namesArr : [String] = ["Ryan Neil Stroud", "Justin Ling", "Josh Loke", "Melody Wakefield", "Rebekah Scott"]
-    var imageArr : [UIImage] = [UIImage(named: "1.jpg")!,UIImage(named: "2.jpg")!,UIImage(named: "3.jpg")!,UIImage(named: "4.jpg")!,UIImage(named: "5.jpg")!]
     
     var volunteers = [PFObject]()
-    
-    var didReload = false
-    
+    var tableview: UITableView!
+        
     func numberOfSectionsInTableView(tableView: UITableView) -> Int {
+        tableview = tableView
         return 1
     }
     
     func tableView(tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-        
-        if didReload == false {
-            didReload = true
-            getVolunteerData(tableView)
-        }
-        
         return volunteers.count
     }
     
@@ -40,7 +31,6 @@ class TabVolunteersVC: UIViewController, UITableViewDataSource, UITableViewDeleg
         tableView.registerNib(nib, forCellReuseIdentifier: "volunteer")
         
         let cell : VolunteersTVC = tableView.dequeueReusableCellWithIdentifier("volunteer", forIndexPath: indexPath) as! VolunteersTVC
-//        cell.refreshCellWithVolunteerData(imageArr[indexPath.row], _fullName: namesArr[indexPath.row])
         cell.refreshCellWithVolunteer(volunteers[indexPath.row])
         
         return cell
@@ -53,7 +43,7 @@ class TabVolunteersVC: UIViewController, UITableViewDataSource, UITableViewDeleg
         navigationController?.pushViewController(vc, animated: true)
     }
     
-    func getVolunteerData(tableview: UITableView) {
+    func getVolunteerData() {
         let query = PFUser.query()
         query?.whereKey("userTypeIsVolunteer", equalTo: true)
         query?.findObjectsInBackgroundWithBlock {
@@ -63,13 +53,11 @@ class TabVolunteersVC: UIViewController, UITableViewDataSource, UITableViewDeleg
                 print(error)
             } else {
                 // objects has all the Posts the current user liked.
-                
                 for object in objects! {
                     self.volunteers.append(object)
                 }
-                print("volunteers: ", objects)
-
-                tableview.reloadData()
+                
+                self.tableview.reloadData()
                 
             }
         }
@@ -79,7 +67,7 @@ class TabVolunteersVC: UIViewController, UITableViewDataSource, UITableViewDeleg
         let currentUser = PFUser.currentUser()
         if currentUser != nil {
             // Do stuff with the user
-            didReload = false
+            getVolunteerData()
         } else {
             // Show the signup or login screen
             let nib = CredentialsVC(nibName:"LogIn", bundle: nil) as CredentialsVC

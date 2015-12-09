@@ -15,6 +15,11 @@ class IconLabelCell: UITableViewCell {
     
     func refreshCellWithData(icon: UIImage, text: String) {
         iconImageView.image = icon
-        iconLabel.text = text
+    
+        if text == "don't repeat" {
+            iconLabel.text = "doesn't repeat"
+        } else {
+            iconLabel.text = text
+        }
     }
 }

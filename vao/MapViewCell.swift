@@ -14,12 +14,14 @@ class MapViewCell: UITableViewCell {
 
     func refreshCellWithMapData(_location: CLLocationCoordinate2D) {
         
+        print("test")
+        
         let location = CLLocationCoordinate2D(
             latitude: _location.latitude,
             longitude: _location.longitude
         )
         // 2
-        let span = MKCoordinateSpanMake(0.05, 0.05)
+        let span = MKCoordinateSpanMake(0.01, 0.01)
         let region = MKCoordinateRegion(center: location, span: span)
         mapView.setRegion(region, animated: true)
         

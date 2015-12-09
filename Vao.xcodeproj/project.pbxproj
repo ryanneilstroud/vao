@@ -106,7 +106,6 @@
 		D33F143F1BFE2FF600555931 /* Montserrat-Regular.ttf in Resources */ = {isa = PBXBuildFile; fileRef = D33F143D1BFE2F9400555931 /* Montserrat-Regular.ttf */; };
 		D34010EB1BF2FC470031442A /* ProfileSummary.xib in Resources */ = {isa = PBXBuildFile; fileRef = D34010EA1BF2FC470031442A /* ProfileSummary.xib */; };
 		D34010ED1BF2FD670031442A /* AttributeValueCells.swift in Sources */ = {isa = PBXBuildFile; fileRef = D34010EC1BF2FD670031442A /* AttributeValueCells.swift */; };
-		D34010EF1BF304850031442A /* 1.jpg in Resources */ = {isa = PBXBuildFile; fileRef = D34010EE1BF304850031442A /* 1.jpg */; };
 		D34010F11BF31E830031442A /* AttributeValue.xib in Resources */ = {isa = PBXBuildFile; fileRef = D34010F01BF31E830031442A /* AttributeValue.xib */; };
 		D34010FB1BF334A90031442A /* LogIn.xib in Resources */ = {isa = PBXBuildFile; fileRef = D34010FA1BF334A90031442A /* LogIn.xib */; };
 		D34011011BF339B20031442A /* CredentialsVC.swift in Sources */ = {isa = PBXBuildFile; fileRef = D34011001BF339B20031442A /* CredentialsVC.swift */; };
@@ -121,10 +120,6 @@
 		D3D9B8D51BFAF45A00A3659D /* TabVolunteersVC.swift in Sources */ = {isa = PBXBuildFile; fileRef = D3D9B8D41BFAF45A00A3659D /* TabVolunteersVC.swift */; };
 		D3D9B8D71BFAF5DB00A3659D /* VolunteersCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = D3D9B8D61BFAF5DB00A3659D /* VolunteersCell.xib */; };
 		D3D9B8DB1BFAF7B600A3659D /* VolunteersTVC.swift in Sources */ = {isa = PBXBuildFile; fileRef = D3D9B8DA1BFAF7B600A3659D /* VolunteersTVC.swift */; };
-		D3D9B8E01BFAFDDA00A3659D /* 2.jpg in Resources */ = {isa = PBXBuildFile; fileRef = D3D9B8DC1BFAFDDA00A3659D /* 2.jpg */; };
-		D3D9B8E11BFAFDDA00A3659D /* 3.jpg in Resources */ = {isa = PBXBuildFile; fileRef = D3D9B8DD1BFAFDDA00A3659D /* 3.jpg */; };
-		D3D9B8E21BFAFDDA00A3659D /* 4.jpg in Resources */ = {isa = PBXBuildFile; fileRef = D3D9B8DE1BFAFDDA00A3659D /* 4.jpg */; };
-		D3D9B8E31BFAFDDA00A3659D /* 5.jpg in Resources */ = {isa = PBXBuildFile; fileRef = D3D9B8DF1BFAFDDA00A3659D /* 5.jpg */; };
 		D3D9B8E71BFB03F600A3659D /* EditProfileVC.swift in Sources */ = {isa = PBXBuildFile; fileRef = D3D9B8E61BFB03F600A3659D /* EditProfileVC.swift */; };
 		D3D9B8EC1BFCB3F000A3659D /* fa-book_100_25_ffffff_21ed8b.png in Resources */ = {isa = PBXBuildFile; fileRef = D3D9B8EA1BFCB3F000A3659D /* fa-book_100_25_ffffff_21ed8b.png */; };
 		D3D9B8EE1BFCB4C300A3659D /* lsf-walking_100_25_ffffff_2197ed.png in Resources */ = {isa = PBXBuildFile; fileRef = D3D9B8ED1BFCB4C300A3659D /* lsf-walking_100_25_ffffff_2197ed.png */; };
@@ -247,7 +242,6 @@
 		D33F143D1BFE2F9400555931 /* Montserrat-Regular.ttf */ = {isa = PBXFileReference; lastKnownFileType = file; path = "Montserrat-Regular.ttf"; sourceTree = "<group>"; };
 		D34010EA1BF2FC470031442A /* ProfileSummary.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = ProfileSummary.xib; sourceTree = "<group>"; };
 		D34010EC1BF2FD670031442A /* AttributeValueCells.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = AttributeValueCells.swift; sourceTree = "<group>"; };
-		D34010EE1BF304850031442A /* 1.jpg */ = {isa = PBXFileReference; lastKnownFileType = image.jpeg; path = 1.jpg; sourceTree = "<group>"; };
 		D34010F01BF31E830031442A /* AttributeValue.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = AttributeValue.xib; sourceTree = "<group>"; };
 		D34010FA1BF334A90031442A /* LogIn.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = LogIn.xib; sourceTree = "<group>"; };
 		D34011001BF339B20031442A /* CredentialsVC.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CredentialsVC.swift; sourceTree = "<group>"; };
@@ -262,10 +256,6 @@
 		D3D9B8D41BFAF45A00A3659D /* TabVolunteersVC.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = TabVolunteersVC.swift; sourceTree = "<group>"; };
 		D3D9B8D61BFAF5DB00A3659D /* VolunteersCell.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = VolunteersCell.xib; sourceTree = "<group>"; };
 		D3D9B8DA1BFAF7B600A3659D /* VolunteersTVC.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = VolunteersTVC.swift; path = ../VolunteersTVC.swift; sourceTree = "<group>"; };
-		D3D9B8DC1BFAFDDA00A3659D /* 2.jpg */ = {isa = PBXFileReference; lastKnownFileType = image.jpeg; path = 2.jpg; sourceTree = "<group>"; };
-		D3D9B8DD1BFAFDDA00A3659D /* 3.jpg */ = {isa = PBXFileReference; lastKnownFileType = image.jpeg; path = 3.jpg; sourceTree = "<group>"; };
-		D3D9B8DE1BFAFDDA00A3659D /* 4.jpg */ = {isa = PBXFileReference; lastKnownFileType = image.jpeg; path = 4.jpg; sourceTree = "<group>"; };
-		D3D9B8DF1BFAFDDA00A3659D /* 5.jpg */ = {isa = PBXFileReference; lastKnownFileType = image.jpeg; path = 5.jpg; sourceTree = "<group>"; };
 		D3D9B8E61BFB03F600A3659D /* EditProfileVC.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = EditProfileVC.swift; sourceTree = "<group>"; };
 		D3D9B8EA1BFCB3F000A3659D /* fa-book_100_25_ffffff_21ed8b.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "fa-book_100_25_ffffff_21ed8b.png"; sourceTree = "<group>"; };
 		D3D9B8ED1BFCB4C300A3659D /* lsf-walking_100_25_ffffff_2197ed.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "lsf-walking_100_25_ffffff_2197ed.png"; sourceTree = "<group>"; };
@@ -409,11 +399,6 @@
 				D3202FA91BF85DC40001F19A /* ion-android-arrow-dropup_256_0_ffffff_none.png */,
 				D33F142C1BFDE18B00555931 /* event1.jpg */,
 				D33F142D1BFDE18B00555931 /* event0.jpg */,
-				D34010EE1BF304850031442A /* 1.jpg */,
-				D3D9B8DC1BFAFDDA00A3659D /* 2.jpg */,
-				D3D9B8DD1BFAFDDA00A3659D /* 3.jpg */,
-				D3D9B8DE1BFAFDDA00A3659D /* 4.jpg */,
-				D3D9B8DF1BFAFDDA00A3659D /* 5.jpg */,
 				D3202F6C1BF36A770001F19A /* pe-7s-user_256_0_606060_none.png */,
 				D33947441BEB3DD200ED53F7 /* AppDelegate.swift */,
 				D33947461BEB3DD200ED53F7 /* ViewController.swift */,
@@ -649,7 +634,6 @@
 				D3202F811BF440860001F19A /* pe-7s-user_0_ffffff_none@2x.png in Resources */,
 				D3202FC31BF8B7FC0001F19A /* ion-ios-location-outline_256_0_c3c3c3_none.png in Resources */,
 				D32D92D91BF8C8E8001C35A8 /* vao_logo_full_alt1.png in Resources */,
-				D3D9B8E11BFAFDDA00A3659D /* 3.jpg in Resources */,
 				D339474F1BEB3DD200ED53F7 /* LaunchScreen.storyboard in Resources */,
 				D3D9B90F1BFCDDF000A3659D /* ion-ios-star-outline_100_0_a3a3a3_none.png in Resources */,
 				D33F14391BFE242E00555931 /* RatedCell.xib in Resources */,
@@ -670,7 +654,6 @@
 				D3D9B8FF1BFCC5E600A3659D /* NotificationsCell.xib in Resources */,
 				D3D9B9101BFCDDF000A3659D /* ion-ios-star_100_0_e4e400_none.png in Resources */,
 				D3202FAC1BF86AD50001F19A /* Organizations.storyboard in Resources */,
-				D34010EF1BF304850031442A /* 1.jpg in Resources */,
 				D3202F6D1BF36A770001F19A /* pe-7s-user_256_0_606060_none.png in Resources */,
 				D3202FB81BF8A5810001F19A /* TextFieldCell.xib in Resources */,
 				D3202FB41BF86DD10001F19A /* pe-7s-culture_0_ffffff_none@3x.png in Resources */,
@@ -682,7 +665,6 @@
 				D3202FC41BF8B7FC0001F19A /* pe-7s-repeat_256_0_c3c3c3_none.png in Resources */,
 				D33F14191BFD9B6600555931 /* SimpleButtonCell.xib in Resources */,
 				D339474A1BEB3DD200ED53F7 /* Main.storyboard in Resources */,
-				D3D9B8E21BFAFDDA00A3659D /* 4.jpg in Resources */,
 				D378FBFF1C181FF50038EA20 /* lsf-category_128_0_c3c3c3_none.png in Resources */,
 				D3202F851BF441340001F19A /* ion-ios-calendar-outline_0_ffffff_none@3x.png in Resources */,
 				D3202FC81BF8BE310001F19A /* ion-ios-arrow-forward_128_0_c3c3c3_none.png in Resources */,
@@ -695,7 +677,6 @@
 				D36738C01C105441002CE8DB /* ion-ios-locked-outline_256_0_c3c3c3_none.png in Resources */,
 				D3202F841BF441340001F19A /* ion-ios-calendar-outline_0_ffffff_none@2x.png in Resources */,
 				D33F14291BFDDD9200555931 /* ion-ios-world-outline_256_0_c3c3c3_none.png in Resources */,
-				D3D9B8E31BFAFDDA00A3659D /* 5.jpg in Resources */,
 				D3202F6B1BF369610001F19A /* OpportunitiesCell.xib in Resources */,
 				D33F14371BFE196300555931 /* SignUp.xib in Resources */,
 				D3202F931BF4493F0001F19A /* CategoriesCell.xib in Resources */,
@@ -712,7 +693,6 @@
 				D3D9B8EE1BFCB4C300A3659D /* lsf-walking_100_25_ffffff_2197ed.png in Resources */,
 				D3D9B8D71BFAF5DB00A3659D /* VolunteersCell.xib in Resources */,
 				D34010FB1BF334A90031442A /* LogIn.xib in Resources */,
-				D3D9B8E01BFAFDDA00A3659D /* 2.jpg in Resources */,
 				D3202F731BF381210001F19A /* OpportunitiesDetailVC.xib in Resources */,
 				D3202FB01BF86C5E0001F19A /* pe-7s-users_0_ffffff_none@3x.png in Resources */,
 				D3202F8D1BF442BA0001F19A /* ion-ios-cog-outline_0_ffffff_none@2x.png in Resources */,

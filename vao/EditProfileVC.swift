@@ -40,9 +40,7 @@ class EditProfileVC: UIViewController, UITableViewDataSource, UITableViewDelegat
     }
     
     func tableView(tableView: UITableView, cellForRowAtIndexPath indexPath: NSIndexPath) -> UITableViewCell {
-        
-        print("hello!")
-        
+                
         tableview = tableView
         
         if indexPath.section == 0 {

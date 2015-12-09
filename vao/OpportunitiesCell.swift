@@ -25,17 +25,36 @@ class OpportuntiesCell: UITableViewCell {
         opportunityTitle.text = title
         opportunityImageView.image = picture
         opportunitySummary.text = summary
+        opportunityLocation.text = location
         
         opportunityImageView.layer.cornerRadius = 33
         opportunityImageView.clipsToBounds = true
         
-        if frequency != "don't repeat" {
+        if frequency == "don't repeat" {
             let formatter = NSDateFormatter()
-            formatter.timeStyle = NSDateFormatterStyle.ShortStyle
+            formatter.dateStyle = NSDateFormatterStyle.MediumStyle
             
-            let dateString = formatter.stringFromDate(time)
+            let dateString = formatter.stringFromDate(date)
             
-            opportunityDateAndTime.text = frequency + " at " + dateString
+            let timeFormatter = NSDateFormatter()
+            timeFormatter.timeStyle = NSDateFormatterStyle.ShortStyle
+            
+            let timeString = timeFormatter.stringFromDate(time)
+            
+            opportunityDateAndTime.text = timeString + " on " + dateString
+        } else {
+            let formatter = NSDateFormatter()
+            formatter.dateStyle = NSDateFormatterStyle.MediumStyle
+            
+            let dateString = formatter.stringFromDate(date)
+            
+            let timeFormatter = NSDateFormatter()
+            timeFormatter.timeStyle = NSDateFormatterStyle.ShortStyle
+            
+            let timeString = timeFormatter.stringFromDate(time)
+            
+            opportunityDateAndTime.text = frequency + " on " + dateString + " at " + timeString
+
         }
     }
     

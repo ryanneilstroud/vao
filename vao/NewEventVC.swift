@@ -22,6 +22,8 @@ class NewEventVC: UIViewController, UITableViewDataSource, UITableViewDelegate, 
     var aboutTextViewText = ""
     var imagePicker : UIImagePickerController!
     var image: UIImage?
+    
+    var locationName: String = "location"
         
     var buttonLabelArray : [String] = ["date","time","don't repeat"]
     let iconImageArray : [UIImage] = [UIImage(named: "ion-ios-calendar-outline_256_0_c3c3c3_none.png")!, UIImage(named: "ion-ios-clock-outline_256_0_c3c3c3_none.png")!, UIImage(named: "pe-7s-repeat_256_0_c3c3c3_none.png")!]
@@ -41,6 +43,7 @@ class NewEventVC: UIViewController, UITableViewDataSource, UITableViewDelegate, 
             orgEvent["time"] = event.time
             orgEvent["frequency"] = event.frequency == nil ? "don't repeat" : event.frequency
             orgEvent["summary"] = event.summary == nil ? "" : event.summary
+            orgEvent["locationName"] = event.locationName == nil ? "" : event.locationName
             
             if event.location != nil {
                 orgEvent["location"] = PFGeoPoint(latitude: event.location!.latitude, longitude: event.location!.longitude)
@@ -87,9 +90,11 @@ class NewEventVC: UIViewController, UITableViewDataSource, UITableViewDelegate, 
     }
     
     func didReceiveAtMapViewController(_data: EventClass) {
-        print(_data.location)
-        
         event = _data
+        
+        if _data.locationName != nil {
+            locationName = _data.locationName!
+        }
         
         tableview.reloadData()
     }
@@ -185,7 +190,7 @@ class NewEventVC: UIViewController, UITableViewDataSource, UITableViewDelegate, 
                 tableView.registerNib(nib, forCellReuseIdentifier: "pickerCell")
                 
                 let cell : NewEventCell = tableView.dequeueReusableCellWithIdentifier("pickerCell", forIndexPath: indexPath) as! NewEventCell
-                cell.refreshCellWithButtonLabel("location", _icon: UIImage(named: "ion-ios-location-outline_256_0_c3c3c3_none.png")!)
+                cell.refreshCellWithButtonLabel(locationName, _icon: UIImage(named: "ion-ios-location-outline_256_0_c3c3c3_none.png")!)
                 
                 return cell
             } else {

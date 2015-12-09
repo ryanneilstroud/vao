@@ -13,7 +13,6 @@ class OrgEventsVC: UIViewController, UITableViewDataSource, UITableViewDelegate 
     //opportunitiesCell info
     let titlesArray = ["Axiom","Indigo","World Vision"]
     let eventImages = [UIImage(named: "axiom.jpg")!, UIImage(named: "event0.jpg")!, UIImage(named: "event1.jpg")]
-
     
     @IBAction func dismissEventsVC(sender: AnyObject) {
         self.dismissViewControllerAnimated(true, completion: nil)

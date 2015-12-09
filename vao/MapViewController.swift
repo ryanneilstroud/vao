@@ -18,6 +18,7 @@ class MapViewController: UIViewController, UISearchBarDelegate {
     @IBOutlet var mapView: MKMapView!
     
     var location: CLLocationCoordinate2D?
+    var locationName: String?
     
     weak var delegate: SendToMapViewController? = nil
     var event: EventClass!
@@ -43,6 +44,7 @@ class MapViewController: UIViewController, UISearchBarDelegate {
     override func viewWillDisappear(animated: Bool) {
         
         event.location = self.location
+        event.locationName = self.locationName
         delegate?.didReceiveAtMapViewController(event)
     }
     
@@ -76,9 +78,9 @@ class MapViewController: UIViewController, UISearchBarDelegate {
             //3
             self.pointAnnotation = MKPointAnnotation()
             self.pointAnnotation.title = searchBar.text
+            self.locationName = searchBar.text
             
             self.location = CLLocationCoordinate2D(latitude: localSearchResponse!.boundingRegion.center.latitude, longitude: localSearchResponse!.boundingRegion.center.longitude)
-            
             self.pointAnnotation.coordinate = self.location!
             
             

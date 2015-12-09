@@ -34,10 +34,10 @@ class OpportunitiesDetailVC: UIViewController, UITableViewDataSource, UITableVie
                                 UIImage(named: "ion-ios-clock-outline_256_0_c3c3c3_none.png")!,
                                 UIImage(named:"pe-7s-repeat_256_0_c3c3c3_none.png")]
     
-    let location = "YMCA"
-    let locationIcon = UIImage(named: "ion-ios-location-outline_256_0_c3c3c3_none.png")
+    var location = ""
+    var locationGeoPoints: CLLocationCoordinate2D?
     
-    let mapLocation = "Hong Kong"
+    let locationIcon = UIImage(named: "ion-ios-location-outline_256_0_c3c3c3_none.png")
     
     func numberOfSectionsInTableView(tableView: UITableView) -> Int {
         return 8
@@ -109,16 +109,17 @@ class OpportunitiesDetailVC: UIViewController, UITableViewDataSource, UITableVie
             
             return cell
         } else if indexPath.section == 3 {
-            var cell : MapViewCell!
-            
-            tableView.rowHeight = 130
+            tableView.rowHeight = 200
             
             let nib = UINib(nibName: "MapViewCell", bundle: nil)
-            tableView.registerNib(nib, forCellReuseIdentifier: "mapCell")
-
-            cell = tableView.dequeueReusableCellWithIdentifier("mapCell", forIndexPath: indexPath) as! MapViewCell
-            cell.selectionStyle = .None
             
+            tableView.registerNib(nib, forCellReuseIdentifier: "mapCell")
+            let cell : MapViewCell = tableView.dequeueReusableCellWithIdentifier("mapCell", forIndexPath: indexPath) as! MapViewCell
+            
+            if locationGeoPoints != nil {
+                cell.refreshCellWithMapData(locationGeoPoints!)
+            }
+        
             return cell
         } else if indexPath.section == 4 {
             var cell : IconLabelCell!
@@ -237,6 +238,12 @@ class OpportunitiesDetailVC: UIViewController, UITableViewDataSource, UITableVie
         let timeString = timeFormatter.stringFromDate(event.time!)
         timeAndDate.append(timeString)
         timeAndDate.append(event.frequency!)
+        
+        location = event.locationName!
+        
+        if event.location != nil {
+            locationGeoPoints = event.location
+        }
     }
     
     override func didReceiveMemoryWarning() {
