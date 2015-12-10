@@ -17,12 +17,18 @@ class EditProfileVC: UIViewController, UITableViewDataSource, UITableViewDelegat
     var imagePicker : UIImagePickerController!
     var orgImage: UIImage?
     
+    var activeTextField: UITextField?
+    
     var name = ""
     
     let about = ["location", "gender", "age", "religion", "languages"]
     let icons = [UIImage(named: "ion-ios-telephone-outline_256_0_c3c3c3_none.png"), UIImage(named: "ion-ios-email-outline_256_0_c3c3c3_none.png")]
     var iconTextFieldText = ["",""]
+    var labelTextFieldText = ["","","","",""]
+    
     let placeholders = ["phone number","email"]
+    let aboutPlaceholders = ["Hong Kong", "Male", "22", "Christian", "English, Cantonese"]
+    
     let keyboardType = [UIKeyboardType.PhonePad, UIKeyboardType.EmailAddress, UIKeyboardType.URL]
     
     func numberOfSectionsInTableView(tableView: UITableView) -> Int {
@@ -71,10 +77,11 @@ class EditProfileVC: UIViewController, UITableViewDataSource, UITableViewDelegat
             tableView.registerNib(nib, forCellReuseIdentifier: "cell")
             
             let cell: EditCell = tableView.dequeueReusableCellWithIdentifier("cell", forIndexPath: indexPath) as! EditCell
-//            cell.selectionStyle = UITableViewCellSelectionStyle.None
-//            cell.editTextField.delegate = self
+            cell.selectionStyle = UITableViewCellSelectionStyle.None
+            cell.editTextField.delegate = self
+            cell.editTextField.addTarget(self, action: "textFieldDidChange:", forControlEvents: UIControlEvents.EditingChanged)
             
-            cell.refreshCellWithLabel(about[indexPath.row])
+            cell.refreshCellWithLabel(about[indexPath.row], _labelValues:labelTextFieldText[indexPath.row] , _placeholder: aboutPlaceholders[indexPath.row])
             
             return cell
         } else {
@@ -125,9 +132,23 @@ class EditProfileVC: UIViewController, UITableViewDataSource, UITableViewDelegat
             iconTextFieldText[0] = textField.text!
         } else if textField.placeholder == "email" {
             iconTextFieldText[1] = textField.text!
+        } else if textField.placeholder == "Hong Kong" {
+            labelTextFieldText[0] = textField.text!
+        } else if textField.placeholder == "Male" {
+            labelTextFieldText[1] = textField.text!
+        } else if textField.placeholder == "22" {
+            labelTextFieldText[2] = textField.text!
+        } else if textField.placeholder == "Christian" {
+            labelTextFieldText[3] = textField.text!
+        } else if textField.placeholder == "English, Cantonese" {
+            labelTextFieldText[4] = textField.text!
         } else {
             name = textField.text!
         }
+    }
+    
+    func textFieldDidBeginEditing(textField: UITextField) {
+        activeTextField = textField
     }
     
     func loadUserData() {
@@ -135,6 +156,12 @@ class EditProfileVC: UIViewController, UITableViewDataSource, UITableViewDelegat
         
         let number = currentUser?["phoneNumber"] != nil ? currentUser!["phoneNumber"] : ""
         let mail = currentUser?.email != nil ? currentUser!.email! : ""
+        
+        labelTextFieldText[0] = currentUser?["location"] != nil ? currentUser?["location"] as! String : ""
+        labelTextFieldText[1] = currentUser?["gender"] != nil ? currentUser?["gender"] as! String : ""
+        labelTextFieldText[2] = currentUser?["age"] != nil ? currentUser?["age"] as! String : ""
+        labelTextFieldText[3] = currentUser?["religion"] != nil ? currentUser?["religion"] as! String : ""
+        labelTextFieldText[4] = currentUser?["languages"] != nil ? currentUser?["languages"] as! String : ""
         
         if let userImageFile = currentUser!["orgImage"] as? PFFile {
             userImageFile.getDataInBackgroundWithBlock {
@@ -163,9 +190,15 @@ class EditProfileVC: UIViewController, UITableViewDataSource, UITableViewDelegat
             currentUser!["orgImage"] = imageFile
         }
             
-        currentUser!["phoneNumber"] = iconTextFieldText[0]
-        currentUser?.email = iconTextFieldText[1]
-        currentUser?.username = iconTextFieldText[1]
+        currentUser!["phoneNumber"] = iconTextFieldText[0] != "" ? iconTextFieldText[0] : ""
+        currentUser?.email = iconTextFieldText[1] != "" ? iconTextFieldText[1] : ""
+        currentUser?.username = iconTextFieldText[1] != "" ? iconTextFieldText[1] : ""
+        
+        currentUser?["location"] = labelTextFieldText[0] != "" ? labelTextFieldText[0] : ""
+        currentUser?["gender"] = labelTextFieldText[1] != "" ? labelTextFieldText[1] : ""
+        currentUser?["age"] = labelTextFieldText[2] != "" ? labelTextFieldText[2] : ""
+        currentUser?["religion"] = labelTextFieldText[3] != "" ? labelTextFieldText[3] : ""
+        currentUser?["languages"] = labelTextFieldText[4] != "" ? labelTextFieldText[4] : ""
     
         currentUser?.saveInBackgroundWithBlock {
             (success: Bool, error: NSError?) -> Void in
@@ -183,9 +216,34 @@ class EditProfileVC: UIViewController, UITableViewDataSource, UITableViewDelegat
                 })
             } else {
                 // There was a problem, check error.description
+                print(error)
             }
 
         }
+    }
+    
+    func keyboardWillShow(notification: NSNotification) {
+        if let keyboardSize = (notification.userInfo?[UIKeyboardFrameBeginUserInfoKey] as? NSValue)?.CGRectValue() {
+            let contentInsets = UIEdgeInsets(top: self.tableview!.contentInset.top, left: 0, bottom: keyboardSize.height, right: 0)
+            self.tableview!.contentInset = contentInsets
+            
+            // If active text field is hidden by keyboard, scroll it so it's visible
+            // Your app might not need or want this behavior.
+            var aRect: CGRect = self.view.frame
+            aRect.size.height -= keyboardSize.height
+            let activeTextFieldRect: CGRect?
+            
+            if self.activeTextField != nil {
+                activeTextFieldRect = self.activeTextField?.superview?.superview?.frame
+                self.tableview!.scrollRectToVisible(activeTextFieldRect!, animated:true)
+            }
+        }
+    }
+    
+    func keyboardWillHide(notification: NSNotification) {
+        let contentInsets = UIEdgeInsets(top: self.tableview!.contentInset.top, left: 0, bottom: 0, right: 0)
+        self.tableview!.contentInset = contentInsets
+        self.activeTextField = nil
     }
     
     override func viewDidLoad() {
@@ -194,6 +252,11 @@ class EditProfileVC: UIViewController, UITableViewDataSource, UITableViewDelegat
         
         imagePicker = UIImagePickerController()
         imagePicker.delegate = self
+        
+        navigationController?.title = "edit"
+        
+        NSNotificationCenter.defaultCenter().addObserver(self, selector: Selector("keyboardWillShow:"), name:UIKeyboardDidShowNotification, object: nil)
+        NSNotificationCenter.defaultCenter().addObserver(self, selector: Selector("keyboardWillHide:"), name:UIKeyboardWillHideNotification, object: nil)
         
         loadUserData()
     }

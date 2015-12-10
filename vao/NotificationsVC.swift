@@ -37,14 +37,14 @@ class NotificationsVC: UIViewController, UITableViewDataSource, UITableViewDeleg
     
     func tableView(tableView: UITableView, didSelectRowAtIndexPath indexPath: NSIndexPath) {
         if indexPath.row == 0 {
-            let vc = OpportunitiesDetailVC(nibName:"OpportunitiesDetailVC", bundle: nil)
-//            vc.event = indexPath.row
-            navigationController?.pushViewController(vc, animated: true)
+//            let vc = OpportunitiesDetailVC(nibName:"OpportunitiesDetailVC", bundle: nil)
+////            vc.event = indexPath.row
+//            navigationController?.pushViewController(vc, animated: true)
         } else if indexPath.row == 1 {
-            let vc = OpportunitiesDetailVC(nibName:"OpportunitiesDetailVC", bundle: nil)
-//            vc.event = indexPath.row
-            vc.orgInvited = true
-            navigationController?.pushViewController(vc, animated: true)
+//            let vc = OpportunitiesDetailVC(nibName:"OpportunitiesDetailVC", bundle: nil)
+////            vc.event = indexPath.row
+//            vc.orgInvited = true
+//            navigationController?.pushViewController(vc, animated: true)
         } else {
             let vc = RateVC(nibName:"RateView", bundle: nil)
             navigationController?.pushViewController(vc, animated: true)

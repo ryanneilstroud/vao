@@ -49,8 +49,8 @@
                 <accessibilityTraits key="traits" link="YES"/>
             </accessibility>
             <connections>
-                <outlet property="editTextField" destination="dUN-P7-0if" id="Yoa-8N-hAD"/>
-                <outlet property="label" destination="6jX-Rw-tCh" id="fIB-3h-FS5"/>
+                <outlet property="editTextField" destination="dUN-P7-0if" id="f37-Xy-dTK"/>
+                <outlet property="label" destination="6jX-Rw-tCh" id="UIF-vV-eCw"/>
             </connections>
             <point key="canvasLocation" x="562.5" y="369"/>
         </tableViewCell>

@@ -70,7 +70,7 @@ class OrgEditProfileVC: UIViewController, UITableViewDataSource, UITableViewDele
             //            cell.selectionStyle = UITableViewCellSelectionStyle.None
             //            cell.editTextField.delegate = self
             
-            cell.refreshCellWithLabel(about[indexPath.row])
+//            cell.refreshCellWithLabel(about[indexPath.row])
             
             return cell
         } else {

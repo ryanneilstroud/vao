@@ -7,6 +7,7 @@
 //
 
 import UIKit
+import Parse
 
 class RecoverPasswordVC: UIViewController, UITextFieldDelegate {
     
@@ -29,8 +30,21 @@ class RecoverPasswordVC: UIViewController, UITextFieldDelegate {
     }
     
     func attemptRetrievePassword() {
-        if volunteersTabIsSelected == true {
         
+        if Reachability.isConnectedToNetwork() == true {
+            PFUser.requestPasswordResetForEmailInBackground(emailTextField.text!.lowercaseString)
+            
+            let alert = UIAlertController(title: "Success", message: "an email has been sent with a link to reset your password", preferredStyle: UIAlertControllerStyle.Alert)
+            alert.addAction(UIAlertAction(title: "okay", style: UIAlertActionStyle.Default, handler: { action in
+                self.dismissViewControllerAnimated(true, completion: nil)
+            }))
+            self.presentViewController(alert, animated: true, completion: nil)
+            
+            
+        } else {
+            let alert = UIAlertController(title: "Error", message: "unable to connect to the internet", preferredStyle: UIAlertControllerStyle.Alert)
+            alert.addAction(UIAlertAction(title: "okay", style: UIAlertActionStyle.Default, handler: nil))
+            self.presentViewController(alert, animated: true, completion: nil)
         }
     }
     
@@ -46,36 +60,6 @@ class RecoverPasswordVC: UIViewController, UITextFieldDelegate {
         
         backgroundColorImageView.translatesAutoresizingMaskIntoConstraints = true
         backgroundColorImageView.frame = CGRectMake(backgroundColorImageView.frame.origin.x, backgroundColorImageView.frame.origin.y, screenRect.width, screenRect.height/2)
-        
-        volunteerButton.translatesAutoresizingMaskIntoConstraints = true
-        volunteerButton.frame = CGRectMake(screenRect.width/6, backgroundColorImageView.frame.size.height - 50, 100, 50)
-        
-        organizationButton.translatesAutoresizingMaskIntoConstraints = true
-        organizationButton.frame = CGRectMake(screenRect.width/6 * 3.5, volunteerButton.frame.origin.y, 100, 50)
-        
-        pointerImage.translatesAutoresizingMaskIntoConstraints = true
-        pointerImage.frame = CGRectMake(screenRect.width/6, backgroundColorImageView.frame.size.height - 25, pointerImage.frame.size.width, pointerImage.frame.size.height)
-    }
-    
-    @IBAction func displayRecoverVolunteerPassword(sender: AnyObject) {
-        volunteersTabIsSelected = true
-        moveImage()
-        
-    }
-    @IBAction func displayRecoverOrganizationPassword(sender: AnyObject) {
-        volunteersTabIsSelected = false
-        moveImage()
-
-    }
-    
-    func moveImage(){
-        var multiplier : CGFloat = 1
-        
-        if volunteersTabIsSelected == false {
-            multiplier = 3.5
-        }
-        
-        pointerImage.frame = CGRectMake(screenRect.width / 6 * multiplier, backgroundColorImageView.frame.size.height - 25, pointerImage.frame.size.width, pointerImage.frame.size.height)
     }
     
     @IBAction func recoverPassword(sender: AnyObject) {

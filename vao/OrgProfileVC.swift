@@ -94,7 +94,6 @@ class OrgProfileVC: UIViewController, UITableViewDataSource, UITableViewDelegate
             tableView.rowHeight = 50
             
             let cell = tableView.dequeueReusableCellWithIdentifier("cell", forIndexPath: indexPath) as! IconLabelCell
-            cell.selectionStyle = .None
             
             cell.refreshCellWithData(iconImagesArray[indexPath.row]!, text: iconLabelArray[indexPath.row])
             
@@ -103,7 +102,18 @@ class OrgProfileVC: UIViewController, UITableViewDataSource, UITableViewDelegate
     }
     
     func tableView(tableView: UITableView, didSelectRowAtIndexPath indexPath: NSIndexPath) {
-        
+        if indexPath.section == 2 {
+            if indexPath.row == 0 {
+                UIApplication.sharedApplication().openURL(NSURL(string:"telprompt:" + iconLabelArray[0])!)
+            } else if indexPath.row == 1 {
+                let email = iconLabelArray[1]
+                let url = NSURL(string: "mailto:\(email)")
+                UIApplication.sharedApplication().openURL(url!)
+            } else if indexPath.row == 2 {
+                print("hello")
+                UIApplication.sharedApplication().openURL(NSURL(string: "http://" + iconLabelArray[2])!)
+            }
+        }
     }
     
     func tableView(tableView: UITableView, titleForHeaderInSection section: Int) -> String? {

@@ -26,14 +26,11 @@ class ProfileVC: UIViewController, UITableViewDataSource, UITableViewDelegate {
     
     var tableview: UITableView!
     
-    let data = [
-        ("gender", "male"),
-        ("age", "22"),
-        ("religion", "Christian")
-    ]
-    
     let iconImagesArray = [UIImage(named: "ion-ios-telephone-outline_256_0_c3c3c3_none.png"), UIImage(named: "ion-ios-email-outline_256_0_c3c3c3_none.png")]
     var iconLabelArray = ["", ""]
+    
+    var labelArray = [String]()
+    var labelValueArray = [String]()
     
     func numberOfSectionsInTableView(tableView: UITableView) -> Int {
         if orgIsViewing {
@@ -47,7 +44,9 @@ class ProfileVC: UIViewController, UITableViewDataSource, UITableViewDelegate {
         if section == 0 {
             return 1
         } else if section == 1 {
-            return data.count
+            let returnValue = labelArray.count != 0 ? labelArray.count : 0
+            print(returnValue)
+            return returnValue
         } else if section == 2 {
             return 1
         } else if section == 3 {
@@ -89,9 +88,10 @@ class ProfileVC: UIViewController, UITableViewDataSource, UITableViewDelegate {
             tableView.registerNib(nib, forCellReuseIdentifier: "details")
             cell = tableView.dequeueReusableCellWithIdentifier("details", forIndexPath: indexPath) as! AttributeValueCells;
             cell.selectionStyle = .None
-
-            let (attr, value) = data[indexPath.row]
-            cell.refreshProfileAboutCellWithData(attr, attributeValue: value)
+            
+            if labelArray.count != 0 {
+                cell.refreshProfileAboutCellWithData(labelArray[indexPath.row], attributeValue: labelValueArray[indexPath.row])            
+            }
             
             return cell
         } else if indexPath.section == 2 {
@@ -171,6 +171,17 @@ class ProfileVC: UIViewController, UITableViewDataSource, UITableViewDelegate {
             iconLabelArray[0] = volObject["phoneNumber"] as! String
             iconLabelArray[1] = volObject["email"] as! String
             
+            let array = ["gender", "age", "religion", "languages", "location"]
+            
+            for index in 0...4 {
+                if volObject[array[index]] != nil {
+                    if volObject[array[index]] as! String != "" {
+                        labelArray.append(array[index])
+                        labelValueArray.append(volObject[array[index]] as! String)
+                    }
+                }
+            }
+            
             let userImageFile = volObject["orgImage"] as! PFFile
             userImageFile.getDataInBackgroundWithBlock {
                 (imageData: NSData?, error: NSError?) -> Void in
@@ -191,6 +202,17 @@ class ProfileVC: UIViewController, UITableViewDataSource, UITableViewDelegate {
             iconLabelArray[0] = volunteer!["phoneNumber"] != nil ? volunteer!["phoneNumber"] as! String : ""
             iconLabelArray[1] = volunteer!["email"] != nil ? volunteer!["email"] as! String : ""
             
+            let array = ["gender", "age", "religion", "languages", "location"]
+            
+            for index in 0...4 {
+                if volunteer![array[index]] != nil {
+                    if volunteer![array[index]] as! String != "" {
+                        labelArray.append(array[index])
+                        labelValueArray.append(volunteer![array[index]] as! String)
+                    }
+                }
+            }
+            
             let userImageFile = volunteer!["orgImage"] as! PFFile
             userImageFile.getDataInBackgroundWithBlock {
                 (imageData: NSData?, error: NSError?) -> Void in
@@ -207,17 +229,13 @@ class ProfileVC: UIViewController, UITableViewDataSource, UITableViewDelegate {
     
     override func viewDidLoad() {
         super.viewDidLoad()
+        getUserData()
         // Do any additional setup after loading the view, typically from a nib.
-        didReload = false
 
         userNumberOfProjects = 0
         userNumberOfEvents = 0
         userRatingScore = 0
         
-    }
-    
-    override func viewDidAppear(animated: Bool) {
-        getUserData()
     }
     
     override func didReceiveMemoryWarning() {

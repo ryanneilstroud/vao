@@ -31,6 +31,9 @@ class TabVolunteersVC: UIViewController, UITableViewDataSource, UITableViewDeleg
         tableView.registerNib(nib, forCellReuseIdentifier: "volunteer")
         
         let cell : VolunteersTVC = tableView.dequeueReusableCellWithIdentifier("volunteer", forIndexPath: indexPath) as! VolunteersTVC
+        
+        print("volunteer: ", volunteers[indexPath.row])
+        
         cell.refreshCellWithVolunteer(volunteers[indexPath.row])
         
         return cell

@@ -16,8 +16,16 @@ class EditCell: UITableViewCell {
     @IBOutlet var iconImageView: UIImageView!
     @IBOutlet var editIconTextField: UITextField!
     
-    func refreshCellWithLabel(_label: String) {
+    func refreshCellWithLabel(_label: String, _labelValues: String, _placeholder: String) {
         label.text = _label
+        editTextField.placeholder = _placeholder
+        editTextField.text = _labelValues
+        
+        if _placeholder == "22" {
+            editTextField.keyboardType = UIKeyboardType.NumberPad
+        }
+        
+        self.selectionStyle = UITableViewCellSelectionStyle.None
     }
     
     func refreshCellWithIcon(_icon: UIImage, _keyboardType: UIKeyboardType, _placeHolder: String) {

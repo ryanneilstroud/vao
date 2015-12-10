@@ -42,7 +42,9 @@ class CredentialsVC: UIViewController, UITextFieldDelegate {
     
     func attemptLogIn() {
         
-        PFUser.logInWithUsernameInBackground(emailTextField.text!, password:passwordTextField.text!) {
+        let emailString = emailTextField.text!.lowercaseString
+        
+        PFUser.logInWithUsernameInBackground(emailString, password:passwordTextField.text!) {
             (user: PFUser?, error: NSError?) -> Void in
             if user != nil {
                 // Do stuff after successful login.
@@ -62,30 +64,16 @@ class CredentialsVC: UIViewController, UITextFieldDelegate {
 
             } else {
                 // The login failed. Check error to see why.
-                print("log in failed")
+                print(error?.userInfo)
+                
+                let errorString = error!.userInfo["error"] as? String
+                
+                let alert = UIAlertController(title: "Error", message: errorString, preferredStyle: UIAlertControllerStyle.Alert)
+                alert.addAction(UIAlertAction(title: "okay", style: UIAlertActionStyle.Default, handler: nil))
+                self.presentViewController(alert, animated: true, completion: nil)
             }
         }
     }
-    
-//    @IBAction func displayVolunteerSignIn(sender: AnyObject) {
-//        volunteersTabIsSelected = true
-//        moveImage()
-//    }
-//    
-//    @IBAction func displayOrganizationSignIn(sender: AnyObject) {
-//        volunteersTabIsSelected = false
-//        moveImage()
-//    }
-    
-//    func moveImage(){
-//        var multiplier : CGFloat = 1
-//        
-//        if volunteersTabIsSelected == false {
-//            multiplier = 3.5
-//        }
-//        
-//        pointerImageView.frame = CGRectMake(screenRect.width / 6 * multiplier, backgroundColorImageView.frame.size.height - 25, pointerImageView.frame.size.width, pointerImageView.frame.size.height)
-//    }
     
     @IBAction func logIn(sender: AnyObject) {
         attemptLogIn()
@@ -137,14 +125,5 @@ class CredentialsVC: UIViewController, UITextFieldDelegate {
         // Do any additional setup after loading the view, typically from a nib.
         backgroundColorImageView.translatesAutoresizingMaskIntoConstraints = true
         backgroundColorImageView.frame = CGRectMake(backgroundColorImageView.frame.origin.x, backgroundColorImageView.frame.origin.y, screenRect.width, screenRect.height/2)
-        
-//        volunteerButton.translatesAutoresizingMaskIntoConstraints = true
-//        volunteerButton.frame = CGRectMake(screenRect.width/6, backgroundColorImageView.frame.size.height - 50, 100, 50)
-//        
-//        organizationButton.translatesAutoresizingMaskIntoConstraints = true
-//        organizationButton.frame = CGRectMake(screenRect.width/6 * 3.5, volunteerButton.frame.origin.y, 100, 50)
-//        
-//        pointerImageView.translatesAutoresizingMaskIntoConstraints = true
-//        pointerImageView.frame = CGRectMake(screenRect.width/6, backgroundColorImageView.frame.size.height - 25, pointerImageView.frame.size.width, pointerImageView.frame.size.height)
     }
 }

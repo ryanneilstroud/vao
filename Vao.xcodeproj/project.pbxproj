@@ -116,6 +116,7 @@
 		D378FBFC1C1489F30038EA20 /* FBSDKLoginKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = D378FBF91C1489F30038EA20 /* FBSDKLoginKit.framework */; };
 		D378FBFD1C1489F30038EA20 /* FBSDKShareKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = D378FBFA1C1489F30038EA20 /* FBSDKShareKit.framework */; };
 		D378FBFF1C181FF50038EA20 /* lsf-category_128_0_c3c3c3_none.png in Resources */ = {isa = PBXBuildFile; fileRef = D378FBFE1C181FF50038EA20 /* lsf-category_128_0_c3c3c3_none.png */; };
+		D378FC011C19601C0038EA20 /* Reachability.swift in Sources */ = {isa = PBXBuildFile; fileRef = D378FC001C19601C0038EA20 /* Reachability.swift */; };
 		D3BCCB741C0C72C000B32F50 /* OrgEditProfileVC.swift in Sources */ = {isa = PBXBuildFile; fileRef = D3BCCB731C0C72C000B32F50 /* OrgEditProfileVC.swift */; };
 		D3D9B8D51BFAF45A00A3659D /* TabVolunteersVC.swift in Sources */ = {isa = PBXBuildFile; fileRef = D3D9B8D41BFAF45A00A3659D /* TabVolunteersVC.swift */; };
 		D3D9B8D71BFAF5DB00A3659D /* VolunteersCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = D3D9B8D61BFAF5DB00A3659D /* VolunteersCell.xib */; };
@@ -252,6 +253,7 @@
 		D378FBF91C1489F30038EA20 /* FBSDKLoginKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; path = FBSDKLoginKit.framework; sourceTree = "<group>"; };
 		D378FBFA1C1489F30038EA20 /* FBSDKShareKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; path = FBSDKShareKit.framework; sourceTree = "<group>"; };
 		D378FBFE1C181FF50038EA20 /* lsf-category_128_0_c3c3c3_none.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "lsf-category_128_0_c3c3c3_none.png"; sourceTree = "<group>"; };
+		D378FC001C19601C0038EA20 /* Reachability.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Reachability.swift; sourceTree = "<group>"; };
 		D3BCCB731C0C72C000B32F50 /* OrgEditProfileVC.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = OrgEditProfileVC.swift; sourceTree = "<group>"; };
 		D3D9B8D41BFAF45A00A3659D /* TabVolunteersVC.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = TabVolunteersVC.swift; sourceTree = "<group>"; };
 		D3D9B8D61BFAF5DB00A3659D /* VolunteersCell.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = VolunteersCell.xib; sourceTree = "<group>"; };
@@ -412,6 +414,7 @@
 				D3D9B8F31BFCBC8200A3659D /* vol_opportunities */,
 				D3D9B9081BFCDCC200A3659D /* rate */,
 				D34010FA1BF334A90031442A /* LogIn.xib */,
+				D378FC001C19601C0038EA20 /* Reachability.swift */,
 				D34011001BF339B20031442A /* CredentialsVC.swift */,
 				D33F14361BFE196300555931 /* SignUp.xib */,
 				D33F14341BFE18FF00555931 /* SignUpVC.swift */,
@@ -746,6 +749,7 @@
 				D305BF4A1C0703FD00729B64 /* EditCell.swift in Sources */,
 				D3202FBA1BF8A6500001F19A /* NewEventCell.swift in Sources */,
 				D305BF441C05E6A100729B64 /* MapViewController.swift in Sources */,
+				D378FC011C19601C0038EA20 /* Reachability.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
