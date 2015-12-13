@@ -83,13 +83,21 @@ class ChangePrivateData: UIViewController, UITableViewDataSource, UITableViewDel
                 if user != nil {
                     // Do stuff after successful login.
                     print(self.checkPassword())
+                    
+                    self.navigationController?.popViewControllerAnimated(true)
                 } else {
                     // The login failed. Check error to see why.
+                    
+                    let alert = UIAlertController(title: "oh no!", message: "this is not the password we have on record", preferredStyle: UIAlertControllerStyle.Alert)
+                    alert.addAction(UIAlertAction(title: "okay", style: UIAlertActionStyle.Default, handler: nil))
+                    self.presentViewController(alert, animated: true, completion: nil)
+                    
                 }
             }
         } else if viewIndentifier == 2 {
             if checkEmail() {
                 user?.username = newEmailTextFieldText
+                user?.email = newEmailTextFieldText
                 user?.saveInBackgroundWithBlock {
                     (success: Bool, error: NSError?) -> Void in
                     if (success) {
@@ -98,6 +106,7 @@ class ChangePrivateData: UIViewController, UITableViewDataSource, UITableViewDel
                     } else {
                         // There was a problem, check error.description
                         print(error)
+                        
                     }
                 }
             }
@@ -109,9 +118,17 @@ class ChangePrivateData: UIViewController, UITableViewDataSource, UITableViewDel
         
         if newPasswordTextFieldText.characters.count < 8 {
             //needs longer password
+            let alert = UIAlertController(title: "oh no!", message: "I'm afraid your password needs to be at least 8 characters long", preferredStyle: UIAlertControllerStyle.Alert)
+            alert.addAction(UIAlertAction(title: "okay", style: UIAlertActionStyle.Default, handler: nil))
+            self.presentViewController(alert, animated: true, completion: nil)
+            
             return (false, "password too short")
         } else if newPasswordTextFieldText != newConfirmedPasswordTextFieldText {
             //passwords don't match
+            let alert = UIAlertController(title: "oh no!", message: "Your new passwords don't match!", preferredStyle: UIAlertControllerStyle.Alert)
+            alert.addAction(UIAlertAction(title: "okay", style: UIAlertActionStyle.Default, handler: nil))
+            self.presentViewController(alert, animated: true, completion: nil)
+            
             return (false, "passwords don't match")
         } else {
             user?.password = newPasswordTextFieldText

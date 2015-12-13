@@ -10,21 +10,36 @@ import UIKit
 import Parse
 import MapKit
 
-class OpportunitiesVC: UIViewController, UITableViewDataSource, UITableViewDelegate {
+protocol SendToOrgViewingVolunteerProfile: class {
+    func didReceiveAtOrgViewingVolunteerProfile(_eventId: String)
+}
+
+class OpportunitiesVC: UIViewController, UITableViewDataSource, UITableViewDelegate, SendToOpportunitiesVC {
+    
+    weak var delegate: SendToOrgViewingVolunteerProfile? = nil
     
     let STORYBOARD_NAME_VOL = "Main"
     let STORYBOARD_NAME_ORG = "Organizations"
     let VC_IDENTIFIER = "mainScreen"
     
+    var filter = ""
+    
     @IBOutlet var tableview: UITableView!
     
-    var myBool = false
+    var orgIsPickingEventForVolunteer = false
+    
     var screenRect : CGRect = UIScreen.mainScreen().bounds
     
     var picker : UIPickerView! = UIPickerView()
     let array = ["recent", "upcoming", "recommended", "bookmarked", "my opportunities"]
     
     var eventsArray = [EventClass]()
+//    var eventObjectArrays = [PFObject]()
+    
+    func didReceiveAtOpportunitiesVC(_category: String) {
+        filter = _category
+        navigationItem.title = filter
+    }
     
     func tableView(tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
         return eventsArray.count
@@ -50,9 +65,15 @@ class OpportunitiesVC: UIViewController, UITableViewDataSource, UITableViewDeleg
     }
     
     func tableView(tableView: UITableView, didSelectRowAtIndexPath indexPath: NSIndexPath) {
-        let vc = OpportunitiesDetailVC(nibName:"OpportunitiesDetailVC", bundle: nil)
-        vc.event = eventsArray[indexPath.row]
-        navigationController?.pushViewController(vc, animated: true)
+        if orgIsPickingEventForVolunteer {
+            if let myDelegate = delegate {
+                myDelegate.didReceiveAtOrgViewingVolunteerProfile(eventsArray[indexPath.row].objectId)
+            }
+        } else {
+            let vc = OpportunitiesDetailVC(nibName:"OpportunitiesDetailVC", bundle: nil)
+            vc.event = eventsArray[indexPath.row]
+            navigationController?.pushViewController(vc, animated: true)
+        }
     }
     
     func loadEvents() {
@@ -72,15 +93,21 @@ class OpportunitiesVC: UIViewController, UITableViewDataSource, UITableViewDeleg
                     event.setSummary(object["summary"] as! String)
                     event.setFrequency(object["frequency"] as! String)
                     
+                    event.objectId = object.objectId
+                    
                     event.locationName = object["locationName"] as? String
-                    let loc = object["location"] as? PFGeoPoint
                     
-                    let latitude: CLLocationDegrees = loc!.latitude
-                    let longtitude: CLLocationDegrees = loc!.longitude
-                    
-                    let newLoc: CLLocationCoordinate2D = CLLocationCoordinate2D(latitude: latitude, longitude: longtitude)
-                    event.location = newLoc
-
+                    if let loc = object["location"] as? PFGeoPoint {
+                        let latitude: CLLocationDegrees = loc.latitude
+                        let longtitude: CLLocationDegrees = loc.longitude
+                        
+                        let newLoc: CLLocationCoordinate2D = CLLocationCoordinate2D(latitude: latitude, longitude: longtitude)
+                        event.location = newLoc
+                    } else {
+                        let newLoc: CLLocationCoordinate2D = CLLocationCoordinate2D(latitude: 0, longitude: 0)
+                        event.location = newLoc
+                    }
+        
                     event.createdBy = object["createdBy"] as! PFUser
                                         
                     if let userImageFile = object["eventImage"] as? PFFile {
@@ -134,5 +161,4 @@ class OpportunitiesVC: UIViewController, UITableViewDataSource, UITableViewDeleg
             
         }
     }
-    
 }

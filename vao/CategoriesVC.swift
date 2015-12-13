@@ -8,8 +8,23 @@
 
 import UIKit
 
+protocol SendToCreateEvent: class {
+    func didReceiveAtCreateEvent(_data: EventClass)
+}
+
+protocol SendToOpportunitiesVC: class {
+    func didReceiveAtOpportunitiesVC(_category: String)
+}
+
 class CategoriesVC: UIViewController, UITableViewDataSource, UITableViewDelegate {
 
+    var delegate: SendToCreateEvent? = nil
+    weak var oppDelegate: SendToOpportunitiesVC? = nil
+
+    var event: EventClass?
+    var filterCategory: String = ""
+    var creatingEvent = false
+    
     let image : [UIImage] = [UIImage(named: "lsf-walking_100_25_ffffff_2197ed.png")!,
                                 UIImage(named: "fa-hospital-o_100_25_ffffff_ed8f21.png")!,
                                 UIImage(named: "fa-book_100_25_ffffff_21ed8b.png")!]
@@ -35,7 +50,21 @@ class CategoriesVC: UIViewController, UITableViewDataSource, UITableViewDelegate
     
     func tableView(tableView: UITableView, didSelectRowAtIndexPath indexPath: NSIndexPath) {
         NSLog("clicked = %@", name[indexPath.row])
-        self.dismissViewControllerAnimated(true, completion: nil)
+        if let myDelegate = delegate {
+            
+            event?.category = name[indexPath.row]
+            myDelegate.didReceiveAtCreateEvent(event!)
+        }
+        
+        if creatingEvent {
+            self.navigationController?.popViewControllerAnimated(true)
+        } else {
+            if let oppDelegate = delegate {
+                
+//                opp(name[indexPath.row])
+            }
+            self.dismissViewControllerAnimated(true, completion: nil)
+        }
     }
     
     override func viewDidLoad() {
@@ -49,6 +78,7 @@ class CategoriesVC: UIViewController, UITableViewDataSource, UITableViewDelegate
     }
     
     @IBAction func dismissCategories(sender: AnyObject) {
+        
         self.dismissViewControllerAnimated(true, completion: nil)
     }
 }

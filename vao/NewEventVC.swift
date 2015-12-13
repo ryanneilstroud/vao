@@ -10,7 +10,7 @@ import UIKit
 import Parse
 import MapKit
 
-class NewEventVC: UIViewController, UITableViewDataSource, UITableViewDelegate, UITextFieldDelegate, UITextViewDelegate, UIImagePickerControllerDelegate, UINavigationControllerDelegate, SendToB, SendToMapViewController {
+class NewEventVC: UIViewController, UITableViewDataSource, UITableViewDelegate, UITextFieldDelegate, UITextViewDelegate, UIImagePickerControllerDelegate, UINavigationControllerDelegate, SendToB, SendToMapViewController, SendToCreateEvent {
 
     @IBOutlet var tableview: UITableView!
     
@@ -24,6 +24,7 @@ class NewEventVC: UIViewController, UITableViewDataSource, UITableViewDelegate, 
     var image: UIImage?
     
     var locationName: String = "location"
+    var categoryType: String = "category"
         
     var buttonLabelArray : [String] = ["date","time","don't repeat"]
     let iconImageArray : [UIImage] = [UIImage(named: "ion-ios-calendar-outline_256_0_c3c3c3_none.png")!, UIImage(named: "ion-ios-clock-outline_256_0_c3c3c3_none.png")!, UIImage(named: "pe-7s-repeat_256_0_c3c3c3_none.png")!]
@@ -44,6 +45,7 @@ class NewEventVC: UIViewController, UITableViewDataSource, UITableViewDelegate, 
             orgEvent["frequency"] = event.frequency == nil ? "don't repeat" : event.frequency
             orgEvent["summary"] = event.summary == nil ? "" : event.summary
             orgEvent["locationName"] = event.locationName == nil ? "" : event.locationName
+            orgEvent["category"] = event.category == nil ? "none" : event.category
             
             if event.location != nil {
                 orgEvent["location"] = PFGeoPoint(latitude: event.location!.latitude, longitude: event.location!.longitude)
@@ -87,6 +89,16 @@ class NewEventVC: UIViewController, UITableViewDataSource, UITableViewDelegate, 
     
     @IBAction func cancelEventCreation(sender: AnyObject) {
         self.dismissViewControllerAnimated(true, completion: nil)
+    }
+    
+    func didReceiveAtCreateEvent(_data: EventClass) {
+        event = _data
+        
+        if _data.category != nil {
+            categoryType = _data.category!
+        }
+        
+        tableview.reloadData()
     }
     
     func didReceiveAtMapViewController(_data: EventClass) {
@@ -180,7 +192,7 @@ class NewEventVC: UIViewController, UITableViewDataSource, UITableViewDelegate, 
             tableView.registerNib(nib, forCellReuseIdentifier: "pickerCell")
             
             let cell : NewEventCell = tableView.dequeueReusableCellWithIdentifier("pickerCell", forIndexPath: indexPath) as! NewEventCell
-            cell.refreshCellWithButtonLabel("category", _icon: UIImage(named: "lsf-category_128_0_c3c3c3_none.png")!)
+            cell.refreshCellWithButtonLabel(categoryType, _icon: UIImage(named: "lsf-category_128_0_c3c3c3_none.png")!)
             
             return cell
         } else if indexPath.section == 3 {
@@ -262,13 +274,18 @@ class NewEventVC: UIViewController, UITableViewDataSource, UITableViewDelegate, 
                 navigationController?.pushViewController(vc, animated: true)
             }
         
+        } else if indexPath.section == 2 {
+            let vc = CategoriesVC(nibName:"TableView", bundle: nil)
+            vc.delegate = self
+            vc.event = event
+            vc.creatingEvent = true
+            navigationController?.pushViewController(vc, animated: true)
         } else if indexPath.section == 3 {
             let vc = MapViewController(nibName: "MapView", bundle: nil)
             vc.delegate = self
             vc.event = event
             navigationController?.pushViewController(vc, animated: true)
         }
-        
     }
     
     func textFieldDidChange(textField: UITextField) {

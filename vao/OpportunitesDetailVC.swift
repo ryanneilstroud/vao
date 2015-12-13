@@ -40,7 +40,7 @@ class OpportunitiesDetailVC: UIViewController, UITableViewDataSource, UITableVie
     let locationIcon = UIImage(named: "ion-ios-location-outline_256_0_c3c3c3_none.png")
     
     func numberOfSectionsInTableView(tableView: UITableView) -> Int {
-        return 8
+        return 6
     }
     
     @IBAction func handleVolunteerInvitation(sender: AnyObject) {
@@ -121,7 +121,9 @@ class OpportunitiesDetailVC: UIViewController, UITableViewDataSource, UITableVie
             }
         
             return cell
-        } else if indexPath.section == 4 {
+        }
+        
+        else if indexPath.section == 4 {
             var cell : IconLabelCell!
             let nib = UINib(nibName:"IconLabelCell", bundle: nil)
             
@@ -134,7 +136,7 @@ class OpportunitiesDetailVC: UIViewController, UITableViewDataSource, UITableVie
             
             return cell
         }
-        else if indexPath.section == 5 {
+        else {
             
             var cell : GenericLabelTextviewCell!
             
@@ -149,40 +151,107 @@ class OpportunitiesDetailVC: UIViewController, UITableViewDataSource, UITableVie
             cell.refreshCellWithTextviewText(event.summary!)
             
             return cell
-        } else if indexPath.section == 6 {
-            var cell : SimpleButtonCell!
-            
-            let nib = UINib(nibName:"SimpleButtonCell", bundle: nil)
-            
-            tableView.rowHeight = 40
-            tableView.registerNib(nib, forCellReuseIdentifier: "cell")
-            cell = tableView.dequeueReusableCellWithIdentifier("cell", forIndexPath: indexPath) as! SimpleButtonCell
-//            cell.selectionStyle = .None
-
-            cell.refreshCellWithButtonData(buttonTextArray[0])
-            
-            return cell
-        } else {
-            var cell : SimpleButtonCell!
-            
-            let nib = UINib(nibName:"SimpleButtonCell", bundle: nil)
-            
-            tableView.rowHeight = 40
-            tableView.registerNib(nib, forCellReuseIdentifier: "cell")
-            cell = tableView.dequeueReusableCellWithIdentifier("cell", forIndexPath: indexPath) as! SimpleButtonCell
-            cell.selectionStyle = .None
-
-            var buttonText = ""
-            
-            if orgInvited == true {
-                buttonText = "accept invitation"
-            } else {
-                buttonText = buttonTextArray[1]
-            }
-            cell.refreshCellWithButtonData(buttonText)
-            
-            return cell
         }
+        
+//        else if indexPath.section == 6 {
+//            var cell : SimpleButtonCell!
+//            
+//            let nib = UINib(nibName:"SimpleButtonCell", bundle: nil)
+//            
+//            tableView.rowHeight = 40
+//            tableView.registerNib(nib, forCellReuseIdentifier: "cell")
+//            cell = tableView.dequeueReusableCellWithIdentifier("cell", forIndexPath: indexPath) as! SimpleButtonCell
+////            cell.selectionStyle = .None
+//
+//            cell.refreshCellWithButtonData(buttonTextArray[0])
+//            
+//            return cell
+//        } else {
+//            var cell : SimpleButtonCell!
+//            
+//            let nib = UINib(nibName:"SimpleButtonCell", bundle: nil)
+//            
+//            tableView.rowHeight = 40
+//            tableView.registerNib(nib, forCellReuseIdentifier: "cell")
+//            cell = tableView.dequeueReusableCellWithIdentifier("cell", forIndexPath: indexPath) as! SimpleButtonCell
+//            cell.selectionStyle = .None
+//            
+////            cell.basicButton.addTarget(self, action: "handleEventParticipantValidation:", forControlEvents: UIControlEvents.TouchUpInside)
+//
+//            var buttonText = ""
+//            
+//            if orgInvited == true {
+//                buttonText = "accept invitation"
+//            } else {
+//                buttonText = buttonTextArray[1]
+//            }
+//            cell.refreshCellWithButtonData(buttonText)
+//            
+//            return cell
+//        }
+    }
+    
+    func handleEventParticipantValidation(_button: UIButton) {
+        print("tapped")
+        
+        let EVENT_PARTICIPANT_VALIDATION = "EventParticipantValidation"
+        let VOLUNTEER = "volunteer"
+        let ORGANIZATION = "organization"
+        let EVENT = "event"
+        
+        let user = PFUser.currentUser()
+        
+        let volunteerQuery = PFQuery(className: EVENT_PARTICIPANT_VALIDATION)
+        volunteerQuery.whereKey(VOLUNTEER, equalTo: user!)
+        
+        let organizationQuery = PFQuery(className: EVENT_PARTICIPANT_VALIDATION)
+        organizationQuery.whereKey(ORGANIZATION, equalTo: event.createdBy)
+        
+        let eventQuery = PFQuery(className: EVENT_PARTICIPANT_VALIDATION)
+        eventQuery.whereKey(EVENT, equalTo: event.objectId)
+        
+        let query = PFQuery.orQueryWithSubqueries([volunteerQuery, organizationQuery, eventQuery])
+        query.findObjectsInBackgroundWithBlock {
+            (results: [PFObject]?, error: NSError?) -> Void in
+            if error == nil {
+                // results contains players with lots of wins or only a few wins.
+                print("results = ",results)
+                if results?.count == 0 {
+                    let eventParticipantValidation = PFObject(className: EVENT_PARTICIPANT_VALIDATION)
+                    
+                    if user!["userTypeIsVolunteer"] as! Bool {
+                        eventParticipantValidation[VOLUNTEER] = user!
+                        eventParticipantValidation["status"] = "pending"
+                        eventParticipantValidation[ORGANIZATION] = self.event.createdBy
+                        eventParticipantValidation["event"] = self.event.objectId
+                        eventParticipantValidation["initiatorTypeIsVolunteer"] = true
+            
+                        eventParticipantValidation.saveInBackgroundWithBlock {
+                            (success: Bool, error: NSError?) -> Void in
+                            if (success) {
+                                // The object has been saved.
+                                
+                                _button.setTitle("cancel request", forState: UIControlState.Normal)
+                                
+                            } else {
+                                // There was a problem, check error.description
+                            }
+                        }
+                    } else {
+                        print("false")
+                    }
+                } else {
+                    
+                }
+            } else {
+                print("error = ",error)
+            }
+        }
+        
+    }
+    
+    func createAlert() {
+    
     }
     
     func tableView(tableView: UITableView, titleForHeaderInSection section: Int) -> String? {

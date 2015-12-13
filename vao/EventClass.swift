@@ -20,8 +20,10 @@ class EventClass {
     var eventImage: UIImage?
     var location: CLLocationCoordinate2D?
     var locationName: String?
+    var category: String?
     
     var createdBy: PFUser!
+    var objectId: String!
     
     func setTitle(_title: String){
         title = _title

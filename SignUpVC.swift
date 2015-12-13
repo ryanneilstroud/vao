@@ -68,9 +68,15 @@ class SignUpVC: UIViewController, UITextFieldDelegate {
     func checkPassword() -> (Bool, String) {
         if passwordTextField.text?.characters.count < 8 {
             //needs longer password
+            let alert = UIAlertController(title: "oh no!", message: "your password must be at least 8 characters long", preferredStyle: UIAlertControllerStyle.Alert)
+            alert.addAction(UIAlertAction(title: "okay", style: UIAlertActionStyle.Default, handler: nil))
+            self.presentViewController(alert, animated: true, completion: nil)
             return (false, "password too short")
         } else if passwordTextField.text != confirmPasswordTextField.text {
             //passwords don't match
+            let alert = UIAlertController(title: "oh no!", message: "your passwords do not match", preferredStyle: UIAlertControllerStyle.Alert)
+            alert.addAction(UIAlertAction(title: "okay", style: UIAlertActionStyle.Default, handler: nil))
+            self.presentViewController(alert, animated: true, completion: nil)
             return (false, "passwords don't match")
         } else {
             return (true, "success")

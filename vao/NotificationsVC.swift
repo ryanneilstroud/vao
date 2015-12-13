@@ -7,6 +7,7 @@
 //
 
 import UIKit
+import Parse
 
 class NotificationsVC: UIViewController, UITableViewDataSource, UITableViewDelegate {
     
@@ -52,5 +53,15 @@ class NotificationsVC: UIViewController, UITableViewDataSource, UITableViewDeleg
         NSLog("selected notification index = %d", indexPath.row)
     }
     
+    func getNotifications() {
+        //confirmation, invitation, event completetion
+        
+//        let invitationQuery = PFQuery(className:"EventParticipantValidation")
+//        invitationQuery.whereKey("", equalTo: <#T##AnyObject#>)
+    }
+    
+    override func viewDidLoad() {
+        getNotifications()
+    }
     
 }

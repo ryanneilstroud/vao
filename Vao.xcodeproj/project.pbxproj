@@ -117,6 +117,7 @@
 		D378FBFD1C1489F30038EA20 /* FBSDKShareKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = D378FBFA1C1489F30038EA20 /* FBSDKShareKit.framework */; };
 		D378FBFF1C181FF50038EA20 /* lsf-category_128_0_c3c3c3_none.png in Resources */ = {isa = PBXBuildFile; fileRef = D378FBFE1C181FF50038EA20 /* lsf-category_128_0_c3c3c3_none.png */; };
 		D378FC011C19601C0038EA20 /* Reachability.swift in Sources */ = {isa = PBXBuildFile; fileRef = D378FC001C19601C0038EA20 /* Reachability.swift */; };
+		D3A474DA1C1C7DDB001575AA /* EventParticipantValidation.swift in Sources */ = {isa = PBXBuildFile; fileRef = D3A474D91C1C7DDB001575AA /* EventParticipantValidation.swift */; };
 		D3BCCB741C0C72C000B32F50 /* OrgEditProfileVC.swift in Sources */ = {isa = PBXBuildFile; fileRef = D3BCCB731C0C72C000B32F50 /* OrgEditProfileVC.swift */; };
 		D3D9B8D51BFAF45A00A3659D /* TabVolunteersVC.swift in Sources */ = {isa = PBXBuildFile; fileRef = D3D9B8D41BFAF45A00A3659D /* TabVolunteersVC.swift */; };
 		D3D9B8D71BFAF5DB00A3659D /* VolunteersCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = D3D9B8D61BFAF5DB00A3659D /* VolunteersCell.xib */; };
@@ -254,6 +255,7 @@
 		D378FBFA1C1489F30038EA20 /* FBSDKShareKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; path = FBSDKShareKit.framework; sourceTree = "<group>"; };
 		D378FBFE1C181FF50038EA20 /* lsf-category_128_0_c3c3c3_none.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "lsf-category_128_0_c3c3c3_none.png"; sourceTree = "<group>"; };
 		D378FC001C19601C0038EA20 /* Reachability.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Reachability.swift; sourceTree = "<group>"; };
+		D3A474D91C1C7DDB001575AA /* EventParticipantValidation.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = EventParticipantValidation.swift; sourceTree = "<group>"; };
 		D3BCCB731C0C72C000B32F50 /* OrgEditProfileVC.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = OrgEditProfileVC.swift; sourceTree = "<group>"; };
 		D3D9B8D41BFAF45A00A3659D /* TabVolunteersVC.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = TabVolunteersVC.swift; sourceTree = "<group>"; };
 		D3D9B8D61BFAF5DB00A3659D /* VolunteersCell.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = VolunteersCell.xib; sourceTree = "<group>"; };
@@ -407,6 +409,7 @@
 				D33947481BEB3DD200ED53F7 /* Main.storyboard */,
 				D3202FAB1BF86AD50001F19A /* Organizations.storyboard */,
 				D305BF4F1C07436700729B64 /* UserDataClass.swift */,
+				D3A474D91C1C7DDB001575AA /* EventParticipantValidation.swift */,
 				D378FBF11C147E810038EA20 /* profile */,
 				D3D9B8EF1BFCBBD500A3659D /* org_volunteers */,
 				D3D9B8F41BFCBC9900A3659D /* notifications */,
@@ -717,6 +720,7 @@
 				D3D9B90A1BFCDCE500A3659D /* RateCell.swift in Sources */,
 				D33947591BEB5AA700ED53F7 /* ProfileVC.swift in Sources */,
 				D34011011BF339B20031442A /* CredentialsVC.swift in Sources */,
+				D3A474DA1C1C7DDB001575AA /* EventParticipantValidation.swift in Sources */,
 				D3202F791BF390600001F19A /* MapViewCell.swift in Sources */,
 				D3D9B9071BFCD6B600A3659D /* RateVC.swift in Sources */,
 				D3202FA41BF8414A0001F19A /* EventPhotoCell.swift in Sources */,
