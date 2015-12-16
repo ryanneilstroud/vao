@@ -297,26 +297,26 @@ class ProfileVC: UIViewController, UITableViewDataSource, UITableViewDelegate, S
             if error == nil && objects != nil {
                 print(objects)
                 
-                if objects!.count == 1 {
-                    if objects![0][self.INITIATOR_TYPE_IS_VOLUNTEER] as! Bool {
-                        //accept or decline them one single event
-                        self.eventParticipantValidationButtonText = self.ACCEPT_REQUEST
-                        self.tableview.reloadData()
-                    } else {
-                        //cancel invite
-                        self.eventParticipantValidationButtonText = self.CANCEL_INVITE
-                        self.tableview.reloadData()
-                    }
-                } else if objects!.count > 1 {
+//                if objects!.count == 1 {
+//                    if objects![0][self.INITIATOR_TYPE_IS_VOLUNTEER] as! Bool {
+//                        //accept or decline them one single event
+//                        self.eventParticipantValidationButtonText = self.ACCEPT_REQUEST
+//                        self.tableview.reloadData()
+//                    } else {
+//                        //cancel invite
+//                        self.eventParticipantValidationButtonText = self.CANCEL_INVITE
+//                        self.tableview.reloadData()
+//                    }
+//                } else if objects!.count > 1 {
                     //review invites
                     self.eventParticipantValidationButtonText = self.REVIEW_INVITES
                     self.tableview.reloadData()
                     
-                } else {
-                    //invite them
-                    self.eventParticipantValidationButtonText = self.INVITE
-                    self.tableview.reloadData()
-                }
+//                } else {
+//                    //invite them
+//                    self.eventParticipantValidationButtonText = self.INVITE
+//                    self.tableview.reloadData()
+//                }
                 
             } else {
                 print(error)
@@ -332,26 +332,26 @@ class ProfileVC: UIViewController, UITableViewDataSource, UITableViewDelegate, S
             if error == nil && objects != nil {
                 print(objects)
                 
-                if objects!.count == 1 {
+//                if objects!.count == 1 {
+//
+//                    //check volunteer and organization
+//                    if objects![0][self.ORGANIZATION] as! PFUser == PFUser.currentUser()! && objects![0][self.ORGANIZATION] as! PFObject == self.volObject {
+//                        let eventParticipantValidationStatus = objects![0][self.STATUS] as! String
+//                        
+//                        
+//                        self.createAlertForHandlingEventParticipantValidation(objects![0][self.INITIATOR_TYPE_IS_VOLUNTEER] as! Bool, _eventParticipantValidationStatus: eventParticipantValidationStatus, _eventParticipantValidationEvent: self.volObject)
+//                    }
                     
-                    //check volunteer and organization
-                    if objects![0][self.ORGANIZATION] as! PFUser == PFUser.currentUser()! && objects![0][self.ORGANIZATION] as! PFObject == self.volObject {
-                        let eventParticipantValidationStatus = objects![0][self.STATUS] as! String
-                        
-                        
-                        self.createAlertForHandlingEventParticipantValidation(objects![0][self.INITIATOR_TYPE_IS_VOLUNTEER] as! Bool, _eventParticipantValidationStatus: eventParticipantValidationStatus, _eventParticipantValidationEvent: self.volObject)
-                    }
-                    
-                } else if objects!.count > 1 {
+//                } else if objects!.count > 1 {
                     let vc = OrgHandlesEventInvites(nibName:"TableView", bundle: nil)
                     vc.eventValidationObjects = objects!
                     vc.volunteerObject = self.volObject
                     self.navigationController?.pushViewController(vc, animated: true)
                     
-                } else {
-                    let myObject = PFObject(className: self.EVENT_PARTICIPANT_VALIDATION)
-                    self.createAlertForHandlingEventParticipantValidation(false, _eventParticipantValidationStatus: "", _eventParticipantValidationEvent: myObject)
-                }
+//                } else {
+//                    let myObject = PFObject(className: self.EVENT_PARTICIPANT_VALIDATION)
+//                    self.createAlertForHandlingEventParticipantValidation(false, _eventParticipantValidationStatus: "", _eventParticipantValidationEvent: myObject)
+//                }
             } else {
                 print(error)
             }
