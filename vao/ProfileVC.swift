@@ -10,7 +10,30 @@ import UIKit
 import Parse
 
 class ProfileVC: UIViewController, UITableViewDataSource, UITableViewDelegate, SendToOrgViewingVolunteerProfile {
-        
+    
+    let EVENT_PARTICIPANT_VALIDATION = "EventParticipantValidation"
+    let EVENT_ID = "event"
+    let VOLUNTEER = "volunteer"
+    let VOLUNTEERS = "volunteers"
+    let ORGANIZATION = "organization"
+    let INITIATOR_TYPE_IS_VOLUNTEER = "initiatorTypeIsVolunteer"
+    
+    let EVENT_CLASS = "Event"
+    
+    let STATUS = "status"
+    let PENDING = "pending"
+    let ACCEPTED = "accepted"
+    let DECLINED = "declined"
+    
+    let CANCEL_INVITE = "Cancel Invite"
+    let ACCEPT_REQUEST = "Accept Request"
+    //        let DECLINE_REQUEST = "Decline Request"
+    let LEAVE_EVENT = "Leave Event"
+    let JOIN_EVENT = "Join Event"
+    let VOLUNTEER_DECLINED = "You were declined from this event"
+    let REVIEW_INVITES = "Review Invites"
+    let INVITE = "Invite"
+    
     var profilePic : UIImage?
     var userNumberOfProjects : Int!
     var userNumberOfEvents : Int!
@@ -124,7 +147,7 @@ class ProfileVC: UIViewController, UITableViewDataSource, UITableViewDelegate, S
             tableView.registerNib(nib, forCellReuseIdentifier: "cell")
             cell = tableView.dequeueReusableCellWithIdentifier("cell", forIndexPath: indexPath) as! SimpleButtonCell
             
-//            cell.basicButton.addTarget(self, action: "handleEventParticipantValidation:", forControlEvents: UIControlEvents.TouchUpInside)
+            cell.basicButton.addTarget(self, action: "handleEventParticipantValidation:", forControlEvents: UIControlEvents.TouchUpInside)
             button = cell.basicButton
             
             if eventParticipantValidationButtonText == "" {
@@ -184,325 +207,7 @@ class ProfileVC: UIViewController, UITableViewDataSource, UITableViewDelegate, S
     
     func didReceiveAtOrgViewingVolunteerProfile(_eventId: String) {
         selectedEventForVolunteer = _eventId
-        handleEventParticipantValidation(button!)
-    }
-    
-    func handleEventParticipantValidation(_button: UIButton) {
-        let EVENT_PARTICIPANT_VALIDATION = "EventParticipantValidation"
-        let VOLUNTEER = "volunteer"
-        let ORGANIZATION = "organization"
-        let EVENT = "event"
-        
-        let user = PFUser.currentUser()
-        
-        let volunteerQuery = PFQuery(className: EVENT_PARTICIPANT_VALIDATION)
-        volunteerQuery.whereKey(VOLUNTEER, equalTo: volObject)
-        
-        print("volObject = ", volObject)
-        
-        let organizationQuery = PFQuery(className: EVENT_PARTICIPANT_VALIDATION)
-        organizationQuery.whereKey(ORGANIZATION, equalTo: user!)
-        
-        print("volEvents = ", volEvents)
-        
-        let eventQuery = PFQuery(className: EVENT_PARTICIPANT_VALIDATION)
-        if volEvents.isEmpty == false {
-            eventQuery.whereKey(EVENT, equalTo: volEvents[0])
-            print("not empty")
-        } else {
-            eventQuery.whereKey(EVENT, equalTo: "0")
-            print("empty")
-        }
-        
-        let compoundQuery = PFQuery.orQueryWithSubqueries([volunteerQuery, organizationQuery, eventQuery])
-        compoundQuery.findObjectsInBackgroundWithBlock {
-            (results: [PFObject]?, error: NSError?) -> Void in
-            if error == nil {
-                if results?.count == 0 {
-                    print("results count 0")
-                    if self.selectedEventForVolunteer == "" {
-                        print("no event selected")
-                        let eventParticipantValidation = PFObject(className: EVENT_PARTICIPANT_VALIDATION)
-                        
-                        if user!["userTypeIsVolunteer"] as! Bool == false {
-                            eventParticipantValidation[ORGANIZATION] = user!
-                            eventParticipantValidation["status"] = "pending"
-                            eventParticipantValidation[VOLUNTEER] = self.volObject
-                            eventParticipantValidation["event"] = self.selectedEventForVolunteer
-                            eventParticipantValidation["initiatorTypeIsVolunteer"] = false
-                            
-                            eventParticipantValidation.saveInBackgroundWithBlock {
-                                (success: Bool, error: NSError?) -> Void in
-                                if (success) {
-                                    // The object has been saved.
-                                    
-                                    _button.setTitle("cancel request", forState: UIControlState.Normal)
-                                    
-                                } else {
-                                    // There was a problem, check error.description
-                                }
-                            }
-                        } else {
-                            print("true")
-                        }
-                    } else {
-                        print("event selected")
-                        let vc = OpportunitiesVC(nibName: "TableView", bundle: nil)
-                        vc.delegate = self
-                        self.navigationController?.pushViewController(vc, animated: true)
-                    }
-                } else {
-                    print("results count is greater than 0")
-                    print("results = ", results)
-                    let query = PFQuery(className: "Event")
-                    query.getObjectInBackgroundWithId(self.volEvents[0]) {
-                        (event: PFObject?, error: NSError?) -> Void in
-                        if error == nil {
-                            print("not nil")
-                            
-                            let eventTitle =  event!["title"] as! String
-                            
-                            let alertTitle = "Alert!"
-                            var alertMessage = ""
-                            var alertButtonTitleArray = [String]()
-                            
-                            if results![0]["status"] as! String == "pending" {
-                                //confirm
-                                if results![0]["initiatorTypeIsVolunteer"] as! Bool {
-                                    alertMessage = "accept this person as a volunteer for " + eventTitle
-                                    alertButtonTitleArray.append("decline")
-                                    alertButtonTitleArray.append("accept")
-                                } else {
-                                    alertMessage = "cancel invitation"
-                                    alertButtonTitleArray.append("uninvite")
-                                }
-                            } else if results![0]["status"] as! String == "confirmed" {
-                                //cancel
-                                alertMessage = "univite this person as a volunteer for " + eventTitle
-                                alertButtonTitleArray.append("uninvite")
-                            } else if results![0]["status"] as! String == "declined" {
-                                //invite
-                                
-                                print("declined status")
-                                
-                                if self.selectedEventForVolunteer != "" {
-                                    print("no event selected")
-                                    let eventParticipantValidation = PFObject(className: EVENT_PARTICIPANT_VALIDATION)
-                                    
-                                    if user!["userTypeIsVolunteer"] as! Bool == false {
-                                        eventParticipantValidation[ORGANIZATION] = user!
-                                        eventParticipantValidation["status"] = "pending"
-                                        eventParticipantValidation[VOLUNTEER] = self.volObject
-                                        eventParticipantValidation["event"] = self.selectedEventForVolunteer
-                                        eventParticipantValidation["initiatorTypeIsVolunteer"] = false
-                                        
-                                        eventParticipantValidation.saveInBackgroundWithBlock {
-                                            (success: Bool, error: NSError?) -> Void in
-                                            if (success) {
-                                                // The object has been saved.
-                                                
-                                                _button.setTitle("cancel request", forState: UIControlState.Normal)
-                                                
-                                            } else {
-                                                // There was a problem, check error.description
-                                            }
-                                        }
-                                    } else {
-                                        print("true")
-                                    }
-                                } else {
-                                    print("event selected")
-                                    let vc = OpportunitiesVC(nibName: "TableView", bundle: nil)
-                                    vc.delegate = self
-                                    self.navigationController?.pushViewController(vc, animated: true)
-                                }
-                                
-//                                alertMessage = "invite this person to be a volunteer for " + eventTitle
-//                                alertButtonTitleArray.append("invite")
-                            }
-                            
-                            let alert = UIAlertController(title: alertTitle, message: alertMessage, preferredStyle: UIAlertControllerStyle.Alert)
-                            
-                            for _title in alertButtonTitleArray {
-                                alert.addAction(UIAlertAction(title: _title, style: UIAlertActionStyle.Default, handler: { action in
-                            
-                                    var status = ""
-                                    var buttonText = ""
-                                    var addVolunteerToEvent = false
-                                    
-                                    switch action.title {
-                                    case "accept"?:
-                                        status = "confirmed"
-                                        buttonText = "uninvite volunteer "
-                                        addVolunteerToEvent = true
-                                    case "decline"?:
-                                        status = "declined"
-                                        buttonText = "invite volunteer "
-                                        addVolunteerToEvent = false
-                                    case "uninvite"?:
-                                        status = "declined"
-                                        buttonText = "invite volunteer "
-                                        addVolunteerToEvent = false
-                                    case "invite"?:
-                                        status = "pending"
-                                        buttonText = "cancel invite "
-                                        results![0]["initiatorTypeIsVolunteer"] = false
-                                    default:
-                                        print("cancel")
-                                        break
-                                    }
-                                                                        
-                                    if (event!.valueForKey("volunteers") != nil) {
-                                        print("not nil")
-                                        
-                                        if addVolunteerToEvent {
-                                            if event!["volunteers"].containsObject(self.volObject) {
-                                                
-                                            } else {
-                                                event!["volunteers"].addObject(self.volObject)
-                                            }
-                                        } else {
-                                            if event!["volunteers"].containsObject(self.volObject) {
-
-                                            } else {
-                                                event!["volunteers"].removeObject(self.volObject)
-                                            }
-                                        }
-                                    } else {
-                                        print("nil")
-                                        event!["volunteers"] = [PFObject]()
-                                        event?.saveInBackgroundWithBlock {
-                                            (success: Bool, error: NSError?) -> Void in
-                                            if (success) {
-                                                // The object has been saved.
-                                                if addVolunteerToEvent {
-                                                    if event!["volunteers"].containsObject(self.volObject) {
-                                                        
-                                                    } else {
-                                                        event!["volunteers"].addObject(self.volObject)
-                                                    }
-                                                } else {
-                                                    if event!["volunteers"].containsObject(self.volObject) {
-                                                        
-                                                    } else {
-                                                        event!["volunteers"].removeObject(self.volObject)
-                                                    }
-                                                }
-                                            } else {
-                                                // There was a problem, check error.description
-                                            }
-                                        }
-                                    }
-
-                                    event?.saveInBackgroundWithBlock {
-                                        (success: Bool, error: NSError?) -> Void in
-                                        if (success) {
-                                        
-                                            results![0]["status"] = status
-                                            results![0].saveInBackgroundWithBlock {
-                                                (success: Bool, error: NSError?) -> Void in
-                                                if (success) {
-                                                    self.eventParticipantValidationButtonText = buttonText + eventTitle
-                                                    
-                                                    self.tableview.reloadData()
-                                                } else {
-                                                    print(error)
-                                                }
-                                            }
-                                        
-                                        } else {
-                                            // There was a problem, check error.description
-                                            print(error)
-                                        }
-                                    }
-
-                                }))
-                            }
-                            
-                            alert.addAction(UIAlertAction(title: "Cancel", style: .Cancel, handler: nil))
-                            
-                            self.presentViewController(alert, animated: true, completion: nil)
-                            
-                        } else {
-                            print(error)
-                        }
-                    }
-                }
-            } else {
-                print("error = ",error)
-            }
-        }
-    }
-    
-    func getEventParticipantValidationStatus(_volunteerObject: PFObject) {
-        
-        let EVENT_PARTICIPANT_VALIDATION = "EventParticipantValidation"
-        let VOLUNTEER = "volunteer"
-        let ORGANIZATION = "organization"
-        
-        let user = PFUser.currentUser()
-        let volunteer = volObject
-        
-        let volunteerQuery = PFQuery(className: EVENT_PARTICIPANT_VALIDATION)
-        volunteerQuery.whereKey(VOLUNTEER, equalTo: volunteer)
-        
-        let organizationQuery = PFQuery(className: EVENT_PARTICIPANT_VALIDATION)
-        organizationQuery.whereKey(ORGANIZATION, equalTo: user!)
-        
-        let query = PFQuery.orQueryWithSubqueries([volunteerQuery, organizationQuery])
-        query.findObjectsInBackgroundWithBlock {
-            (results: [PFObject]?, error: NSError?) -> Void in
-            if error == nil {
-                // results contains players with lots of wins or only a few wins.
-                print("results = ",results)
-                if results!.count == 0 {
-                    
-                } else {
-//                    if results![0]["initiatorTypeIsVolunteer"] as! Bool {
-                    
-                        if results!.count == 1 {
-                            
-                            for result in results! {
-                                let query = PFQuery(className: "Event")
-                                query.getObjectInBackgroundWithId(result["event"] as! String) {
-                                    (event: PFObject?, error: NSError?) -> Void in
-                                    if error == nil {
-                                        print(event)
-                                        
-                                        self.volEvents.append(event!.objectId!)
-                                        
-                                        if result["status"] as! String == "pending" {
-                                            
-                                            let eventTitle =  event!["title"] as! String
-                                            self.eventParticipantValidationButtonText = "accept request for " + eventTitle
-                                            self.tableview.reloadData()
-                                            
-                                        } else if result["status"] as! String == "confrimed" {
-                                        
-                                            let eventTitle =  event!["title"] as! String
-                                            self.eventParticipantValidationButtonText = "remove volunteer from " + eventTitle
-                                            self.tableview.reloadData()
-                                            
-                                        } else if result["status"] as! String == "declined" {
-                                            
-                                            let eventTitle =  event!["title"] as! String
-                                            self.eventParticipantValidationButtonText = "invite volunteer to " + eventTitle
-                                            self.tableview.reloadData()
-                                        }
-                                    } else {
-                                        print(error)
-                                    }
-                                }
-                            }
-//                        } else {
-//                        
-//                        }
-                    }
-                }
-            } else {
-                print("error = ",error)
-            }
-        }
+//        handleEventParticipantValidation(button!)
     }
     
     func getUserData() {
@@ -533,9 +238,9 @@ class ProfileVC: UIViewController, UITableViewDataSource, UITableViewDelegate, S
                         self.profilePic = UIImage(data:imageData)
                         
                         self.tableview.reloadData()
+                        self.loadStatusOfEventParticipantForOrganization(self.volObject)
                         
                         //get eventParticipantValidationStatus
-                        self.getEventParticipantValidationStatus(self.volObject)
                     }
                 }
             }
@@ -581,13 +286,112 @@ class ProfileVC: UIViewController, UITableViewDataSource, UITableViewDelegate, S
         userNumberOfProjects = 0
         userNumberOfEvents = 0
         userRatingScore = 0
+    }
+    
+    func loadStatusOfEventParticipantForOrganization(_volunteerObject: PFObject) {
+        //get volunteer
+        let volunteer = PFQuery(className: self.EVENT_PARTICIPANT_VALIDATION)
+        volunteer.whereKey(self.VOLUNTEER, equalTo: _volunteerObject)
+        volunteer.findObjectsInBackgroundWithBlock {
+            (objects: [PFObject]?, error: NSError?) -> Void in
+            if error == nil && objects != nil {
+                print(objects)
+                
+                if objects!.count == 1 {
+                    if objects![0][self.INITIATOR_TYPE_IS_VOLUNTEER] as! Bool {
+                        //accept or decline them one single event
+                        self.eventParticipantValidationButtonText = self.ACCEPT_REQUEST
+                        self.tableview.reloadData()
+                    } else {
+                        //cancel invite
+                        self.eventParticipantValidationButtonText = self.CANCEL_INVITE
+                        self.tableview.reloadData()
+                    }
+                } else if objects!.count > 1 {
+                    //review invites
+                    self.eventParticipantValidationButtonText = self.REVIEW_INVITES
+                    self.tableview.reloadData()
+                    
+                } else {
+                    //invite them
+                    self.eventParticipantValidationButtonText = self.INVITE
+                    self.tableview.reloadData()
+                }
+                
+            } else {
+                print(error)
+            }
+        }
+    }
+    
+    func handleEventParticipantValidation(_button: UIButton) {
+        let volunteer = PFQuery(className: self.EVENT_PARTICIPANT_VALIDATION)
+        volunteer.whereKey(self.VOLUNTEER, equalTo: volObject)
+        volunteer.findObjectsInBackgroundWithBlock {
+            (objects: [PFObject]?, error: NSError?) -> Void in
+            if error == nil && objects != nil {
+                print(objects)
+                
+                if objects!.count == 1 {
+                    
+                    //check volunteer and organization
+                    if objects![0][self.ORGANIZATION] as! PFUser == PFUser.currentUser()! && objects![0][self.ORGANIZATION] as! PFObject == self.volObject {
+                        let eventParticipantValidationStatus = objects![0][self.STATUS] as! String
+                        
+                        
+                        self.createAlertForHandlingEventParticipantValidation(objects![0][self.INITIATOR_TYPE_IS_VOLUNTEER] as! Bool, _eventParticipantValidationStatus: eventParticipantValidationStatus, _eventParticipantValidationEvent: self.volObject)
+                    }
+                    
+                } else if objects!.count > 1 {
+                    let vc = OrgHandlesEventInvites(nibName:"TableView", bundle: nil)
+                    vc.eventValidationObjects = objects!
+                    vc.volunteerObject = self.volObject
+                    self.navigationController?.pushViewController(vc, animated: true)
+                    
+                } else {
+                    let myObject = PFObject(className: self.EVENT_PARTICIPANT_VALIDATION)
+                    self.createAlertForHandlingEventParticipantValidation(false, _eventParticipantValidationStatus: "", _eventParticipantValidationEvent: myObject)
+                }
+            } else {
+                print(error)
+            }
+        }
+    }
+    
+    func createAlertForHandlingEventParticipantValidation(_initiatorTypeIsVolunteer: Bool, _eventParticipantValidationStatus: String, _eventParticipantValidationEvent: PFObject) {
+        print("okay")
         
+        if _initiatorTypeIsVolunteer {
+            
+            print("true")
+            
+            let alert = UIAlertController(title: "Alert", message: "Would you like to accept this request?", preferredStyle: UIAlertControllerStyle.Alert)
+            alert.addAction(UIAlertAction(title: "No", style: UIAlertActionStyle.Cancel, handler: nil))
+            alert.addAction(UIAlertAction(title: "Yes", style: UIAlertActionStyle.Default, handler: { action in
+                
+            }))
+            
+            self.presentViewController(alert, animated: true, completion: nil)
+        } else {
+            print("false")
+            
+            let alert = UIAlertController(title: "Alert", message: "Would you like to invite this person to be a volunteer?", preferredStyle: UIAlertControllerStyle.Alert)
+            alert.addAction(UIAlertAction(title: "No", style: UIAlertActionStyle.Cancel, handler: nil))
+            alert.addAction(UIAlertAction(title: "Yes", style: UIAlertActionStyle.Default, handler: { action in
+                
+            }))
+            
+            self.presentViewController(alert, animated: true, completion: nil)
+        }
+
     }
     
-    override func didReceiveMemoryWarning() {
-        super.didReceiveMemoryWarning()
-        // Dispose of any resources that can be recreated.
-    }
-    
+//    override func prepareForSegue(segue: UIStoryboardSegue, sender: AnyObject?) {
+//        if segue.identifier == "showSettingsSegue" {
+//            if let vc = segue.destinationViewController as? Settings {
+//                vc.isVolunteer = true
+//            }
+//        }
+//    }
     
 }

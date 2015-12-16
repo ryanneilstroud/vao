@@ -118,6 +118,7 @@
 		D378FBFF1C181FF50038EA20 /* lsf-category_128_0_c3c3c3_none.png in Resources */ = {isa = PBXBuildFile; fileRef = D378FBFE1C181FF50038EA20 /* lsf-category_128_0_c3c3c3_none.png */; };
 		D378FC011C19601C0038EA20 /* Reachability.swift in Sources */ = {isa = PBXBuildFile; fileRef = D378FC001C19601C0038EA20 /* Reachability.swift */; };
 		D3A474DA1C1C7DDB001575AA /* EventParticipantValidation.swift in Sources */ = {isa = PBXBuildFile; fileRef = D3A474D91C1C7DDB001575AA /* EventParticipantValidation.swift */; };
+		D3A474DC1C1FE217001575AA /* OrgHandleEventInvites.swift in Sources */ = {isa = PBXBuildFile; fileRef = D3A474DB1C1FE217001575AA /* OrgHandleEventInvites.swift */; };
 		D3BCCB741C0C72C000B32F50 /* OrgEditProfileVC.swift in Sources */ = {isa = PBXBuildFile; fileRef = D3BCCB731C0C72C000B32F50 /* OrgEditProfileVC.swift */; };
 		D3D9B8D51BFAF45A00A3659D /* TabVolunteersVC.swift in Sources */ = {isa = PBXBuildFile; fileRef = D3D9B8D41BFAF45A00A3659D /* TabVolunteersVC.swift */; };
 		D3D9B8D71BFAF5DB00A3659D /* VolunteersCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = D3D9B8D61BFAF5DB00A3659D /* VolunteersCell.xib */; };
@@ -136,6 +137,7 @@
 		D3D9B90C1BFCDD2E00A3659D /* ScoreCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = D3D9B90B1BFCDD2E00A3659D /* ScoreCell.xib */; };
 		D3D9B90F1BFCDDF000A3659D /* ion-ios-star-outline_100_0_a3a3a3_none.png in Resources */ = {isa = PBXBuildFile; fileRef = D3D9B90D1BFCDDF000A3659D /* ion-ios-star-outline_100_0_a3a3a3_none.png */; };
 		D3D9B9101BFCDDF000A3659D /* ion-ios-star_100_0_e4e400_none.png in Resources */ = {isa = PBXBuildFile; fileRef = D3D9B90E1BFCDDF000A3659D /* ion-ios-star_100_0_e4e400_none.png */; };
+		D3E3BA731C21947200F93BD9 /* OrgNotificationsVC.swift in Sources */ = {isa = PBXBuildFile; fileRef = D3E3BA721C21947200F93BD9 /* OrgNotificationsVC.swift */; };
 		D3ECA1A61BFA277B0072AAFB /* Settings.swift in Sources */ = {isa = PBXBuildFile; fileRef = D3ECA1A51BFA277B0072AAFB /* Settings.swift */; };
 		D3ECA1A81BFA39320072AAFB /* OrgProfileVC.swift in Sources */ = {isa = PBXBuildFile; fileRef = D3ECA1A71BFA39320072AAFB /* OrgProfileVC.swift */; };
 		D3ECA1AA1BFA3DED0072AAFB /* axiom_logo.jpg in Resources */ = {isa = PBXBuildFile; fileRef = D3ECA1A91BFA3DED0072AAFB /* axiom_logo.jpg */; };
@@ -256,6 +258,7 @@
 		D378FBFE1C181FF50038EA20 /* lsf-category_128_0_c3c3c3_none.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "lsf-category_128_0_c3c3c3_none.png"; sourceTree = "<group>"; };
 		D378FC001C19601C0038EA20 /* Reachability.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Reachability.swift; sourceTree = "<group>"; };
 		D3A474D91C1C7DDB001575AA /* EventParticipantValidation.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = EventParticipantValidation.swift; sourceTree = "<group>"; };
+		D3A474DB1C1FE217001575AA /* OrgHandleEventInvites.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = OrgHandleEventInvites.swift; sourceTree = "<group>"; };
 		D3BCCB731C0C72C000B32F50 /* OrgEditProfileVC.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = OrgEditProfileVC.swift; sourceTree = "<group>"; };
 		D3D9B8D41BFAF45A00A3659D /* TabVolunteersVC.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = TabVolunteersVC.swift; sourceTree = "<group>"; };
 		D3D9B8D61BFAF5DB00A3659D /* VolunteersCell.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = VolunteersCell.xib; sourceTree = "<group>"; };
@@ -274,6 +277,7 @@
 		D3D9B90B1BFCDD2E00A3659D /* ScoreCell.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = ScoreCell.xib; sourceTree = "<group>"; };
 		D3D9B90D1BFCDDF000A3659D /* ion-ios-star-outline_100_0_a3a3a3_none.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "ion-ios-star-outline_100_0_a3a3a3_none.png"; sourceTree = "<group>"; };
 		D3D9B90E1BFCDDF000A3659D /* ion-ios-star_100_0_e4e400_none.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "ion-ios-star_100_0_e4e400_none.png"; sourceTree = "<group>"; };
+		D3E3BA721C21947200F93BD9 /* OrgNotificationsVC.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = OrgNotificationsVC.swift; sourceTree = "<group>"; };
 		D3ECA1A51BFA277B0072AAFB /* Settings.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Settings.swift; sourceTree = "<group>"; };
 		D3ECA1A71BFA39320072AAFB /* OrgProfileVC.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = OrgProfileVC.swift; sourceTree = "<group>"; };
 		D3ECA1A91BFA3DED0072AAFB /* axiom_logo.jpg */ = {isa = PBXFileReference; lastKnownFileType = image.jpeg; path = axiom_logo.jpg; sourceTree = "<group>"; };
@@ -503,6 +507,7 @@
 			children = (
 				D3D9B8F01BFCBC1800A3659D /* createEvent */,
 				D33F14301BFE035C00555931 /* OrgEventsVC.swift */,
+				D3A474DB1C1FE217001575AA /* OrgHandleEventInvites.swift */,
 				D3D9B8D41BFAF45A00A3659D /* TabVolunteersVC.swift */,
 				D3D9B8DA1BFAF7B600A3659D /* VolunteersTVC.swift */,
 				D3D9B8D61BFAF5DB00A3659D /* VolunteersCell.xib */,
@@ -545,6 +550,7 @@
 				D3D9B8FC1BFCC4BE00A3659D /* NotificationsVC.swift */,
 				D3D9B8FE1BFCC5E600A3659D /* NotificationsCell.xib */,
 				D3D9B9001BFCC61500A3659D /* NotificationsCell.swift */,
+				D3E3BA721C21947200F93BD9 /* OrgNotificationsVC.swift */,
 			);
 			name = notifications;
 			sourceTree = "<group>";
@@ -730,6 +736,7 @@
 				D33F143B1BFE245600555931 /* RatedCell.swift in Sources */,
 				D305BF3E1C05998B00729B64 /* EventClass.swift in Sources */,
 				D33F14311BFE035C00555931 /* OrgEventsVC.swift in Sources */,
+				D3A474DC1C1FE217001575AA /* OrgHandleEventInvites.swift in Sources */,
 				D33947471BEB3DD200ED53F7 /* ViewController.swift in Sources */,
 				D3202F911BF445E80001F19A /* CategoriesVC.swift in Sources */,
 				D3202F9E1BF45BEB0001F19A /* SummaryVC.swift in Sources */,
@@ -749,6 +756,7 @@
 				D3D9B8DB1BFAF7B600A3659D /* VolunteersTVC.swift in Sources */,
 				D3202F6F1BF36AED0001F19A /* OpportunitiesCell.swift in Sources */,
 				D33947571BEB44F700ED53F7 /* OpportunitiesVC.swift in Sources */,
+				D3E3BA731C21947200F93BD9 /* OrgNotificationsVC.swift in Sources */,
 				D33F14351BFE18FF00555931 /* SignUpVC.swift in Sources */,
 				D305BF4A1C0703FD00729B64 /* EditCell.swift in Sources */,
 				D3202FBA1BF8A6500001F19A /* NewEventCell.swift in Sources */,

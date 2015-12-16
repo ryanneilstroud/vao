@@ -7,16 +7,30 @@
 //
 
 import UIKit
+import Parse
 
 class NotificationsCell: UITableViewCell {
 
     @IBOutlet var notificationText: UITextView!
     @IBOutlet var profilePicture: UIImageView!
     
-    func refreshNotificationsCellWithData(image: UIImage, text: String) {
-        notificationText.text = text
-        profilePicture.image = image
-
+    func refreshNotificationsCellWithData(_file: PFFile?, _text: String) {
+    
+        notificationText.text = _text
+        
+        if let userImageFile = _file {
+            userImageFile.getDataInBackgroundWithBlock {
+                (imageData: NSData?, error: NSError?) -> Void in
+                if error == nil {
+                    if let imageData = imageData {
+                        print("hello")
+                        self.profilePicture.image = UIImage(data:imageData)
+                        
+                    }
+                }
+            }
+        }
+        
         profilePicture.clipsToBounds = true
 
         profilePicture.layer.cornerRadius = 27

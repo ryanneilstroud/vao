@@ -1,8 +1,8 @@
 <?xml version="1.0" encoding="UTF-8" standalone="no"?>
-<document type="com.apple.InterfaceBuilder3.CocoaTouch.XIB" version="3.0" toolsVersion="9059" systemVersion="15B42" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES">
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.XIB" version="3.0" toolsVersion="9060" systemVersion="15B42" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES">
     <dependencies>
         <deployment identifier="iOS"/>
-        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="9049"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="9051"/>
     </dependencies>
     <objects>
         <placeholder placeholderIdentifier="IBFilesOwner" id="-1" userLabel="File's Owner"/>
@@ -21,27 +21,27 @@
                         <color key="textColor" white="0.66666666666666663" alpha="1" colorSpace="calibratedWhite"/>
                         <nil key="highlightedColor"/>
                     </label>
-                    <button opaque="NO" contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="X7F-Ey-lSK">
+                    <button opaque="NO" tag="1" contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="X7F-Ey-lSK">
                         <rect key="frame" x="15" y="42" width="40" height="40"/>
                         <animations/>
                         <state key="normal" image="ion-ios-star-outline_100_0_a3a3a3_none.png"/>
                     </button>
-                    <button opaque="NO" tag="1" contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="gvq-Re-M4F">
+                    <button opaque="NO" tag="2" contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="gvq-Re-M4F">
                         <rect key="frame" x="56" y="42" width="40" height="40"/>
                         <animations/>
                         <state key="normal" image="ion-ios-star-outline_100_0_a3a3a3_none.png"/>
                     </button>
-                    <button opaque="NO" tag="2" contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="plV-xd-JfW">
+                    <button opaque="NO" tag="3" contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="plV-xd-JfW">
                         <rect key="frame" x="96" y="42" width="40" height="40"/>
                         <animations/>
                         <state key="normal" image="ion-ios-star-outline_100_0_a3a3a3_none.png"/>
                     </button>
-                    <button opaque="NO" tag="3" contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="5hp-Mh-nda">
+                    <button opaque="NO" tag="4" contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="5hp-Mh-nda">
                         <rect key="frame" x="136" y="42" width="40" height="40"/>
                         <animations/>
                         <state key="normal" image="ion-ios-star-outline_100_0_a3a3a3_none.png"/>
                     </button>
-                    <button opaque="NO" tag="4" contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="28j-0x-hRJ">
+                    <button opaque="NO" tag="5" contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="28j-0x-hRJ">
                         <rect key="frame" x="176" y="42" width="40" height="40"/>
                         <animations/>
                         <state key="normal" image="ion-ios-star-outline_100_0_a3a3a3_none.png"/>
@@ -51,7 +51,11 @@
             </tableViewCellContentView>
             <animations/>
             <connections>
-                <outlet property="firstStar" destination="X7F-Ey-lSK" id="cBy-qr-lR1"/>
+                <outlet property="fifthStar" destination="28j-0x-hRJ" id="hWy-Sh-0as"/>
+                <outlet property="firstStar" destination="X7F-Ey-lSK" id="Wka-cH-QbC"/>
+                <outlet property="fourthStar" destination="5hp-Mh-nda" id="snf-YD-SXy"/>
+                <outlet property="secondStar" destination="gvq-Re-M4F" id="yLk-J8-Dya"/>
+                <outlet property="thirdStar" destination="plV-xd-JfW" id="Yi7-p8-HW4"/>
             </connections>
             <point key="canvasLocation" x="447" y="406"/>
         </tableViewCell>
