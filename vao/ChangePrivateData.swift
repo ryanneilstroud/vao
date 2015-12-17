@@ -11,6 +11,8 @@ import Parse
 
 class ChangePrivateData: UIViewController, UITableViewDataSource, UITableViewDelegate, UITextFieldDelegate {
     
+    var saveButton = UIBarButtonItem()
+    
     var viewIndentifier = 0
     let passwordTextfieldPlaceholders = ["new password", "confirm new password"]
     
@@ -75,8 +77,10 @@ class ChangePrivateData: UIViewController, UITableViewDataSource, UITableViewDel
     }
     
     func saveUserData() {
-        let user = PFUser.currentUser()
+        saveButton.enabled = false
 
+        let user = PFUser.currentUser()
+        
         if viewIndentifier == 1 {
             PFUser.logInWithUsernameInBackground(user!.username!, password:currentPasswordTextFieldText) {
                 (user: PFUser?, error: NSError?) -> Void in
@@ -96,21 +100,42 @@ class ChangePrivateData: UIViewController, UITableViewDataSource, UITableViewDel
             }
         } else if viewIndentifier == 2 {
             if checkEmail() {
-                user?.username = newEmailTextFieldText
-                user?.email = newEmailTextFieldText
-                user?.saveInBackgroundWithBlock {
-                    (success: Bool, error: NSError?) -> Void in
-                    if (success) {
-                        print(success)
-                        self.navigationController?.popViewControllerAnimated(true)
-                    } else {
-                        // There was a problem, check error.description
-                        print(error)
-                        
+                if Reachability.isConnectedToNetwork() {
+                    user?.username = newEmailTextFieldText
+                    user?.email = newEmailTextFieldText
+                    user?.saveInBackgroundWithBlock {
+                        (success: Bool, error: NSError?) -> Void in
+                        if (success) {
+                            print(success)
+                            let str = PFUser.currentUser()?.username
+                            let alert = UIAlertController(title: "Success!", message: "Your email has been updated to " + str!, preferredStyle: UIAlertControllerStyle.Alert)
+                            alert.addAction(UIAlertAction(title: "Okay", style: UIAlertActionStyle.Default, handler: { action in
+                                self.navigationController?.popViewControllerAnimated(true)
+                            }))
+                            self.presentViewController(alert, animated: true, completion: nil)
+                        } else {
+                            // There was a problem, check error.description
+                            print(error)
+                            let alert = UIAlertController(title: "Error: " + String(error?.code), message: error?.description, preferredStyle: UIAlertControllerStyle.Alert)
+                            alert.addAction(UIAlertAction(title: "Okay", style: UIAlertActionStyle.Default, handler: nil))
+                            self.presentViewController(alert, animated: true, completion: nil)
+                            
+                        }
                     }
+                } else {
+                    let alert = UIAlertController(title: "Internet Not Found", message: "We can't seem to connect to the Internet. Please double check your connection.", preferredStyle: UIAlertControllerStyle.Alert)
+                    alert.addAction(UIAlertAction(title: "Okay", style: UIAlertActionStyle.Default, handler: nil))
+                    self.presentViewController(alert, animated: true, completion: nil)
                 }
+            } else {
+                let alert = UIAlertController(title: "Invalid Email", message: "Please enter a valid email address.", preferredStyle: UIAlertControllerStyle.Alert)
+                alert.addAction(UIAlertAction(title: "Okay", style: UIAlertActionStyle.Default, handler: nil))
+                self.presentViewController(alert, animated: true, completion: nil)
             }
         }
+        
+        saveButton.enabled = true
+
     }
     
     func checkPassword() -> (Bool, String) {
@@ -154,7 +179,7 @@ class ChangePrivateData: UIViewController, UITableViewDataSource, UITableViewDel
     }
     
     override func viewDidLoad() {
-        let saveButton = UIBarButtonItem(barButtonSystemItem: .Save, target: self, action: "saveUserData")
+        saveButton = UIBarButtonItem(barButtonSystemItem: .Save, target: self, action: "saveUserData")
         navigationItem.setRightBarButtonItem(saveButton, animated: true)
     }
 }

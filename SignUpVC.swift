@@ -46,8 +46,14 @@ class SignUpVC: UIViewController, UITextFieldDelegate {
         if checkFullName() == true && checkEmail() == true && checkPassword().0 == true {
             signUpWithParse()
             print("true: ", checkFullName(), checkEmail(), checkPassword())
-        } else {
-            print("one or more are false")
+        } else if checkEmail() == false {
+            let alert = UIAlertController(title: "Invalid Email", message: "Please enter a valid email address.", preferredStyle: UIAlertControllerStyle.Alert)
+            alert.addAction(UIAlertAction(title: "Okay", style: UIAlertActionStyle.Default, handler: nil))
+            self.presentViewController(alert, animated: true, completion: nil)
+        } else if checkFullName() == false {
+            let alert = UIAlertController(title: "Too Short", message: "Please enter your full name.", preferredStyle: UIAlertControllerStyle.Alert)
+            alert.addAction(UIAlertAction(title: "Okay", style: UIAlertActionStyle.Default, handler: nil))
+            self.presentViewController(alert, animated: true, completion: nil)
         }
     }
     
@@ -92,45 +98,51 @@ class SignUpVC: UIViewController, UITextFieldDelegate {
     
     func signUpWithParse() {
         
-        let user = PFUser()
-        user.username = emailTextField.text
-        user.password = passwordTextField.text
-        user.email = user.username
-        // other fields can be set just like with PFObject
-        user["fullName"] = fullNameTextField.text
-        
-        let imageData = UIImageJPEGRepresentation(UIImage(named: "pe-7s-user_256_0_606060_none.png")!, 0.5)
-        let imageFile = PFFile(name:"image.png", data:imageData!)
-        
-        user["orgImage"] = imageFile
-        
-        user["phoneNumber"] = ""
-        user["website"] = ""
-        
-        user["userTypeIsVolunteer"] = volunteersTabIsSelected
-        
-        user.signUpInBackgroundWithBlock {
-            (succeeded: Bool, error: NSError?) -> Void in
-            if let error = error {
-                let errorString = error.userInfo["error"] as? NSString
-                // Show the errorString somewhere and let the user try again.
-                print(errorString)
-            } else {
-                // Hooray! Let them use the app now.
-                
-                var storyboardName : String
-                
-                if self.volunteersTabIsSelected == true {
-                    storyboardName = self.STORYBOARD_NAME_VOL
+        if Reachability.isConnectedToNetwork() {
+            let user = PFUser()
+            user.username = emailTextField.text
+            user.password = passwordTextField.text
+            user.email = user.username
+            // other fields can be set just like with PFObject
+            user["fullName"] = fullNameTextField.text
+            
+            let imageData = UIImageJPEGRepresentation(UIImage(named: "pe-7s-user_256_0_606060_none.png")!, 0.5)
+            let imageFile = PFFile(name:"image.png", data:imageData!)
+            
+            user["orgImage"] = imageFile
+            
+            user["phoneNumber"] = ""
+            user["website"] = ""
+            
+            user["userTypeIsVolunteer"] = volunteersTabIsSelected
+            
+            user.signUpInBackgroundWithBlock {
+                (succeeded: Bool, error: NSError?) -> Void in
+                if let error = error {
+                    let errorString = error.userInfo["error"] as? NSString
+                    // Show the errorString somewhere and let the user try again.
+                    print(errorString)
                 } else {
-                    storyboardName = self.STORYBOARD_NAME_ORG
+                    // Hooray! Let them use the app now.
+                    
+                    var storyboardName : String
+                    
+                    if self.volunteersTabIsSelected == true {
+                        storyboardName = self.STORYBOARD_NAME_VOL
+                    } else {
+                        storyboardName = self.STORYBOARD_NAME_ORG
+                    }
+                    
+                    let storyboard = UIStoryboard(name: storyboardName, bundle: nil)
+                    let vc = storyboard.instantiateViewControllerWithIdentifier(self.VC_IDENTIFIER) as UIViewController
+                    self.presentViewController(vc, animated: true, completion: nil)
+                    
                 }
-                
-                let storyboard = UIStoryboard(name: storyboardName, bundle: nil)
-                let vc = storyboard.instantiateViewControllerWithIdentifier(self.VC_IDENTIFIER) as UIViewController
-                self.presentViewController(vc, animated: true, completion: nil)
-
             }
+        } else {
+            let alert = UIAlertController(title: "Internet Not Found", message: "We can't seem to connect to the Internet. Please double check your connection.", preferredStyle: UIAlertControllerStyle.Alert)
+            alert.addAction(UIAlertAction(title: "Okay", style: UIAlertActionStyle.Default, handler: nil))
+            self.presentViewController(alert, animated: true, completion: nil)
         }
     }
     

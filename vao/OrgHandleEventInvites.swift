@@ -60,19 +60,6 @@ class OrgHandlesEventInvites: UIViewController, UITableViewDataSource, UITableVi
         print("numberOfRowsInSection")
         tableview = tableView
         
-        var sectionOrder = [Int]()
-        var counter = 0
-        
-        if requestedSectionEvents.count != 0 {
-            sectionOrder.append(counter)
-            counter += 1
-        }
-        
-        if invitedSectionEvents.count != 0 {
-            sectionOrder.append(counter)
-            counter += 1
-        }
-        
         if section == 0 {
             return requestedSectionEvents.count
         } else if section == 1 {

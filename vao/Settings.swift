@@ -103,6 +103,7 @@ class Settings: UIViewController, UITableViewDataSource, UITableViewDelegate {
                 }
             case 1, 2:
                 let vc = ChangePrivateData(nibName: "TableView", bundle: nil)
+                print(indexPath.row)
                 vc.viewIndentifier = indexPath.row
                 navigationController?.pushViewController(vc, animated: true)
             default:

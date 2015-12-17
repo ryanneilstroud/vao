@@ -14,7 +14,7 @@ protocol SendToOrgViewingVolunteerProfile: class {
     func didReceiveAtOrgViewingVolunteerProfile(_eventId: String)
 }
 
-class OpportunitiesVC: UIViewController, UITableViewDataSource, UITableViewDelegate, SendToOpportunitiesVC {
+class OpportunitiesVC: UIViewController, UITableViewDataSource, UITableViewDelegate {
     
     weak var delegate: SendToOrgViewingVolunteerProfile? = nil
     
@@ -22,7 +22,7 @@ class OpportunitiesVC: UIViewController, UITableViewDataSource, UITableViewDeleg
     let STORYBOARD_NAME_ORG = "Organizations"
     let VC_IDENTIFIER = "mainScreen"
     
-    var filter = ""
+    let CATEGORY = "category"
     
     @IBOutlet var tableview: UITableView!
     
@@ -35,11 +35,6 @@ class OpportunitiesVC: UIViewController, UITableViewDataSource, UITableViewDeleg
     
     var eventsArray = [EventClass]()
 //    var eventObjectArrays = [PFObject]()
-    
-    func didReceiveAtOpportunitiesVC(_category: String) {
-        filter = _category
-        navigationItem.title = filter
-    }
     
     func tableView(tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
         return eventsArray.count
@@ -77,8 +72,19 @@ class OpportunitiesVC: UIViewController, UITableViewDataSource, UITableViewDeleg
     }
     
     func loadEvents() {
+        
         let query = PFQuery(className: "Event")
         query.orderByAscending("createdAt")
+        
+        if PFUser.currentUser()!["tempCategory"] != nil {
+            if PFUser.currentUser()!["tempCategory"] as! String != "" {
+                query.whereKey("category", equalTo: PFUser.currentUser()!["tempCategory"] as! String)
+                navigationItem.title = PFUser.currentUser()!["tempCategory"] as? String
+            } else {
+                navigationItem.title = ""
+            }
+        }
+        
         query.findObjectsInBackgroundWithBlock {
             (objects: [PFObject]?, error: NSError?) -> Void in
             if let error = error {
@@ -107,9 +113,9 @@ class OpportunitiesVC: UIViewController, UITableViewDataSource, UITableViewDeleg
                         let newLoc: CLLocationCoordinate2D = CLLocationCoordinate2D(latitude: 0, longitude: 0)
                         event.location = newLoc
                     }
-        
+                    
                     event.createdBy = object["createdBy"] as! PFUser
-                                        
+                    
                     if let userImageFile = object["eventImage"] as? PFFile {
                         print("good!")
                         userImageFile.getDataInBackgroundWithBlock {
@@ -137,6 +143,10 @@ class OpportunitiesVC: UIViewController, UITableViewDataSource, UITableViewDeleg
         super.viewDidLoad()
         // Do any additional setup after loading the view, typically from a nib.
         //checked to see if logged in
+    }
+    
+    override func viewDidAppear(animated: Bool) {
+        eventsArray.removeAll()
         
         let currentUser = PFUser.currentUser()
         if currentUser != nil {

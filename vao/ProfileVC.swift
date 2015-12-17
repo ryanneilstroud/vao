@@ -39,6 +39,8 @@ class ProfileVC: UIViewController, UITableViewDataSource, UITableViewDelegate, S
     var userNumberOfEvents : Int!
     var userRatingScore : Double!
     
+    var reviewsObjects = [PFObject]()
+    
     var button: UIButton?
     
     var eventParticipantValidationButtonText = ""
@@ -61,9 +63,9 @@ class ProfileVC: UIViewController, UITableViewDataSource, UITableViewDelegate, S
     
     func numberOfSectionsInTableView(tableView: UITableView) -> Int {
         if orgIsViewing {
-            return 5
-        } else {
             return 4
+        } else {
+            return 3
         }
     }
     
@@ -73,9 +75,10 @@ class ProfileVC: UIViewController, UITableViewDataSource, UITableViewDelegate, S
         } else if section == 1 {
             let returnValue = labelArray.count != 0 ? labelArray.count : 0
             return returnValue
+//        }
+//        else if section == 2 {
+//            return 1
         } else if section == 2 {
-            return 1
-        } else if section == 3 {
             return iconImagesArray.count;
         } else {
             return 1
@@ -120,17 +123,17 @@ class ProfileVC: UIViewController, UITableViewDataSource, UITableViewDelegate, S
             }
             
             return cell
+//        } else if indexPath.section == 2 {
+//            var cell : TextviewCell
+//            let nib = UINib(nibName:"TextviewCell", bundle: nil);
+//            
+//            tableView.rowHeight = 50
+//            tableView.registerNib(nib, forCellReuseIdentifier: "cell")
+//            cell = tableView.dequeueReusableCellWithIdentifier("cell", forIndexPath: indexPath) as! TextviewCell
+//            cell.selectionStyle = .None
+//            
+//            return cell
         } else if indexPath.section == 2 {
-            var cell : TextviewCell
-            let nib = UINib(nibName:"TextviewCell", bundle: nil);
-            
-            tableView.rowHeight = 50
-            tableView.registerNib(nib, forCellReuseIdentifier: "cell")
-            cell = tableView.dequeueReusableCellWithIdentifier("cell", forIndexPath: indexPath) as! TextviewCell
-            cell.selectionStyle = .None
-            
-            return cell
-        } else if indexPath.section == 3 {
             let nib = UINib(nibName:"IconLabelCell", bundle: nil);
             
             tableView.rowHeight = 50
@@ -168,9 +171,11 @@ class ProfileVC: UIViewController, UITableViewDataSource, UITableViewDelegate, S
             } else {
                 return nil
             }
-        } else if section == 2 {
-            return "skills"
-        } else if section == 3 {
+        }
+//        else if section == 2 {
+//            return "skills"
+//        }
+        else if section == 2 {
             return "contact"
         } else {
             return nil
@@ -178,7 +183,7 @@ class ProfileVC: UIViewController, UITableViewDataSource, UITableViewDelegate, S
     }
     
     func checkButtonClick(sender:UIButton!) {
-        let vc = SummaryVC(nibName:"Summary", bundle: nil)
+        let vc = SummaryViewController(nibName:"TableView", bundle: nil)
         
         if sender.tag == 0 {
             vc.objectIds = projectIds
@@ -187,14 +192,14 @@ class ProfileVC: UIViewController, UITableViewDataSource, UITableViewDelegate, S
             vc.objectIds = eventIds
             vc.target = 1
         } else {
-            
+            vc.target = 2
         }
         
         navigationController?.pushViewController(vc, animated: true)
     }
     
     func tableView(tableView: UITableView, didSelectRowAtIndexPath indexPath: NSIndexPath) {
-        if indexPath.section == 3 {
+        if indexPath.section == 2 {
             if indexPath.row == 0 {
                 UIApplication.sharedApplication().openURL(NSURL(string:"telprompt:" + iconLabelArray[0])!)
             } else if indexPath.row == 1 {
@@ -288,6 +293,12 @@ class ProfileVC: UIViewController, UITableViewDataSource, UITableViewDelegate, S
         userRatingScore = 0
     }
     
+    override func viewDidAppear(animated: Bool) {
+        labelArray.removeAll()
+        labelValueArray.removeAll()
+        getUserData()
+    }
+    
     func loadStatusOfEventParticipantForOrganization(_volunteerObject: PFObject) {
         //get volunteer
         let volunteer = PFQuery(className: self.EVENT_PARTICIPANT_VALIDATION)
@@ -297,26 +308,8 @@ class ProfileVC: UIViewController, UITableViewDataSource, UITableViewDelegate, S
             if error == nil && objects != nil {
                 print(objects)
                 
-//                if objects!.count == 1 {
-//                    if objects![0][self.INITIATOR_TYPE_IS_VOLUNTEER] as! Bool {
-//                        //accept or decline them one single event
-//                        self.eventParticipantValidationButtonText = self.ACCEPT_REQUEST
-//                        self.tableview.reloadData()
-//                    } else {
-//                        //cancel invite
-//                        self.eventParticipantValidationButtonText = self.CANCEL_INVITE
-//                        self.tableview.reloadData()
-//                    }
-//                } else if objects!.count > 1 {
-                    //review invites
                     self.eventParticipantValidationButtonText = self.REVIEW_INVITES
                     self.tableview.reloadData()
-                    
-//                } else {
-//                    //invite them
-//                    self.eventParticipantValidationButtonText = self.INVITE
-//                    self.tableview.reloadData()
-//                }
                 
             } else {
                 print(error)
@@ -331,67 +324,16 @@ class ProfileVC: UIViewController, UITableViewDataSource, UITableViewDelegate, S
             (objects: [PFObject]?, error: NSError?) -> Void in
             if error == nil && objects != nil {
                 print(objects)
-                
-//                if objects!.count == 1 {
-//
-//                    //check volunteer and organization
-//                    if objects![0][self.ORGANIZATION] as! PFUser == PFUser.currentUser()! && objects![0][self.ORGANIZATION] as! PFObject == self.volObject {
-//                        let eventParticipantValidationStatus = objects![0][self.STATUS] as! String
-//                        
-//                        
-//                        self.createAlertForHandlingEventParticipantValidation(objects![0][self.INITIATOR_TYPE_IS_VOLUNTEER] as! Bool, _eventParticipantValidationStatus: eventParticipantValidationStatus, _eventParticipantValidationEvent: self.volObject)
-//                    }
-                    
-//                } else if objects!.count > 1 {
+
                     let vc = OrgHandlesEventInvites(nibName:"TableView", bundle: nil)
                     vc.eventValidationObjects = objects!
                     vc.volunteerObject = self.volObject
                     self.navigationController?.pushViewController(vc, animated: true)
                     
-//                } else {
-//                    let myObject = PFObject(className: self.EVENT_PARTICIPANT_VALIDATION)
-//                    self.createAlertForHandlingEventParticipantValidation(false, _eventParticipantValidationStatus: "", _eventParticipantValidationEvent: myObject)
-//                }
             } else {
                 print(error)
             }
         }
     }
-    
-    func createAlertForHandlingEventParticipantValidation(_initiatorTypeIsVolunteer: Bool, _eventParticipantValidationStatus: String, _eventParticipantValidationEvent: PFObject) {
-        print("okay")
-        
-        if _initiatorTypeIsVolunteer {
-            
-            print("true")
-            
-            let alert = UIAlertController(title: "Alert", message: "Would you like to accept this request?", preferredStyle: UIAlertControllerStyle.Alert)
-            alert.addAction(UIAlertAction(title: "No", style: UIAlertActionStyle.Cancel, handler: nil))
-            alert.addAction(UIAlertAction(title: "Yes", style: UIAlertActionStyle.Default, handler: { action in
-                
-            }))
-            
-            self.presentViewController(alert, animated: true, completion: nil)
-        } else {
-            print("false")
-            
-            let alert = UIAlertController(title: "Alert", message: "Would you like to invite this person to be a volunteer?", preferredStyle: UIAlertControllerStyle.Alert)
-            alert.addAction(UIAlertAction(title: "No", style: UIAlertActionStyle.Cancel, handler: nil))
-            alert.addAction(UIAlertAction(title: "Yes", style: UIAlertActionStyle.Default, handler: { action in
-                
-            }))
-            
-            self.presentViewController(alert, animated: true, completion: nil)
-        }
-
-    }
-    
-//    override func prepareForSegue(segue: UIStoryboardSegue, sender: AnyObject?) {
-//        if segue.identifier == "showSettingsSegue" {
-//            if let vc = segue.destinationViewController as? Settings {
-//                vc.isVolunteer = true
-//            }
-//        }
-//    }
     
 }

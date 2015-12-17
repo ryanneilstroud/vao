@@ -21,6 +21,8 @@ class EditProfileVC: UIViewController, UITableViewDataSource, UITableViewDelegat
     
     var name = ""
     
+    var saveButton = UIBarButtonItem()
+    
     let about = ["location", "gender", "age", "religion", "languages"]
     let icons = [UIImage(named: "ion-ios-telephone-outline_256_0_c3c3c3_none.png"), UIImage(named: "ion-ios-email-outline_256_0_c3c3c3_none.png")]
     var iconTextFieldText = ["",""]
@@ -180,45 +182,85 @@ class EditProfileVC: UIViewController, UITableViewDataSource, UITableViewDelegat
         iconTextFieldText[1] = mail
     }
     
-    func saveUserData() {
-        let currentUser = PFUser.currentUser()
-        currentUser!["fullName"] = name
-            
-        if orgImage != nil {
-            let imageData = UIImageJPEGRepresentation(orgImage!, 0.5)
-            let imageFile = PFFile(name: "orgProfilePhoto", data: imageData!)
-            currentUser!["orgImage"] = imageFile
-        }
-            
-        currentUser!["phoneNumber"] = iconTextFieldText[0] != "" ? iconTextFieldText[0] : ""
-        currentUser?.email = iconTextFieldText[1] != "" ? iconTextFieldText[1] : ""
-        currentUser?.username = iconTextFieldText[1] != "" ? iconTextFieldText[1] : ""
+    func checkEmail() -> Bool {
+        let emailRegEx = "^[a-zA-Z0-9.!#$%&'*+/=?^_`{|}~-]+@[a-zA-Z0-9](?:[a-zA-Z0-9-]{0,61}[a-zA-Z0-9])?(?:\\.[a-zA-Z0-9](?:[a-zA-Z0-9-]{0,61}[a-zA-Z0-9])?)*$"
         
-        currentUser?["location"] = labelTextFieldText[0] != "" ? labelTextFieldText[0] : ""
-        currentUser?["gender"] = labelTextFieldText[1] != "" ? labelTextFieldText[1] : ""
-        currentUser?["age"] = labelTextFieldText[2] != "" ? labelTextFieldText[2] : ""
-        currentUser?["religion"] = labelTextFieldText[3] != "" ? labelTextFieldText[3] : ""
-        currentUser?["languages"] = labelTextFieldText[4] != "" ? labelTextFieldText[4] : ""
+        let emailTest = NSPredicate(format:"SELF MATCHES %@", emailRegEx)
+        return (emailTest.evaluateWithObject(iconTextFieldText[1]))
+    }
     
-        currentUser?.saveInBackgroundWithBlock {
-            (success: Bool, error: NSError?) -> Void in
-            if (success) {
-                // The object has been saved.
-                let alert = UIAlertController(title: "saved!", message: nil, preferredStyle: UIAlertControllerStyle.Alert)
+    func saveUserData() {
+        
+        saveButton.enabled = false
+        
+        if checkEmail() {
+            print("valid email: ", iconTextFieldText[1])
+            if Reachability.isConnectedToNetwork() {
+                let currentUser = PFUser.currentUser()
+                currentUser!["fullName"] = name
+                
+                if orgImage != nil {
+                    let imageData = UIImageJPEGRepresentation(orgImage!, 0.5)
+                    let imageFile = PFFile(name: "orgProfilePhoto", data: imageData!)
+                    currentUser!["orgImage"] = imageFile
+                }
+                
+                let oldEmail = currentUser?.username
+                
+                currentUser!["phoneNumber"] = iconTextFieldText[0] != "" ? iconTextFieldText[0] : ""
+                currentUser?.email = iconTextFieldText[1] != "" ? iconTextFieldText[1] : ""
+                currentUser?.username = iconTextFieldText[1] != "" ? iconTextFieldText[1] : ""
+                
+                currentUser?["location"] = labelTextFieldText[0] != "" ? labelTextFieldText[0] : ""
+                currentUser?["gender"] = labelTextFieldText[1] != "" ? labelTextFieldText[1] : ""
+                currentUser?["age"] = labelTextFieldText[2] != "" ? labelTextFieldText[2] : ""
+                currentUser?["religion"] = labelTextFieldText[3] != "" ? labelTextFieldText[3] : ""
+                currentUser?["languages"] = labelTextFieldText[4] != "" ? labelTextFieldText[4] : ""
+                
+                currentUser?.saveInBackgroundWithBlock {
+                    (success: Bool, error: NSError?) -> Void in
+                    if (success) {
+                        // The object has been saved.
+                        let alert = UIAlertController(title: "saved!", message: nil, preferredStyle: UIAlertControllerStyle.Alert)
+                        self.presentViewController(alert, animated: true, completion: nil)
+                        
+                        let delay = 0.5 * Double(NSEC_PER_SEC)
+                        let time = dispatch_time(DISPATCH_TIME_NOW, Int64(delay))
+                        dispatch_after(time, dispatch_get_main_queue(), {
+                            alert.dismissViewControllerAnimated(true, completion: {(Bool) in
+                                self.navigationController?.popViewControllerAnimated(true)
+                            })
+                        })
+                    } else {
+                        // There was a problem, check error.description
+//                        print(error)
+//                        let alert = UIAlertController(title: "Error: " + String(error?.code), message: error?.description, preferredStyle: UIAlertControllerStyle.Alert)
+//                        alert.addAction(UIAlertAction(title: "Okay", style: UIAlertActionStyle.Default, handler: nil))
+//                        self.presentViewController(alert, animated: true, completion: nil)
+                        currentUser?.email = oldEmail
+                        currentUser?.username = oldEmail
+                        
+                        let alert = UIAlertController(title: "Invalid Email", message: "Please enter a valid email address.", preferredStyle: UIAlertControllerStyle.Alert)
+                        alert.addAction(UIAlertAction(title: "Okay", style: UIAlertActionStyle.Default, handler: nil))
+                        self.presentViewController(alert, animated: true, completion: nil)
+                        
+                        self.saveButton.enabled = true
+                    }
+                    
+                }
+            } else {
+                let alert = UIAlertController(title: "Internet Not Found", message: "We can't seem to connect to the Internet. Please double check your connection.", preferredStyle: UIAlertControllerStyle.Alert)
+                alert.addAction(UIAlertAction(title: "Okay", style: UIAlertActionStyle.Default, handler: nil))
                 self.presentViewController(alert, animated: true, completion: nil)
                 
-                let delay = 0.5 * Double(NSEC_PER_SEC)
-                let time = dispatch_time(DISPATCH_TIME_NOW, Int64(delay))
-                dispatch_after(time, dispatch_get_main_queue(), {
-                    alert.dismissViewControllerAnimated(true, completion: {(Bool) in
-                        self.navigationController?.popViewControllerAnimated(true)
-                    })
-                })
-            } else {
-                // There was a problem, check error.description
-                print(error)
+                self.saveButton.enabled = true
             }
-
+        } else {
+            let alert = UIAlertController(title: "Invalid Email", message: "Please enter a valid email address.", preferredStyle: UIAlertControllerStyle.Alert)
+            alert.addAction(UIAlertAction(title: "Okay", style: UIAlertActionStyle.Default, handler: nil))
+            self.presentViewController(alert, animated: true, completion: nil)
+            
+            self.saveButton.enabled = true
         }
     }
     
@@ -247,7 +289,7 @@ class EditProfileVC: UIViewController, UITableViewDataSource, UITableViewDelegat
     }
     
     override func viewDidLoad() {
-        let saveButton = UIBarButtonItem(barButtonSystemItem: .Save, target: self, action: "saveUserData")
+        saveButton = UIBarButtonItem(barButtonSystemItem: .Save, target: self, action: "saveUserData")
         navigationItem.setRightBarButtonItem(saveButton, animated: true)
         
         imagePicker = UIImagePickerController()

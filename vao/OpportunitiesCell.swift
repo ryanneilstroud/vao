@@ -68,11 +68,27 @@ class OpportuntiesCell: UITableViewCell {
     
     func refreshCellWithObject(object: PFObject) {
         opportunityTitle.text = object["title"] as? String
-//        opportunityImageView.image = picture
+        
+        if let userImageFile = object["eventImage"] as? PFFile {
+            userImageFile.getDataInBackgroundWithBlock {
+                (imageData: NSData?, error: NSError?) -> Void in
+                if error == nil {
+                    if let imageData = imageData {
+                        self.opportunityImageView.image = UIImage(data:imageData)!
+                    }
+                }
+            }
+        } else {
+            opportunityImageView.image = UIImage(named: "pe-7s-user_256_0_606060_none.png")!
+        }
+
+        
         opportunitySummary.text = object["summary"] as! String
         
         opportunityImageView.layer.cornerRadius = 33
         opportunityImageView.clipsToBounds = true
+        
+        opportunityLocation.text = object["locationName"] as? String
         
         if object["frequency"] as! String != "don't repeat" {
             let formatter = NSDateFormatter()
@@ -81,6 +97,17 @@ class OpportuntiesCell: UITableViewCell {
             let dateString = formatter.stringFromDate(object["time"] as! NSDate)
             
             opportunityDateAndTime.text = object["frequency"] as! String + " at " + dateString
+        } else {
+            let formatter = NSDateFormatter()
+            formatter.timeStyle = NSDateFormatterStyle.ShortStyle
+            
+            let dateFormatter = NSDateFormatter()
+            dateFormatter.dateStyle = NSDateFormatterStyle.MediumStyle
+            
+            let timeString = formatter.stringFromDate(object["time"] as! NSDate)
+            let dateString = dateFormatter.stringFromDate(object["date"] as! NSDate)
+            
+            opportunityDateAndTime.text = timeString + " on " + dateString
         }
     }
 }

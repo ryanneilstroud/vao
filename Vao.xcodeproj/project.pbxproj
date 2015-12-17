@@ -53,14 +53,10 @@
 		D3202F911BF445E80001F19A /* CategoriesVC.swift in Sources */ = {isa = PBXBuildFile; fileRef = D3202F901BF445E80001F19A /* CategoriesVC.swift */; };
 		D3202F931BF4493F0001F19A /* CategoriesCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = D3202F921BF4493F0001F19A /* CategoriesCell.xib */; };
 		D3202F971BF44F060001F19A /* fa-hospital-o_100_25_ffffff_ed8f21.png in Resources */ = {isa = PBXBuildFile; fileRef = D3202F961BF44F060001F19A /* fa-hospital-o_100_25_ffffff_ed8f21.png */; };
-		D3202F9A1BF45B140001F19A /* Summary.xib in Resources */ = {isa = PBXBuildFile; fileRef = D3202F991BF45B140001F19A /* Summary.xib */; };
-		D3202F9E1BF45BEB0001F19A /* SummaryVC.swift in Sources */ = {isa = PBXBuildFile; fileRef = D3202F9D1BF45BEB0001F19A /* SummaryVC.swift */; };
 		D3202FA01BF840AF0001F19A /* EventPhoto.xib in Resources */ = {isa = PBXBuildFile; fileRef = D3202F9F1BF840AF0001F19A /* EventPhoto.xib */; };
-		D3202FA21BF840F80001F19A /* axiom.jpg in Resources */ = {isa = PBXBuildFile; fileRef = D3202FA11BF840F80001F19A /* axiom.jpg */; };
 		D3202FA41BF8414A0001F19A /* EventPhotoCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = D3202FA31BF8414A0001F19A /* EventPhotoCell.swift */; };
 		D3202FA61BF8486C0001F19A /* ProfileView.xib in Resources */ = {isa = PBXBuildFile; fileRef = D3202FA51BF8486C0001F19A /* ProfileView.xib */; };
 		D3202FA81BF853460001F19A /* vao_logo_full.png in Resources */ = {isa = PBXBuildFile; fileRef = D3202FA71BF853460001F19A /* vao_logo_full.png */; };
-		D3202FAA1BF85DC40001F19A /* ion-android-arrow-dropup_256_0_ffffff_none.png in Resources */ = {isa = PBXBuildFile; fileRef = D3202FA91BF85DC40001F19A /* ion-android-arrow-dropup_256_0_ffffff_none.png */; };
 		D3202FAC1BF86AD50001F19A /* Organizations.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = D3202FAB1BF86AD50001F19A /* Organizations.storyboard */; };
 		D3202FAF1BF86C5E0001F19A /* pe-7s-users_0_ffffff_none@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = D3202FAD1BF86C5E0001F19A /* pe-7s-users_0_ffffff_none@2x.png */; };
 		D3202FB01BF86C5E0001F19A /* pe-7s-users_0_ffffff_none@3x.png in Resources */ = {isa = PBXBuildFile; fileRef = D3202FAE1BF86C5E0001F19A /* pe-7s-users_0_ffffff_none@3x.png */; };
@@ -83,7 +79,6 @@
 		D33947471BEB3DD200ED53F7 /* ViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = D33947461BEB3DD200ED53F7 /* ViewController.swift */; };
 		D339474A1BEB3DD200ED53F7 /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = D33947481BEB3DD200ED53F7 /* Main.storyboard */; };
 		D339474C1BEB3DD200ED53F7 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = D339474B1BEB3DD200ED53F7 /* Assets.xcassets */; };
-		D339474F1BEB3DD200ED53F7 /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = D339474D1BEB3DD200ED53F7 /* LaunchScreen.storyboard */; };
 		D33947571BEB44F700ED53F7 /* OpportunitiesVC.swift in Sources */ = {isa = PBXBuildFile; fileRef = D33947561BEB44F700ED53F7 /* OpportunitiesVC.swift */; };
 		D33947591BEB5AA700ED53F7 /* ProfileVC.swift in Sources */ = {isa = PBXBuildFile; fileRef = D33947581BEB5AA700ED53F7 /* ProfileVC.swift */; };
 		D33F14171BFD9B3B00555931 /* SimpleButtonCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = D33F14161BFD9B3B00555931 /* SimpleButtonCell.swift */; };
@@ -95,8 +90,6 @@
 		D33F14291BFDDD9200555931 /* ion-ios-world-outline_256_0_c3c3c3_none.png in Resources */ = {isa = PBXBuildFile; fileRef = D33F14261BFDDD9200555931 /* ion-ios-world-outline_256_0_c3c3c3_none.png */; };
 		D33F142A1BFDDD9200555931 /* ion-ios-telephone-outline_256_0_c3c3c3_none.png in Resources */ = {isa = PBXBuildFile; fileRef = D33F14271BFDDD9200555931 /* ion-ios-telephone-outline_256_0_c3c3c3_none.png */; };
 		D33F142B1BFDDD9200555931 /* ion-ios-email-outline_256_0_c3c3c3_none.png in Resources */ = {isa = PBXBuildFile; fileRef = D33F14281BFDDD9200555931 /* ion-ios-email-outline_256_0_c3c3c3_none.png */; };
-		D33F142E1BFDE18B00555931 /* event1.jpg in Resources */ = {isa = PBXBuildFile; fileRef = D33F142C1BFDE18B00555931 /* event1.jpg */; };
-		D33F142F1BFDE18B00555931 /* event0.jpg in Resources */ = {isa = PBXBuildFile; fileRef = D33F142D1BFDE18B00555931 /* event0.jpg */; };
 		D33F14311BFE035C00555931 /* OrgEventsVC.swift in Sources */ = {isa = PBXBuildFile; fileRef = D33F14301BFE035C00555931 /* OrgEventsVC.swift */; };
 		D33F14351BFE18FF00555931 /* SignUpVC.swift in Sources */ = {isa = PBXBuildFile; fileRef = D33F14341BFE18FF00555931 /* SignUpVC.swift */; };
 		D33F14371BFE196300555931 /* SignUp.xib in Resources */ = {isa = PBXBuildFile; fileRef = D33F14361BFE196300555931 /* SignUp.xib */; };
@@ -120,6 +113,8 @@
 		D3A474DA1C1C7DDB001575AA /* EventParticipantValidation.swift in Sources */ = {isa = PBXBuildFile; fileRef = D3A474D91C1C7DDB001575AA /* EventParticipantValidation.swift */; };
 		D3A474DC1C1FE217001575AA /* OrgHandleEventInvites.swift in Sources */ = {isa = PBXBuildFile; fileRef = D3A474DB1C1FE217001575AA /* OrgHandleEventInvites.swift */; };
 		D3BCCB741C0C72C000B32F50 /* OrgEditProfileVC.swift in Sources */ = {isa = PBXBuildFile; fileRef = D3BCCB731C0C72C000B32F50 /* OrgEditProfileVC.swift */; };
+		D3C0EF6F1C23064B00C67493 /* SummaryViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = D3C0EF6E1C23064B00C67493 /* SummaryViewController.swift */; };
+		D3C0EF731C23389D00C67493 /* ion-android-arrow-dropup_256_0_ffffff_none.png in Resources */ = {isa = PBXBuildFile; fileRef = D3C0EF721C23389D00C67493 /* ion-android-arrow-dropup_256_0_ffffff_none.png */; };
 		D3D9B8D51BFAF45A00A3659D /* TabVolunteersVC.swift in Sources */ = {isa = PBXBuildFile; fileRef = D3D9B8D41BFAF45A00A3659D /* TabVolunteersVC.swift */; };
 		D3D9B8D71BFAF5DB00A3659D /* VolunteersCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = D3D9B8D61BFAF5DB00A3659D /* VolunteersCell.xib */; };
 		D3D9B8DB1BFAF7B600A3659D /* VolunteersTVC.swift in Sources */ = {isa = PBXBuildFile; fileRef = D3D9B8DA1BFAF7B600A3659D /* VolunteersTVC.swift */; };
@@ -137,10 +132,13 @@
 		D3D9B90C1BFCDD2E00A3659D /* ScoreCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = D3D9B90B1BFCDD2E00A3659D /* ScoreCell.xib */; };
 		D3D9B90F1BFCDDF000A3659D /* ion-ios-star-outline_100_0_a3a3a3_none.png in Resources */ = {isa = PBXBuildFile; fileRef = D3D9B90D1BFCDDF000A3659D /* ion-ios-star-outline_100_0_a3a3a3_none.png */; };
 		D3D9B9101BFCDDF000A3659D /* ion-ios-star_100_0_e4e400_none.png in Resources */ = {isa = PBXBuildFile; fileRef = D3D9B90E1BFCDDF000A3659D /* ion-ios-star_100_0_e4e400_none.png */; };
+		D3DEE91A1C2283EB00449E24 /* VolunteerListVC.swift in Sources */ = {isa = PBXBuildFile; fileRef = D3DEE9191C2283EA00449E24 /* VolunteerListVC.swift */; };
+		D3DEE91E1C22B9B500449E24 /* lsf-category_100_25_ffffff_e0c71c.png in Resources */ = {isa = PBXBuildFile; fileRef = D3DEE91D1C22B9B500449E24 /* lsf-category_100_25_ffffff_e0c71c.png */; };
+		D3DEE9201C22D02400449E24 /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = D3DEE91F1C22D02400449E24 /* LaunchScreen.storyboard */; };
+		D3DEE9241C22D3CC00449E24 /* LaunchImage.png in Resources */ = {isa = PBXBuildFile; fileRef = D3DEE9231C22D3CC00449E24 /* LaunchImage.png */; };
 		D3E3BA731C21947200F93BD9 /* OrgNotificationsVC.swift in Sources */ = {isa = PBXBuildFile; fileRef = D3E3BA721C21947200F93BD9 /* OrgNotificationsVC.swift */; };
 		D3ECA1A61BFA277B0072AAFB /* Settings.swift in Sources */ = {isa = PBXBuildFile; fileRef = D3ECA1A51BFA277B0072AAFB /* Settings.swift */; };
 		D3ECA1A81BFA39320072AAFB /* OrgProfileVC.swift in Sources */ = {isa = PBXBuildFile; fileRef = D3ECA1A71BFA39320072AAFB /* OrgProfileVC.swift */; };
-		D3ECA1AA1BFA3DED0072AAFB /* axiom_logo.jpg in Resources */ = {isa = PBXBuildFile; fileRef = D3ECA1A91BFA3DED0072AAFB /* axiom_logo.jpg */; };
 		D3ECA1AC1BFA45AA0072AAFB /* DetailDatePickerView.xib in Resources */ = {isa = PBXBuildFile; fileRef = D3ECA1AB1BFA45AA0072AAFB /* DetailDatePickerView.xib */; };
 /* End PBXBuildFile section */
 
@@ -191,14 +189,10 @@
 		D3202F901BF445E80001F19A /* CategoriesVC.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CategoriesVC.swift; sourceTree = "<group>"; };
 		D3202F921BF4493F0001F19A /* CategoriesCell.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = CategoriesCell.xib; sourceTree = "<group>"; };
 		D3202F961BF44F060001F19A /* fa-hospital-o_100_25_ffffff_ed8f21.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "fa-hospital-o_100_25_ffffff_ed8f21.png"; sourceTree = "<group>"; };
-		D3202F991BF45B140001F19A /* Summary.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = Summary.xib; sourceTree = "<group>"; };
-		D3202F9D1BF45BEB0001F19A /* SummaryVC.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = SummaryVC.swift; path = ../SummaryVC.swift; sourceTree = "<group>"; };
 		D3202F9F1BF840AF0001F19A /* EventPhoto.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = EventPhoto.xib; sourceTree = "<group>"; };
-		D3202FA11BF840F80001F19A /* axiom.jpg */ = {isa = PBXFileReference; lastKnownFileType = image.jpeg; path = axiom.jpg; sourceTree = "<group>"; };
 		D3202FA31BF8414A0001F19A /* EventPhotoCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = EventPhotoCell.swift; sourceTree = "<group>"; };
 		D3202FA51BF8486C0001F19A /* ProfileView.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = ProfileView.xib; sourceTree = "<group>"; };
 		D3202FA71BF853460001F19A /* vao_logo_full.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = vao_logo_full.png; sourceTree = "<group>"; };
-		D3202FA91BF85DC40001F19A /* ion-android-arrow-dropup_256_0_ffffff_none.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "ion-android-arrow-dropup_256_0_ffffff_none.png"; sourceTree = "<group>"; };
 		D3202FAB1BF86AD50001F19A /* Organizations.storyboard */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.storyboard; path = Organizations.storyboard; sourceTree = "<group>"; };
 		D3202FAD1BF86C5E0001F19A /* pe-7s-users_0_ffffff_none@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "pe-7s-users_0_ffffff_none@2x.png"; sourceTree = "<group>"; };
 		D3202FAE1BF86C5E0001F19A /* pe-7s-users_0_ffffff_none@3x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "pe-7s-users_0_ffffff_none@3x.png"; sourceTree = "<group>"; };
@@ -222,7 +216,6 @@
 		D33947461BEB3DD200ED53F7 /* ViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ViewController.swift; sourceTree = "<group>"; };
 		D33947491BEB3DD200ED53F7 /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/Main.storyboard; sourceTree = "<group>"; };
 		D339474B1BEB3DD200ED53F7 /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
-		D339474E1BEB3DD200ED53F7 /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/LaunchScreen.storyboard; sourceTree = "<group>"; };
 		D33947501BEB3DD200ED53F7 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		D33947561BEB44F700ED53F7 /* OpportunitiesVC.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = OpportunitiesVC.swift; sourceTree = "<group>"; };
 		D33947581BEB5AA700ED53F7 /* ProfileVC.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ProfileVC.swift; sourceTree = "<group>"; };
@@ -235,8 +228,6 @@
 		D33F14261BFDDD9200555931 /* ion-ios-world-outline_256_0_c3c3c3_none.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "ion-ios-world-outline_256_0_c3c3c3_none.png"; sourceTree = "<group>"; };
 		D33F14271BFDDD9200555931 /* ion-ios-telephone-outline_256_0_c3c3c3_none.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "ion-ios-telephone-outline_256_0_c3c3c3_none.png"; sourceTree = "<group>"; };
 		D33F14281BFDDD9200555931 /* ion-ios-email-outline_256_0_c3c3c3_none.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "ion-ios-email-outline_256_0_c3c3c3_none.png"; sourceTree = "<group>"; };
-		D33F142C1BFDE18B00555931 /* event1.jpg */ = {isa = PBXFileReference; lastKnownFileType = image.jpeg; path = event1.jpg; sourceTree = "<group>"; };
-		D33F142D1BFDE18B00555931 /* event0.jpg */ = {isa = PBXFileReference; lastKnownFileType = image.jpeg; path = event0.jpg; sourceTree = "<group>"; };
 		D33F14301BFE035C00555931 /* OrgEventsVC.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = OrgEventsVC.swift; sourceTree = "<group>"; };
 		D33F14341BFE18FF00555931 /* SignUpVC.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = SignUpVC.swift; path = ../SignUpVC.swift; sourceTree = "<group>"; };
 		D33F14361BFE196300555931 /* SignUp.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = SignUp.xib; sourceTree = "<group>"; };
@@ -260,6 +251,8 @@
 		D3A474D91C1C7DDB001575AA /* EventParticipantValidation.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = EventParticipantValidation.swift; sourceTree = "<group>"; };
 		D3A474DB1C1FE217001575AA /* OrgHandleEventInvites.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = OrgHandleEventInvites.swift; sourceTree = "<group>"; };
 		D3BCCB731C0C72C000B32F50 /* OrgEditProfileVC.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = OrgEditProfileVC.swift; sourceTree = "<group>"; };
+		D3C0EF6E1C23064B00C67493 /* SummaryViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SummaryViewController.swift; sourceTree = "<group>"; };
+		D3C0EF721C23389D00C67493 /* ion-android-arrow-dropup_256_0_ffffff_none.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "ion-android-arrow-dropup_256_0_ffffff_none.png"; sourceTree = "<group>"; };
 		D3D9B8D41BFAF45A00A3659D /* TabVolunteersVC.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = TabVolunteersVC.swift; sourceTree = "<group>"; };
 		D3D9B8D61BFAF5DB00A3659D /* VolunteersCell.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = VolunteersCell.xib; sourceTree = "<group>"; };
 		D3D9B8DA1BFAF7B600A3659D /* VolunteersTVC.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = VolunteersTVC.swift; path = ../VolunteersTVC.swift; sourceTree = "<group>"; };
@@ -277,10 +270,13 @@
 		D3D9B90B1BFCDD2E00A3659D /* ScoreCell.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = ScoreCell.xib; sourceTree = "<group>"; };
 		D3D9B90D1BFCDDF000A3659D /* ion-ios-star-outline_100_0_a3a3a3_none.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "ion-ios-star-outline_100_0_a3a3a3_none.png"; sourceTree = "<group>"; };
 		D3D9B90E1BFCDDF000A3659D /* ion-ios-star_100_0_e4e400_none.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "ion-ios-star_100_0_e4e400_none.png"; sourceTree = "<group>"; };
+		D3DEE9191C2283EA00449E24 /* VolunteerListVC.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = VolunteerListVC.swift; sourceTree = "<group>"; };
+		D3DEE91D1C22B9B500449E24 /* lsf-category_100_25_ffffff_e0c71c.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "lsf-category_100_25_ffffff_e0c71c.png"; sourceTree = "<group>"; };
+		D3DEE91F1C22D02400449E24 /* LaunchScreen.storyboard */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.storyboard; path = LaunchScreen.storyboard; sourceTree = "<group>"; };
+		D3DEE9231C22D3CC00449E24 /* LaunchImage.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = LaunchImage.png; sourceTree = "<group>"; };
 		D3E3BA721C21947200F93BD9 /* OrgNotificationsVC.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = OrgNotificationsVC.swift; sourceTree = "<group>"; };
 		D3ECA1A51BFA277B0072AAFB /* Settings.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Settings.swift; sourceTree = "<group>"; };
 		D3ECA1A71BFA39320072AAFB /* OrgProfileVC.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = OrgProfileVC.swift; sourceTree = "<group>"; };
-		D3ECA1A91BFA3DED0072AAFB /* axiom_logo.jpg */ = {isa = PBXFileReference; lastKnownFileType = image.jpeg; path = axiom_logo.jpg; sourceTree = "<group>"; };
 		D3ECA1AB1BFA45AA0072AAFB /* DetailDatePickerView.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = DetailDatePickerView.xib; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
@@ -356,6 +352,7 @@
 		D3202F981BF44F660001F19A /* category */ = {
 			isa = PBXGroup;
 			children = (
+				D3DEE91D1C22B9B500449E24 /* lsf-category_100_25_ffffff_e0c71c.png */,
 				D3D9B8ED1BFCB4C300A3659D /* lsf-walking_100_25_ffffff_2197ed.png */,
 				D3202F961BF44F060001F19A /* fa-hospital-o_100_25_ffffff_ed8f21.png */,
 				D3D9B8EA1BFCB3F000A3659D /* fa-book_100_25_ffffff_21ed8b.png */,
@@ -398,15 +395,11 @@
 				D305BF1A1C0431B400729B64 /* parse */,
 				D33F143C1BFE2F9300555931 /* Montserrat-Bold.ttf */,
 				D33F143D1BFE2F9400555931 /* Montserrat-Regular.ttf */,
+				D3DEE9231C22D3CC00449E24 /* LaunchImage.png */,
 				D34011041BF355A40031442A /* icons */,
-				D3202FA11BF840F80001F19A /* axiom.jpg */,
-				D3ECA1A91BFA3DED0072AAFB /* axiom_logo.jpg */,
 				D3202FA71BF853460001F19A /* vao_logo_full.png */,
 				D32D92D71BF8C8E8001C35A8 /* vao_logo_full_alt1.png */,
 				D32D92D81BF8C8E8001C35A8 /* vao_logo_full_alt2.png */,
-				D3202FA91BF85DC40001F19A /* ion-android-arrow-dropup_256_0_ffffff_none.png */,
-				D33F142C1BFDE18B00555931 /* event1.jpg */,
-				D33F142D1BFDE18B00555931 /* event0.jpg */,
 				D3202F6C1BF36A770001F19A /* pe-7s-user_256_0_606060_none.png */,
 				D33947441BEB3DD200ED53F7 /* AppDelegate.swift */,
 				D33947461BEB3DD200ED53F7 /* ViewController.swift */,
@@ -431,8 +424,8 @@
 				D36738BB1C1052F9002CE8DB /* ChangePrivateData.swift */,
 				D36738C71C105B99002CE8DB /* TableView.xib */,
 				D339474B1BEB3DD200ED53F7 /* Assets.xcassets */,
-				D339474D1BEB3DD200ED53F7 /* LaunchScreen.storyboard */,
 				D33947501BEB3DD200ED53F7 /* Info.plist */,
+				D3DEE91F1C22D02400449E24 /* LaunchScreen.storyboard */,
 			);
 			path = vao;
 			sourceTree = "<group>";
@@ -440,6 +433,7 @@
 		D34011041BF355A40031442A /* icons */ = {
 			isa = PBXGroup;
 			children = (
+				D3C0EF721C23389D00C67493 /* ion-android-arrow-dropup_256_0_ffffff_none.png */,
 				D378FBFE1C181FF50038EA20 /* lsf-category_128_0_c3c3c3_none.png */,
 				D33F14261BFDDD9200555931 /* ion-ios-world-outline_256_0_c3c3c3_none.png */,
 				D33F14271BFDDD9200555931 /* ion-ios-telephone-outline_256_0_c3c3c3_none.png */,
@@ -467,7 +461,6 @@
 				D3202F9F1BF840AF0001F19A /* EventPhoto.xib */,
 				D3202F6E1BF36AED0001F19A /* OpportunitiesCell.swift */,
 				D34010EA1BF2FC470031442A /* ProfileSummary.xib */,
-				D3202F991BF45B140001F19A /* Summary.xib */,
 				D34010EC1BF2FD670031442A /* AttributeValueCells.swift */,
 				D34010F01BF31E830031442A /* AttributeValue.xib */,
 				D305BF491C0703FD00729B64 /* EditCell.swift */,
@@ -496,7 +489,7 @@
 				D3D9B8E61BFB03F600A3659D /* EditProfileVC.swift */,
 				D3ECA1A71BFA39320072AAFB /* OrgProfileVC.swift */,
 				D3BCCB731C0C72C000B32F50 /* OrgEditProfileVC.swift */,
-				D3202F9D1BF45BEB0001F19A /* SummaryVC.swift */,
+				D3C0EF6E1C23064B00C67493 /* SummaryViewController.swift */,
 				D3202FA51BF8486C0001F19A /* ProfileView.xib */,
 			);
 			name = profile;
@@ -508,6 +501,7 @@
 				D3D9B8F01BFCBC1800A3659D /* createEvent */,
 				D33F14301BFE035C00555931 /* OrgEventsVC.swift */,
 				D3A474DB1C1FE217001575AA /* OrgHandleEventInvites.swift */,
+				D3DEE9191C2283EA00449E24 /* VolunteerListVC.swift */,
 				D3D9B8D41BFAF45A00A3659D /* TabVolunteersVC.swift */,
 				D3D9B8DA1BFAF7B600A3659D /* VolunteersTVC.swift */,
 				D3D9B8D61BFAF5DB00A3659D /* VolunteersCell.xib */,
@@ -640,24 +634,23 @@
 				D33F143F1BFE2FF600555931 /* Montserrat-Regular.ttf in Resources */,
 				D3202F8E1BF442BA0001F19A /* ion-ios-cog-outline_0_ffffff_none@3x.png in Resources */,
 				D3D9B8EC1BFCB3F000A3659D /* fa-book_100_25_ffffff_21ed8b.png in Resources */,
-				D3202FAA1BF85DC40001F19A /* ion-android-arrow-dropup_256_0_ffffff_none.png in Resources */,
 				D33F14231BFDB56000555931 /* TextviewCell.xib in Resources */,
 				D30A057E1BFD8BA500B8F72A /* ion-ios-pricetag-outline_256_0_c3c3c3_none.png in Resources */,
 				D3202F811BF440860001F19A /* pe-7s-user_0_ffffff_none@2x.png in Resources */,
 				D3202FC31BF8B7FC0001F19A /* ion-ios-location-outline_256_0_c3c3c3_none.png in Resources */,
 				D32D92D91BF8C8E8001C35A8 /* vao_logo_full_alt1.png in Resources */,
-				D339474F1BEB3DD200ED53F7 /* LaunchScreen.storyboard in Resources */,
 				D3D9B90F1BFCDDF000A3659D /* ion-ios-star-outline_100_0_a3a3a3_none.png in Resources */,
 				D33F14391BFE242E00555931 /* RatedCell.xib in Resources */,
 				D3202FA81BF853460001F19A /* vao_logo_full.png in Resources */,
 				D3202F881BF441B90001F19A /* ion-ios-bell-outline_0_ffffff_none@2x.png in Resources */,
 				D30A057C1BFCECC100B8F72A /* FullButtonCell.xib in Resources */,
+				D3C0EF731C23389D00C67493 /* ion-android-arrow-dropup_256_0_ffffff_none.png in Resources */,
 				D36738C81C105B99002CE8DB /* TableView.xib in Resources */,
+				D3DEE9241C22D3CC00449E24 /* LaunchImage.png in Resources */,
 				D305BF401C05DAB600729B64 /* DetailPickerView.xib in Resources */,
 				D3202FC11BF8B7FC0001F19A /* ion-ios-calendar-outline_256_0_c3c3c3_none.png in Resources */,
 				D3D9B8F91BFCBF5800A3659D /* IconLabelCell.xib in Resources */,
 				D339474C1BEB3DD200ED53F7 /* Assets.xcassets in Resources */,
-				D3202F9A1BF45B140001F19A /* Summary.xib in Resources */,
 				D3202FA61BF8486C0001F19A /* ProfileView.xib in Resources */,
 				D3202FC21BF8B7FC0001F19A /* ion-ios-clock-outline_256_0_c3c3c3_none.png in Resources */,
 				D34010EB1BF2FC470031442A /* ProfileSummary.xib in Resources */,
@@ -670,8 +663,8 @@
 				D3202FB81BF8A5810001F19A /* TextFieldCell.xib in Resources */,
 				D3202FB41BF86DD10001F19A /* pe-7s-culture_0_ffffff_none@3x.png in Resources */,
 				D3D9B90C1BFCDD2E00A3659D /* ScoreCell.xib in Resources */,
+				D3DEE9201C22D02400449E24 /* LaunchScreen.storyboard in Resources */,
 				D3202F771BF38EA30001F19A /* MapViewCell.xib in Resources */,
-				D33F142E1BFDE18B00555931 /* event1.jpg in Resources */,
 				D3D9B9051BFCD69900A3659D /* RateView.xib in Resources */,
 				D305BF4E1C0709BE00729B64 /* IconTextFieldCell.xib in Resources */,
 				D3202FC41BF8B7FC0001F19A /* pe-7s-repeat_256_0_c3c3c3_none.png in Resources */,
@@ -685,15 +678,13 @@
 				D32D92DA1BF8C8E8001C35A8 /* vao_logo_full_alt2.png in Resources */,
 				D30A057A1BFCE9D000B8F72A /* CommentCell.xib in Resources */,
 				D3202FB31BF86DD10001F19A /* pe-7s-culture_0_ffffff_none@2x.png in Resources */,
-				D3202FA21BF840F80001F19A /* axiom.jpg in Resources */,
 				D36738C01C105441002CE8DB /* ion-ios-locked-outline_256_0_c3c3c3_none.png in Resources */,
 				D3202F841BF441340001F19A /* ion-ios-calendar-outline_0_ffffff_none@2x.png in Resources */,
 				D33F14291BFDDD9200555931 /* ion-ios-world-outline_256_0_c3c3c3_none.png in Resources */,
 				D3202F6B1BF369610001F19A /* OpportunitiesCell.xib in Resources */,
 				D33F14371BFE196300555931 /* SignUp.xib in Resources */,
 				D3202F931BF4493F0001F19A /* CategoriesCell.xib in Resources */,
-				D33F142F1BFDE18B00555931 /* event0.jpg in Resources */,
-				D3ECA1AA1BFA3DED0072AAFB /* axiom_logo.jpg in Resources */,
+				D3DEE91E1C22B9B500449E24 /* lsf-category_100_25_ffffff_e0c71c.png in Resources */,
 				D3202F971BF44F060001F19A /* fa-hospital-o_100_25_ffffff_ed8f21.png in Resources */,
 				D34010F11BF31E830031442A /* AttributeValue.xib in Resources */,
 				D33F14211BFD9ED600555931 /* GenericLabelTextviewCell.xib in Resources */,
@@ -723,6 +714,7 @@
 				D32D92DE1BF8D7A4001C35A8 /* RecoverPasswordVC.swift in Sources */,
 				D33F14251BFDB5C600555931 /* TextviewCell.swift in Sources */,
 				D3BCCB741C0C72C000B32F50 /* OrgEditProfileVC.swift in Sources */,
+				D3DEE91A1C2283EB00449E24 /* VolunteerListVC.swift in Sources */,
 				D3D9B90A1BFCDCE500A3659D /* RateCell.swift in Sources */,
 				D33947591BEB5AA700ED53F7 /* ProfileVC.swift in Sources */,
 				D34011011BF339B20031442A /* CredentialsVC.swift in Sources */,
@@ -734,12 +726,12 @@
 				D305BF501C07436700729B64 /* UserDataClass.swift in Sources */,
 				D3D9B8FD1BFCC4BE00A3659D /* NotificationsVC.swift in Sources */,
 				D33F143B1BFE245600555931 /* RatedCell.swift in Sources */,
+				D3C0EF6F1C23064B00C67493 /* SummaryViewController.swift in Sources */,
 				D305BF3E1C05998B00729B64 /* EventClass.swift in Sources */,
 				D33F14311BFE035C00555931 /* OrgEventsVC.swift in Sources */,
 				D3A474DC1C1FE217001575AA /* OrgHandleEventInvites.swift in Sources */,
 				D33947471BEB3DD200ED53F7 /* ViewController.swift in Sources */,
 				D3202F911BF445E80001F19A /* CategoriesVC.swift in Sources */,
-				D3202F9E1BF45BEB0001F19A /* SummaryVC.swift in Sources */,
 				D33947451BEB3DD200ED53F7 /* AppDelegate.swift in Sources */,
 				D3D9B8D51BFAF45A00A3659D /* TabVolunteersVC.swift in Sources */,
 				D3D9B8E71BFB03F600A3659D /* EditProfileVC.swift in Sources */,
@@ -774,14 +766,6 @@
 				D33947491BEB3DD200ED53F7 /* Base */,
 			);
 			name = Main.storyboard;
-			sourceTree = "<group>";
-		};
-		D339474D1BEB3DD200ED53F7 /* LaunchScreen.storyboard */ = {
-			isa = PBXVariantGroup;
-			children = (
-				D339474E1BEB3DD200ED53F7 /* Base */,
-			);
-			name = LaunchScreen.storyboard;
 			sourceTree = "<group>";
 		};
 /* End PBXVariantGroup section */
@@ -872,6 +856,7 @@
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				ASSETCATALOG_COMPILER_LAUNCHIMAGE_NAME = LaunchImage;
 				CODE_SIGN_IDENTITY = "iPhone Developer";
 				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
 				FRAMEWORK_SEARCH_PATHS = (
@@ -891,6 +876,7 @@
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				ASSETCATALOG_COMPILER_LAUNCHIMAGE_NAME = LaunchImage;
 				CODE_SIGN_IDENTITY = "iPhone Developer";
 				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
 				FRAMEWORK_SEARCH_PATHS = (

@@ -7,29 +7,26 @@
 //
 
 import UIKit
+import Parse
 
 protocol SendToCreateEvent: class {
     func didReceiveAtCreateEvent(_data: EventClass)
 }
 
-protocol SendToOpportunitiesVC: class {
-    func didReceiveAtOpportunitiesVC(_category: String)
-}
-
 class CategoriesVC: UIViewController, UITableViewDataSource, UITableViewDelegate {
 
     var delegate: SendToCreateEvent? = nil
-    weak var oppDelegate: SendToOpportunitiesVC? = nil
 
     var event: EventClass?
     var filterCategory: String = ""
     var creatingEvent = false
     
-    let image : [UIImage] = [UIImage(named: "lsf-walking_100_25_ffffff_2197ed.png")!,
+    let image : [UIImage] = [UIImage(named: "lsf-category_100_25_ffffff_e0c71c.png")!,
+                                UIImage(named: "lsf-walking_100_25_ffffff_2197ed.png")!,
                                 UIImage(named: "fa-hospital-o_100_25_ffffff_ed8f21.png")!,
                                 UIImage(named: "fa-book_100_25_ffffff_21ed8b.png")!]
     
-    let name : [String] = ["Delivery","Medical","Tutor"]
+    let name : [String] = ["All Categories","Delivery","Medical","Tutor"]
     
     func tableView(tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
         return image.count
@@ -59,11 +56,24 @@ class CategoriesVC: UIViewController, UITableViewDataSource, UITableViewDelegate
         if creatingEvent {
             self.navigationController?.popViewControllerAnimated(true)
         } else {
-            if let oppDelegate = delegate {
-                
-//                opp(name[indexPath.row])
+            
+            var text = ""
+            
+            if indexPath.row != 0 {
+                text = name[indexPath.row]
             }
-            self.dismissViewControllerAnimated(true, completion: nil)
+            
+            let user = PFUser.currentUser()
+            user!["tempCategory"] = text
+            user?.saveInBackgroundWithBlock {
+                (success: Bool, error: NSError?) -> Void in
+                if (success) {
+                    // The score key has been incremented
+                    self.dismissViewControllerAnimated(true, completion: nil)
+                } else {
+                    // There was a problem, check error.description
+                }
+            }
         }
     }
     

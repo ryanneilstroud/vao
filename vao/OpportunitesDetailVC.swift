@@ -19,6 +19,8 @@ class OpportunitiesDetailVC: UIViewController, UITableViewDataSource, UITableVie
     let ORGANIZATION = "organization"
     let INITIATOR_TYPE_IS_VOLUNTEER = "initiatorTypeIsVolunteer"
     
+    let USER_TYPE_IS_VOLUNTEER = "userTypeIsVolunteer"
+    
     let EVENT_CLASS = "Event"
     
     let STATUS = "status"
@@ -59,7 +61,13 @@ class OpportunitiesDetailVC: UIViewController, UITableViewDataSource, UITableVie
     let locationIcon = UIImage(named: "ion-ios-location-outline_256_0_c3c3c3_none.png")
     
     func numberOfSectionsInTableView(tableView: UITableView) -> Int {
-        return 7
+        
+        if PFUser.currentUser()![USER_TYPE_IS_VOLUNTEER] as! Bool {
+            return 6
+        } else {
+            buttonTextArray[0] = "see volunteers list"
+            return 5
+        }
     }
     
     @IBAction func handleVolunteerInvitation(sender: AnyObject) {
@@ -142,27 +150,26 @@ class OpportunitiesDetailVC: UIViewController, UITableViewDataSource, UITableVie
             }
         
             return cell
+//        }
+//        else if indexPath.section == 4 {
+//            print("4")
+//            let nib = UINib(nibName:"IconLabelCell", bundle: nil)
+//            
+//            tableView.rowHeight = 40
+//            tableView.registerNib(nib, forCellReuseIdentifier: "cell")
+//            let cell = tableView.dequeueReusableCellWithIdentifier("cell", forIndexPath: indexPath) as! IconLabelCell
+////            cell.selectionStyle = .None
+//            
+//            cell.refreshCellWithData(UIImage(named: "ion-ios-pricetag-outline_256_0_c3c3c3_none.png")!, text: "outgoing, friendly, committed")
+//            
+//            return cell
         } else if indexPath.section == 4 {
-            var cell : IconLabelCell!
-            let nib = UINib(nibName:"IconLabelCell", bundle: nil)
-            
-            tableView.rowHeight = 40
-            tableView.registerNib(nib, forCellReuseIdentifier: "cell")
-            cell = tableView.dequeueReusableCellWithIdentifier("cell", forIndexPath: indexPath) as! IconLabelCell
-            cell.selectionStyle = .None
-            
-            cell.refreshCellWithData(UIImage(named: "ion-ios-pricetag-outline_256_0_c3c3c3_none.png")!, text: "outgoing, friendly, committed")
-            
-            return cell
-        } else if indexPath.section == 5 {
-            var cell : SimpleButtonCell!
-            
+            print("4")
             let nib = UINib(nibName:"SimpleButtonCell", bundle: nil)
             
             tableView.rowHeight = 40
             tableView.registerNib(nib, forCellReuseIdentifier: "cell")
-            cell = tableView.dequeueReusableCellWithIdentifier("cell", forIndexPath: indexPath) as! SimpleButtonCell
-//            cell.selectionStyle = .None
+            let cell = tableView.dequeueReusableCellWithIdentifier("cell", forIndexPath: indexPath) as! SimpleButtonCell
             cell.basicButton.enabled = false
 
             cell.refreshCellWithButtonData(buttonTextArray[0])
@@ -217,24 +224,43 @@ class OpportunitiesDetailVC: UIViewController, UITableViewDataSource, UITableVie
     func tableView(tableView: UITableView, didSelectRowAtIndexPath indexPath: NSIndexPath) {
         if indexPath.section == 5 {
             let user = PFUser.currentUser()
-            if !PFFacebookUtils.isLinkedWithUser(user!) {
-                PFFacebookUtils.linkUserInBackground(user!, withReadPermissions: ["user_friends"], block: {
-                    (succeeded: Bool?, error: NSError?) -> Void in
-                    if succeeded == true {
-                        print("Woohoo, the user is linked with Facebook!")
-                    } else {
-                        print(error)
-                    }
-                })
+            
+            if user![USER_TYPE_IS_VOLUNTEER] as! Bool {
+                if !PFFacebookUtils.isLinkedWithUser(user!) {
+                    PFFacebookUtils.linkUserInBackground(user!, withReadPermissions: ["user_friends"], block: {
+                        (succeeded: Bool?, error: NSError?) -> Void in
+                        if succeeded == true {
+                            print("Woohoo, the user is linked with Facebook!")
+                        } else {
+                            print(error)
+                        }
+                    })
+                } else {
+                    //load friend cell
+                }
             } else {
-                //load friend cell
+                //go to volunteer list
+                let vc = VolunteerListVC(nibName:"TableView", bundle: nil)
+                vc.eventObject = objectEvent!
+                navigationController?.pushViewController(vc, animated: true)
             }
         }
+    }
+    
+    func editEvent() {
+        print("I should be editing")
+        let vc = NewEventVC(nibName:"TableView", bundle: nil)
+        navigationController?.pushViewController(vc, animated: true)
     }
     
     override func viewDidLoad() {
         super.viewDidLoad()
         // Do any additional setup after loading the view, typically from a nib.
+        
+        if PFUser.currentUser()![USER_TYPE_IS_VOLUNTEER] as! Bool == false {
+            let editEventButton = UIBarButtonItem(barButtonSystemItem: .Edit, target: self, action: "editEvent")
+            self.navigationItem.setRightBarButtonItem(editEventButton, animated: true)
+        }
         
         if objectEvent != nil {
             

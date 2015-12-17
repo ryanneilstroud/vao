@@ -12,7 +12,9 @@ import Parse
 class OrgEditProfileVC: UIViewController, UITableViewDataSource, UITableViewDelegate, UITextFieldDelegate, UIImagePickerControllerDelegate, UINavigationControllerDelegate {
     
     @IBOutlet var tableview: UITableView!
-        
+    
+    var tv: UITableView!
+    
     var currentUser = PFUser.currentUser()
     var imagePicker : UIImagePickerController!
     var orgImage: UIImage?
@@ -20,6 +22,9 @@ class OrgEditProfileVC: UIViewController, UITableViewDataSource, UITableViewDele
     var name = ""
     
     let about = ["location", "languages"]
+    let aboutPlaceHolders = ["Hong Kong", "English"]
+    var aboutTextFieldText = ["",""]
+    
     let icons = [UIImage(named: "ion-ios-telephone-outline_256_0_c3c3c3_none.png"), UIImage(named: "ion-ios-email-outline_256_0_c3c3c3_none.png"), UIImage(named: "ion-ios-world-outline_256_0_c3c3c3_none.png")]
     let placeholders = ["phone number","email","website"]
     var iconTextFieldText = ["","",""]
@@ -30,6 +35,8 @@ class OrgEditProfileVC: UIViewController, UITableViewDataSource, UITableViewDele
     }
     
     func tableView(tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
+        tv = tableView
+        
         if section == 0 {
             return 1
         } else if section == 1 {
@@ -52,9 +59,14 @@ class OrgEditProfileVC: UIViewController, UITableViewDataSource, UITableViewDele
             cell.titleTextField.delegate = self
             cell.titleTextField.addTarget(self, action: "textFieldDidChange:", forControlEvents: UIControlEvents.EditingChanged)
             
+            print("did begin")
+            
             if orgImage != nil {
+                print("not nil")
                 cell.refreshCellWithEventImageAndText(orgImage!, _text: name)
+                print("successfully refreshed cell")
             } else {
+                print("nil")
                 cell.titleTextField.text = name
             }
             
@@ -67,10 +79,11 @@ class OrgEditProfileVC: UIViewController, UITableViewDataSource, UITableViewDele
             tableView.registerNib(nib, forCellReuseIdentifier: "cell")
             
             let cell: EditCell = tableView.dequeueReusableCellWithIdentifier("cell", forIndexPath: indexPath) as! EditCell
-            //            cell.selectionStyle = UITableViewCellSelectionStyle.None
-            //            cell.editTextField.delegate = self
-            
-//            cell.refreshCellWithLabel(about[indexPath.row])
+            cell.selectionStyle = UITableViewCellSelectionStyle.None
+            cell.editTextField.delegate = self
+            cell.editTextField.addTarget(self, action: "textFieldDidChange:", forControlEvents: UIControlEvents.EditingChanged)
+
+            cell.refreshCellWithLabel(about[indexPath.row], _labelValues: aboutTextFieldText[indexPath.row] , _placeholder: aboutPlaceHolders[indexPath.row])
             
             return cell
         } else {
@@ -109,11 +122,12 @@ class OrgEditProfileVC: UIViewController, UITableViewDataSource, UITableViewDele
     func imagePickerController(picker: UIImagePickerController, didFinishPickingMediaWithInfo info: [String : AnyObject]) {
         imagePicker.dismissViewControllerAnimated(true, completion: nil)
         orgImage = info[UIImagePickerControllerOriginalImage] as? UIImage
-        
-        self.tableview.beginUpdates()
-        let indexPath = NSIndexPath(forItem: 0, inSection: 0)
-        self.tableview.reloadRowsAtIndexPaths([indexPath], withRowAnimation: .None)
-        self.tableview.endUpdates()
+                
+        self.tv.reloadData()
+//        self.tableview.beginUpdates()
+//        let indexPath = NSIndexPath(forItem: 0, inSection: 0)
+//        self.tableview.reloadRowsAtIndexPaths([indexPath], withRowAnimation: .None)
+//        self.tableview.endUpdates()
     }
     
     func textFieldDidChange(textField: UITextField) {
@@ -123,28 +137,72 @@ class OrgEditProfileVC: UIViewController, UITableViewDataSource, UITableViewDele
             iconTextFieldText[1] = textField.text!
         } else if textField.placeholder == "website" {
             iconTextFieldText[2] = textField.text!
+        } else if textField.placeholder == "Hong Kong" {
+            aboutTextFieldText[0] = textField.text!
+        } else if textField.placeholder == "English" {
+            aboutTextFieldText[1] = textField.text!
         } else {
             name = textField.text!
         }
     }
     
-    func saveUserData() {
-        let currentUser = PFUser.currentUser()
-        currentUser!["fullName"] = name
-        
-        if orgImage != nil {
-            let imageData = UIImageJPEGRepresentation(orgImage!, 0.5)
-            let imageFile = PFFile(name: "orgProfilePhoto", data: imageData!)
-            currentUser!["orgImage"] = imageFile
+    func verifyUrl (urlString: String?) -> Bool {
+//        Check for nil
+        if let urlString = urlString {
+            // create NSURL instance
+            if let url = NSURL(string: urlString) {
+                // check if your application can open the NSURL instance
+                return UIApplication.sharedApplication().canOpenURL(url)
+            }
         }
+        return false
         
-        currentUser!["phoneNumber"] = iconTextFieldText[0]
-        currentUser?.email = iconTextFieldText[1]
-        currentUser?.username = iconTextFieldText[1]
-        currentUser!["website"] = iconTextFieldText[2]
-        
-        currentUser?.saveInBackground()
+//        let urlRegEx = "(http|https)://((\\w)*|([0-9]*)|([-|_])*)+([\\.|/]((\\w)*|([0-9]*)|([-|_])*))+"
+//        let urlTest = NSPredicate(format: "SELF MATCHES %@", urlRegEx)
+//        return urlTest.evaluateWithObject(urlString)
     }
+
+    
+    func saveUserData() {
+        
+        if verifyUrl("http://" + iconTextFieldText[2]){
+            let currentUser = PFUser.currentUser()
+            currentUser!["fullName"] = name
+            
+            if orgImage != nil {
+                let imageData = UIImageJPEGRepresentation(orgImage!, 0.5)
+                let imageFile = PFFile(name: "orgProfilePhoto", data: imageData!)
+                currentUser!["orgImage"] = imageFile
+            }
+            
+            currentUser!["phoneNumber"] = iconTextFieldText[0]
+            currentUser?.email = iconTextFieldText[1]
+            currentUser?.username = iconTextFieldText[1]
+            currentUser!["website"] = iconTextFieldText[2]
+            
+            currentUser!["location"] = aboutTextFieldText[0]
+            currentUser!["languages"] = aboutTextFieldText[1]
+            
+            currentUser?.saveInBackgroundWithBlock {
+                (success: Bool, error: NSError?) -> Void in
+                if (success) {
+                    // The score key has been incremented
+                    self.navigationController?.popToRootViewControllerAnimated(true)
+                } else {
+                    // There was a problem, check error.description
+                    let alert = UIAlertController(title: "Error: " + String(error?.code), message: error?.description, preferredStyle: UIAlertControllerStyle.Alert)
+                    alert.addAction(UIAlertAction(title: "okay", style: UIAlertActionStyle.Default, handler: nil))
+                    self.presentViewController(alert, animated: true, completion: nil)
+                }
+            }
+
+        } else {
+            let alert = UIAlertController(title: "Invalid Web Address", message: "Please enter a valid web address.", preferredStyle: UIAlertControllerStyle.Alert)
+            alert.addAction(UIAlertAction(title: "Okay", style: UIAlertActionStyle.Default, handler: nil))
+            self.presentViewController(alert, animated: true, completion: nil)
+        }
+    }
+
     
     override func viewDidLoad() {
         let saveButton = UIBarButtonItem(barButtonSystemItem: .Save, target: self, action: "saveUserData")
@@ -159,15 +217,27 @@ class OrgEditProfileVC: UIViewController, UITableViewDataSource, UITableViewDele
         let mail = currentUser?.email != nil ? currentUser!.email! : ""
         let website = currentUser?["website"] != nil ? currentUser!["website"] : ""
         
-        let userImageFile = currentUser!["orgImage"] as! PFFile
-        userImageFile.getDataInBackgroundWithBlock {
-            (imageData: NSData?, error: NSError?) -> Void in
-            if error == nil {
-                if let imageData = imageData {
-                    self.orgImage = UIImage(data:imageData)
+        let location = currentUser?["location"] != nil ? currentUser!["location"] : ""
+        let languages = currentUser?["languages"] != nil ? currentUser!["languages"] : ""
+        
+        if let userImageFile = currentUser!["orgImage"] as? PFFile {
+            userImageFile.getDataInBackgroundWithBlock {
+                (imageData: NSData?, error: NSError?) -> Void in
+                if error == nil {
+                    if let imageData = imageData {
+                        self.orgImage = UIImage(data:imageData)
+                        self.tv.reloadData()
+                    }
+                } else {
+                    print(error)
                 }
             }
+        } else {
+            print("nil")
         }
+        
+        aboutTextFieldText[0] = location as! String
+        aboutTextFieldText[1] = languages as! String
         
         iconTextFieldText[0] = number as! String
         iconTextFieldText[1] = mail

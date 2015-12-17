@@ -21,12 +21,14 @@ class OrgProfileVC: UIViewController, UITableViewDataSource, UITableViewDelegate
     var eventIds = [String]()
     var projectIds = [String]()
     
+    var reviewsObjects = [PFObject]()
+    
+    var tableview: UITableView!
+    
     var didReload: Bool!
     
-    let about = [
-        ("location", "Hong Kong"),
-        ("languages", "English")
-    ]
+    let about = ["location","languages"]
+    var labelValueArray = ["",""]
 //        ("tags", "youth worker, outgoing, Christian, committed")
     
     
@@ -38,6 +40,8 @@ class OrgProfileVC: UIViewController, UITableViewDataSource, UITableViewDelegate
     }
     
     func tableView(tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
+        tableview = tableView
+        
         if section == 0 {
             return 1
         } else if section == 1 {
@@ -48,15 +52,6 @@ class OrgProfileVC: UIViewController, UITableViewDataSource, UITableViewDelegate
     }
     
     func tableView(tableView: UITableView, cellForRowAtIndexPath indexPath: NSIndexPath) -> UITableViewCell {
-        
-        if didReload == false {
-            didReload = true
-            if orgId == "" {
-                getCurrentUserData(tableView, organization: PFUser.currentUser()!)
-            } else {
-                getOrgData(tableView)
-            }
-        }
         
         if indexPath.section == 0 {
             let nib = UINib(nibName:"ProfileSummary", bundle: nil);
@@ -84,8 +79,7 @@ class OrgProfileVC: UIViewController, UITableViewDataSource, UITableViewDelegate
             let cell = tableView.dequeueReusableCellWithIdentifier("details", forIndexPath: indexPath) as! AttributeValueCells
             cell.selectionStyle = .None
             
-            let (attr, value) = about[indexPath.row]
-            cell.refreshProfileAboutCellWithData(attr, attributeValue: value)
+            cell.refreshProfileAboutCellWithData(about[indexPath.row], attributeValue: labelValueArray[indexPath.row])
             
             return cell
         } else {
@@ -127,7 +121,8 @@ class OrgProfileVC: UIViewController, UITableViewDataSource, UITableViewDelegate
     }
     
     func checkButtonClick(sender:UIButton!) {
-        let vc = SummaryVC(nibName:"Summary", bundle: nil)
+        
+        let vc = SummaryViewController(nibName:"TableView", bundle: nil)
         
         if sender.tag == 0 {
             vc.objectIds = projectIds
@@ -136,34 +131,38 @@ class OrgProfileVC: UIViewController, UITableViewDataSource, UITableViewDelegate
             vc.objectIds = eventIds
             vc.target = 1
         } else {
-        
+            vc.ratingObjects = reviewsObjects
+            vc.target = 2
         }
         
         navigationController?.pushViewController(vc, animated: true)
 
     }
     
-    func getOrgData(tableview: UITableView) {
+    func getOrgData() {
         
         let query = PFUser.query()
         query!.getObjectInBackgroundWithId(orgId) {
             (object: PFObject?, error: NSError?) -> Void in
             if error == nil && object != nil {
                 print("object -> ", object)
-                self.getCurrentUserData(tableview, organization: object!)
+                self.getCurrentUserData(object!)
             } else {
                 print(error)
             }            
         }
     }
     
-    func getCurrentUserData(tableView: UITableView, organization: PFObject) {
+    func getCurrentUserData(organization: PFObject) {
         
         navigationItem.title = organization["fullName"] != nil ? organization["fullName"] as! String : ""
         
         iconLabelArray[0] = organization["phoneNumber"] != nil ? organization["phoneNumber"] as! String : ""
         iconLabelArray[1] = organization["email"] != nil ? organization["email"] as! String : ""
         iconLabelArray[2] = organization["website"] != nil ? organization["website"] as! String : ""
+        
+        labelValueArray[0] = organization["location"] != nil ? organization["location"] as! String : ""
+        labelValueArray[1] = organization["languages"] != nil ? organization["languages"] as! String : ""
         
         let userImageFile = organization["orgImage"] as! PFFile
         userImageFile.getDataInBackgroundWithBlock {
@@ -172,7 +171,7 @@ class OrgProfileVC: UIViewController, UITableViewDataSource, UITableViewDelegate
                 if let imageData = imageData {
                     self.profilePic = UIImage(data:imageData)
                     
-                    tableView.reloadData()
+                    self.tableview.reloadData()
                 }
             }
         }
@@ -187,6 +186,9 @@ class OrgProfileVC: UIViewController, UITableViewDataSource, UITableViewDelegate
                 // Do something with the found objects
                 if let objects = objects {
                     
+                    self.eventIds.removeAll()
+                    self.projectIds.removeAll()
+
                     for object in objects {
                         print(object.objectId)
                         if object["frequency"] as! String == "don't repeat" {
@@ -197,23 +199,66 @@ class OrgProfileVC: UIViewController, UITableViewDataSource, UITableViewDelegate
                             self.orgNumberOfProjects = self.projectIds.count
                         }
                     }
-                    tableView.reloadData()
+                    self.tableview.reloadData()
                 }
             } else {
-                // Log details of the failure
                 print("Error: \(error!) \(error!.userInfo)")
             }
         }
         
+        let reviewsQuery = PFQuery(className: "Review")
+        reviewsQuery.whereKey("organization", equalTo: PFUser.currentUser()!)
+        reviewsQuery.findObjectsInBackgroundWithBlock {
+            (objects: [PFObject]?, error: NSError?) -> Void in
+            if error == nil && objects != nil {
+                // There was an error
+                print("reviews: ", objects)
+                
+                self.reviewsObjects.removeAll()
+
+                var ratingArray = [Double]()
+
+                for review in objects! {
+                    if review["reviewerIsVolunteer"] as! Bool {
+                        self.reviewsObjects.append(review)
+                        ratingArray.append(review["rating"] as! Double)
+                    }
+                }
+                
+                var orgScore = Double()
+                
+                for score in ratingArray {
+                    orgScore += score
+                }
+                
+                self.orgRatingScore = orgScore / Double(ratingArray.count)
+                self.tableview.reloadData()
+                
+            } else {
+                // objects has all the Posts the current user liked.
+                print(error)
+            }
+        }
     }
     
-    override func viewDidLoad() {
-        didReload = false
-        
+    func getData() {        
         orgNumberOfProjects = 0
         orgNumberOfEvents = 0
         orgRatingScore = 0
         
+        if orgId == "" {
+            getCurrentUserData(PFUser.currentUser()!)
+        } else {
+            getOrgData()
+        }
+    }
+    
+    override func viewDidLoad() {
+        getData()
+    }
+    
+    override func viewDidAppear(animated: Bool) {
+        getData()
     }
 
 }
