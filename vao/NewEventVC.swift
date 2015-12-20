@@ -17,6 +17,7 @@ class NewEventVC: UIViewController, UITableViewDataSource, UITableViewDelegate, 
     var activeTextView: UITextView?
     
     var event = EventClass()
+    var editEvent: PFObject!
     
     var titleTextFieldText = ""
     var aboutTextViewText = ""
@@ -172,8 +173,20 @@ class NewEventVC: UIViewController, UITableViewDataSource, UITableViewDelegate, 
             cell.titleTextField.delegate = self
             cell.titleTextField.addTarget(self, action: "textFieldDidChange:", forControlEvents: UIControlEvents.EditingChanged)
             
-            if image != nil {
-                cell.refreshCellWithEventImage(image!)
+            if editEvent != nil {
+                let userImageFile = editEvent["eventImage"] as? PFFile
+                userImageFile!.getDataInBackgroundWithBlock {
+                    (imageData: NSData?, error: NSError?) -> Void in
+                    if error == nil {
+                        if let imageData = imageData {
+                            cell.refreshCellWithEventImage(UIImage(data:imageData)!)
+                        }
+                    }
+                }
+            } else {
+                if image != nil {
+                    cell.refreshCellWithEventImage(image!)
+                }
             }
             
             return cell
@@ -183,6 +196,7 @@ class NewEventVC: UIViewController, UITableViewDataSource, UITableViewDelegate, 
             tableView.registerNib(nib, forCellReuseIdentifier: "pickerCell")
 
             let cell : NewEventCell = tableView.dequeueReusableCellWithIdentifier("pickerCell", forIndexPath: indexPath) as! NewEventCell
+            
             cell.refreshCellWithButtonLabel(buttonLabelArray[indexPath.row], _icon: iconImageArray[indexPath.row])
             
             return cell
@@ -347,6 +361,12 @@ class NewEventVC: UIViewController, UITableViewDataSource, UITableViewDelegate, 
     override func viewDidLoad() {
         imagePicker = UIImagePickerController()
         imagePicker.delegate = self
+        
+//        if editEvent != nil {
+//            buttonLabelArray[0] = "hello"
+//            buttonLabelArray[1] = "world"
+//        }
+
     }
     
     override func viewWillAppear(animated: Bool) {

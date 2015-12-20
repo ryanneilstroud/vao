@@ -61,11 +61,13 @@ class ProfileVC: UIViewController, UITableViewDataSource, UITableViewDelegate, S
     var labelArray = [String]()
     var labelValueArray = [String]()
     
+    var skills = ""
+    
     func numberOfSectionsInTableView(tableView: UITableView) -> Int {
         if orgIsViewing {
-            return 4
+            return 5
         } else {
-            return 3
+            return 4
         }
     }
     
@@ -78,7 +80,7 @@ class ProfileVC: UIViewController, UITableViewDataSource, UITableViewDelegate, S
 //        }
 //        else if section == 2 {
 //            return 1
-        } else if section == 2 {
+        } else if section == 3 {
             return iconImagesArray.count;
         } else {
             return 1
@@ -112,7 +114,7 @@ class ProfileVC: UIViewController, UITableViewDataSource, UITableViewDelegate, S
         } else if indexPath.section == 1 {
             var cell : AttributeValueCells!
             let nib = UINib(nibName:"AttributeValue", bundle: nil);
-
+            
             tableView.rowHeight = 50
             tableView.registerNib(nib, forCellReuseIdentifier: "details")
             cell = tableView.dequeueReusableCellWithIdentifier("details", forIndexPath: indexPath) as! AttributeValueCells
@@ -123,17 +125,19 @@ class ProfileVC: UIViewController, UITableViewDataSource, UITableViewDelegate, S
             }
             
             return cell
-//        } else if indexPath.section == 2 {
-//            var cell : TextviewCell
-//            let nib = UINib(nibName:"TextviewCell", bundle: nil);
-//            
-//            tableView.rowHeight = 50
-//            tableView.registerNib(nib, forCellReuseIdentifier: "cell")
-//            cell = tableView.dequeueReusableCellWithIdentifier("cell", forIndexPath: indexPath) as! TextviewCell
-//            cell.selectionStyle = .None
-//            
-//            return cell
         } else if indexPath.section == 2 {
+            var cell : AttributeValueCells!
+            let nib = UINib(nibName:"AttributeValue", bundle: nil);
+            
+            tableView.rowHeight = 50
+            tableView.registerNib(nib, forCellReuseIdentifier: "details")
+            cell = tableView.dequeueReusableCellWithIdentifier("details", forIndexPath: indexPath) as! AttributeValueCells
+            cell.selectionStyle = .None
+            
+            cell.refreshProfileAboutCellWithData("skills", attributeValue: skills)
+            
+            return cell
+        } else if indexPath.section == 3 {
             let nib = UINib(nibName:"IconLabelCell", bundle: nil);
             
             tableView.rowHeight = 50
@@ -171,11 +175,9 @@ class ProfileVC: UIViewController, UITableViewDataSource, UITableViewDelegate, S
             } else {
                 return nil
             }
-        }
-//        else if section == 2 {
-//            return "skills"
-//        }
-        else if section == 2 {
+        } else if section == 2 {
+            return "skills"
+        } else if section == 3 {
             return "contact"
         } else {
             return nil
@@ -199,7 +201,7 @@ class ProfileVC: UIViewController, UITableViewDataSource, UITableViewDelegate, S
     }
     
     func tableView(tableView: UITableView, didSelectRowAtIndexPath indexPath: NSIndexPath) {
-        if indexPath.section == 2 {
+        if indexPath.section == 3 {
             if indexPath.row == 0 {
                 UIApplication.sharedApplication().openURL(NSURL(string:"telprompt:" + iconLabelArray[0])!)
             } else if indexPath.row == 1 {
@@ -223,6 +225,9 @@ class ProfileVC: UIViewController, UITableViewDataSource, UITableViewDelegate, S
             
             iconLabelArray[0] = volObject["phoneNumber"] as! String
             iconLabelArray[1] = volObject["email"] as! String
+            if volObject["skills"] != nil {
+                skills = volObject["skills"] as! String
+            }
             
             let array = ["gender", "age", "religion", "languages", "location"]
             
@@ -257,6 +262,7 @@ class ProfileVC: UIViewController, UITableViewDataSource, UITableViewDelegate, S
             
             iconLabelArray[0] = volunteer!["phoneNumber"] != nil ? volunteer!["phoneNumber"] as! String : ""
             iconLabelArray[1] = volunteer!["email"] != nil ? volunteer!["email"] as! String : ""
+            skills = volunteer!["skills"] != nil ? volunteer!["skills"] as! String : ""
             
             let array = ["gender", "age", "religion", "languages", "location"]
             
@@ -285,6 +291,30 @@ class ProfileVC: UIViewController, UITableViewDataSource, UITableViewDelegate, S
     
     override func viewDidLoad() {
         super.viewDidLoad()
+        
+        
+        var volunteer: PFObject!
+        if PFUser.currentUser()!["userTypeIsVolunteer"] as! Bool {
+            volunteer = PFUser.currentUser()
+        } else {
+            volunteer = volObject
+        }
+        
+        var events = [PFObject]()
+        
+        let eventParticipantValidation = PFQuery(className: "EventParticipantValidation")
+        eventParticipantValidation.whereKey("volunteer", equalTo: volunteer)
+        eventParticipantValidation.findObjectsInBackgroundWithBlock {
+            (objects: [PFObject]?, error: NSError?) -> Void in
+            for object in objects! {
+                if object["status"] as! String == "accepted" {
+                    events.append(object)
+                    
+//                    let 
+                }
+            }
+        }
+        
         getUserData()
         // Do any additional setup after loading the view, typically from a nib.
 

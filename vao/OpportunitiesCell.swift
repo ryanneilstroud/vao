@@ -11,6 +11,9 @@ import Parse
 
 class OpportuntiesCell: UITableViewCell {
     
+    @IBOutlet var profilePicture: UIImageView!
+    @IBOutlet var facebookName: UILabel!
+    
     @IBOutlet var categoriesImageView: UIImageView!
     @IBOutlet var categoriesLabel: UILabel!
     
@@ -109,5 +112,16 @@ class OpportuntiesCell: UITableViewCell {
             
             opportunityDateAndTime.text = timeString + " on " + dateString
         }
+    }
+    
+    func refreshFacebookFriendCell(_dictionary: NSDictionary) {
+        facebookName.text = _dictionary.objectForKey("name") as? String
+        let picture = _dictionary.objectForKey("picture")?.objectForKey("data")?.objectForKey("url")
+        print(picture)
+        
+        let url = NSURL(string: picture as! String)
+        let data = NSData(contentsOfURL: url!)
+        profilePicture.image = UIImage(data: data!)
+
     }
 }

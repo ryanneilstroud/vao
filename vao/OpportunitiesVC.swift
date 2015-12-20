@@ -30,8 +30,8 @@ class OpportunitiesVC: UIViewController, UITableViewDataSource, UITableViewDeleg
     
     var screenRect : CGRect = UIScreen.mainScreen().bounds
     
-    var picker : UIPickerView! = UIPickerView()
-    let array = ["recent", "upcoming", "recommended", "bookmarked", "my opportunities"]
+//    var picker : UIPickerView! = UIPickerView()
+//    let array = ["recent", "upcoming", "recommended", "bookmarked", "my opportunities"]
     
     var eventsArray = [EventClass]()
 //    var eventObjectArrays = [PFObject]()
@@ -73,16 +73,37 @@ class OpportunitiesVC: UIViewController, UITableViewDataSource, UITableViewDeleg
     
     func loadEvents() {
         
+        var title = ""
+        var location = ""
+        
         let query = PFQuery(className: "Event")
         query.orderByAscending("createdAt")
         
         if PFUser.currentUser()!["tempCategory"] != nil {
             if PFUser.currentUser()!["tempCategory"] as! String != "" {
                 query.whereKey("category", equalTo: PFUser.currentUser()!["tempCategory"] as! String)
-                navigationItem.title = PFUser.currentUser()!["tempCategory"] as? String
+                title = PFUser.currentUser()!["tempCategory"] as! String
+                navigationItem.title = title
             } else {
                 navigationItem.title = ""
             }
+        }
+        
+        if PFUser.currentUser()!["tempCategoryTwo"] != nil {
+            if PFUser.currentUser()!["tempCategoryTwo"] as! String == "" || PFUser.currentUser()!["tempCategoryTwo"] as! String == "None" {
+                
+            } else {
+            
+                location = PFUser.currentUser()!["tempCategoryTwo"] as! String
+                
+                if title != "" {
+                    self.navigationItem.title = title + " / " + location
+                } else {
+                    self.navigationItem.title = location
+                }
+            }
+        } else {
+            
         }
         
         query.findObjectsInBackgroundWithBlock {
@@ -92,46 +113,104 @@ class OpportunitiesVC: UIViewController, UITableViewDataSource, UITableViewDeleg
             } else {
                 for object in objects! {
                     
-                    let event = EventClass()
-                    event.setTitle(object["title"] as! String)
-                    event.setDate(object["date"] as! NSDate)
-                    event.setTime(object["time"] as! NSDate)
-                    event.setSummary(object["summary"] as! String)
-                    event.setFrequency(object["frequency"] as! String)
-                    
-                    event.objectId = object.objectId
-                    
-                    event.locationName = object["locationName"] as? String
-                    
-                    if let loc = object["location"] as? PFGeoPoint {
-                        let latitude: CLLocationDegrees = loc.latitude
-                        let longtitude: CLLocationDegrees = loc.longitude
-                        
-                        let newLoc: CLLocationCoordinate2D = CLLocationCoordinate2D(latitude: latitude, longitude: longtitude)
-                        event.location = newLoc
-                    } else {
-                        let newLoc: CLLocationCoordinate2D = CLLocationCoordinate2D(latitude: 0, longitude: 0)
-                        event.location = newLoc
-                    }
-                    
-                    event.createdBy = object["createdBy"] as! PFUser
-                    
-                    if let userImageFile = object["eventImage"] as? PFFile {
-                        print("good!")
-                        userImageFile.getDataInBackgroundWithBlock {
-                            (imageData: NSData?, error: NSError?) -> Void in
+                    if location != "" {
+                        let userQuery = PFUser.query()
+                        let personId = object["createdBy"].objectId!
+                        print("person: ", personId)
+                        userQuery?.getObjectInBackgroundWithId(personId!) {
+                            (user: PFObject?, error: NSError?) -> Void in
                             if error == nil {
-                                if let imageData = imageData {
-                                    event.setEventImage(UIImage(data:imageData)!)
-                                    self.eventsArray.append(event)
-                                    self.tableview.reloadData()
+                                print("user: ", user)
+                                if user!["location"] != nil {
+                                    print("HELLO!")
+                                    if user!["location"] as! String == location {
+                                        let event = EventClass()
+                                        event.setTitle(object["title"] as! String)
+                                        event.setDate(object["date"] as! NSDate)
+                                        event.setTime(object["time"] as! NSDate)
+                                        event.setSummary(object["summary"] as! String)
+                                        event.setFrequency(object["frequency"] as! String)
+                                        
+                                        event.objectId = object.objectId
+                                        
+                                        event.locationName = object["locationName"] as? String
+                                        
+                                        if let loc = object["location"] as? PFGeoPoint {
+                                            let latitude: CLLocationDegrees = loc.latitude
+                                            let longtitude: CLLocationDegrees = loc.longitude
+                                            
+                                            let newLoc: CLLocationCoordinate2D = CLLocationCoordinate2D(latitude: latitude, longitude: longtitude)
+                                            event.location = newLoc
+                                        } else {
+                                            let newLoc: CLLocationCoordinate2D = CLLocationCoordinate2D(latitude: 0, longitude: 0)
+                                            event.location = newLoc
+                                        }
+                                        
+                                        event.createdBy = object["createdBy"] as! PFUser
+                                        
+                                        if let userImageFile = object["eventImage"] as? PFFile {
+                                            print("good!")
+                                            userImageFile.getDataInBackgroundWithBlock {
+                                                (imageData: NSData?, error: NSError?) -> Void in
+                                                if error == nil {
+                                                    if let imageData = imageData {
+                                                        event.setEventImage(UIImage(data:imageData)!)
+                                                        self.eventsArray.append(event)
+                                                        self.tableview.reloadData()
+                                                    }
+                                                }
+                                            }
+                                        } else {
+                                            event.setEventImage(UIImage(named: "pe-7s-user_256_0_606060_none.png")!)
+                                            self.eventsArray.append(event)
+                                            self.tableview.reloadData()
+                                        }
+                                    }
                                 }
                             }
                         }
                     } else {
-                        event.setEventImage(UIImage(named: "pe-7s-user_256_0_606060_none.png")!)
-                        self.eventsArray.append(event)
-                        self.tableview.reloadData()
+                        let event = EventClass()
+                        event.setTitle(object["title"] as! String)
+                        event.setDate(object["date"] as! NSDate)
+                        event.setTime(object["time"] as! NSDate)
+                        event.setSummary(object["summary"] as! String)
+                        event.setFrequency(object["frequency"] as! String)
+                        
+                        event.objectId = object.objectId
+                        
+                        event.locationName = object["locationName"] as? String
+                        
+                        if let loc = object["location"] as? PFGeoPoint {
+                            let latitude: CLLocationDegrees = loc.latitude
+                            let longtitude: CLLocationDegrees = loc.longitude
+                            
+                            let newLoc: CLLocationCoordinate2D = CLLocationCoordinate2D(latitude: latitude, longitude: longtitude)
+                            event.location = newLoc
+                        } else {
+                            let newLoc: CLLocationCoordinate2D = CLLocationCoordinate2D(latitude: 0, longitude: 0)
+                            event.location = newLoc
+                        }
+                        
+                        event.createdBy = object["createdBy"] as! PFUser
+                        
+                        if let userImageFile = object["eventImage"] as? PFFile {
+                            print("good!")
+                            userImageFile.getDataInBackgroundWithBlock {
+                                (imageData: NSData?, error: NSError?) -> Void in
+                                if error == nil {
+                                    if let imageData = imageData {
+                                        event.setEventImage(UIImage(data:imageData)!)
+                                        self.eventsArray.append(event)
+                                        self.tableview.reloadData()
+                                    }
+                                }
+                            }
+                        } else {
+                            event.setEventImage(UIImage(named: "pe-7s-user_256_0_606060_none.png")!)
+                            self.eventsArray.append(event)
+                            self.tableview.reloadData()
+                        }
                     }
                 }
                 

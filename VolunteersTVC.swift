@@ -42,7 +42,8 @@ class VolunteersTVC: UITableViewCell {
         volunteerProfilePictureImageView.clipsToBounds = true
         
         volunteerFullName.text = _volunteer["fullName"] as? String
-        
+        volunteerVaoHistory.text = _volunteer["skills"] as? String
+                
         var aboutVolunteerArray = [String]()
         
         if _volunteer["age"] != nil {

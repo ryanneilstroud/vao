@@ -75,6 +75,12 @@
 		D32D92DA1BF8C8E8001C35A8 /* vao_logo_full_alt2.png in Resources */ = {isa = PBXBuildFile; fileRef = D32D92D81BF8C8E8001C35A8 /* vao_logo_full_alt2.png */; };
 		D32D92DC1BF8C93A001C35A8 /* RecoverPassword.xib in Resources */ = {isa = PBXBuildFile; fileRef = D32D92DB1BF8C93A001C35A8 /* RecoverPassword.xib */; };
 		D32D92DE1BF8D7A4001C35A8 /* RecoverPasswordVC.swift in Sources */ = {isa = PBXBuildFile; fileRef = D32D92DD1BF8D7A4001C35A8 /* RecoverPasswordVC.swift */; };
+		D3339A171C25E04300A16EAA /* FacebookFriendsPageList.swift in Sources */ = {isa = PBXBuildFile; fileRef = D3339A161C25E04300A16EAA /* FacebookFriendsPageList.swift */; };
+		D3339A191C25F8C200A16EAA /* FacebookFriendCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = D3339A181C25F8C200A16EAA /* FacebookFriendCell.xib */; };
+		D3339A1B1C25F96500A16EAA /* FacebookFriendCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = D3339A1A1C25F96500A16EAA /* FacebookFriendCell.swift */; };
+		D3339A1E1C26025300A16EAA /* feather-location_0_ffffff_none@3x.png in Resources */ = {isa = PBXBuildFile; fileRef = D3339A1C1C26025300A16EAA /* feather-location_0_ffffff_none@3x.png */; };
+		D3339A1F1C26025300A16EAA /* feather-location_0_ffffff_none@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = D3339A1D1C26025300A16EAA /* feather-location_0_ffffff_none@2x.png */; };
+		D3339A211C26038700A16EAA /* ChangeLocationVC.swift in Sources */ = {isa = PBXBuildFile; fileRef = D3339A201C26038700A16EAA /* ChangeLocationVC.swift */; };
 		D33947451BEB3DD200ED53F7 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = D33947441BEB3DD200ED53F7 /* AppDelegate.swift */; };
 		D33947471BEB3DD200ED53F7 /* ViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = D33947461BEB3DD200ED53F7 /* ViewController.swift */; };
 		D339474A1BEB3DD200ED53F7 /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = D33947481BEB3DD200ED53F7 /* Main.storyboard */; };
@@ -211,6 +217,12 @@
 		D32D92D81BF8C8E8001C35A8 /* vao_logo_full_alt2.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = vao_logo_full_alt2.png; sourceTree = "<group>"; };
 		D32D92DB1BF8C93A001C35A8 /* RecoverPassword.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = RecoverPassword.xib; sourceTree = "<group>"; };
 		D32D92DD1BF8D7A4001C35A8 /* RecoverPasswordVC.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = RecoverPasswordVC.swift; sourceTree = "<group>"; };
+		D3339A161C25E04300A16EAA /* FacebookFriendsPageList.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = FacebookFriendsPageList.swift; sourceTree = "<group>"; };
+		D3339A181C25F8C200A16EAA /* FacebookFriendCell.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = FacebookFriendCell.xib; sourceTree = "<group>"; };
+		D3339A1A1C25F96500A16EAA /* FacebookFriendCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = FacebookFriendCell.swift; sourceTree = "<group>"; };
+		D3339A1C1C26025300A16EAA /* feather-location_0_ffffff_none@3x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "feather-location_0_ffffff_none@3x.png"; sourceTree = "<group>"; };
+		D3339A1D1C26025300A16EAA /* feather-location_0_ffffff_none@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "feather-location_0_ffffff_none@2x.png"; sourceTree = "<group>"; };
+		D3339A201C26038700A16EAA /* ChangeLocationVC.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ChangeLocationVC.swift; sourceTree = "<group>"; };
 		D33947411BEB3DD200ED53F7 /* vao.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = vao.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		D33947441BEB3DD200ED53F7 /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		D33947461BEB3DD200ED53F7 /* ViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ViewController.swift; sourceTree = "<group>"; };
@@ -343,6 +355,8 @@
 		D3202F8F1BF442BF0001F19A /* toolbar / navbar */ = {
 			isa = PBXGroup;
 			children = (
+				D3339A1C1C26025300A16EAA /* feather-location_0_ffffff_none@3x.png */,
+				D3339A1D1C26025300A16EAA /* feather-location_0_ffffff_none@2x.png */,
 				D3202F8B1BF442BA0001F19A /* ion-ios-cog-outline_0_ffffff_none@2x.png */,
 				D3202F8C1BF442BA0001F19A /* ion-ios-cog-outline_0_ffffff_none@3x.png */,
 			);
@@ -405,6 +419,7 @@
 				D33947461BEB3DD200ED53F7 /* ViewController.swift */,
 				D33947481BEB3DD200ED53F7 /* Main.storyboard */,
 				D3202FAB1BF86AD50001F19A /* Organizations.storyboard */,
+				D3339A201C26038700A16EAA /* ChangeLocationVC.swift */,
 				D305BF4F1C07436700729B64 /* UserDataClass.swift */,
 				D3A474D91C1C7DDB001575AA /* EventParticipantValidation.swift */,
 				D378FBF11C147E810038EA20 /* profile */,
@@ -532,7 +547,10 @@
 				D33947561BEB44F700ED53F7 /* OpportunitiesVC.swift */,
 				D3202F6A1BF369610001F19A /* OpportunitiesCell.xib */,
 				D3202F901BF445E80001F19A /* CategoriesVC.swift */,
+				D3339A181C25F8C200A16EAA /* FacebookFriendCell.xib */,
+				D3339A1A1C25F96500A16EAA /* FacebookFriendCell.swift */,
 				D3202F701BF380F20001F19A /* OpportunitesDetailVC.swift */,
+				D3339A161C25E04300A16EAA /* FacebookFriendsPageList.swift */,
 				D3202F721BF381210001F19A /* OpportunitiesDetailVC.xib */,
 			);
 			name = vol_opportunities;
@@ -631,6 +649,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				D33F143E1BFE2FF600555931 /* Montserrat-Bold.ttf in Resources */,
+				D3339A191C25F8C200A16EAA /* FacebookFriendCell.xib in Resources */,
 				D33F143F1BFE2FF600555931 /* Montserrat-Regular.ttf in Resources */,
 				D3202F8E1BF442BA0001F19A /* ion-ios-cog-outline_0_ffffff_none@3x.png in Resources */,
 				D3D9B8EC1BFCB3F000A3659D /* fa-book_100_25_ffffff_21ed8b.png in Resources */,
@@ -654,6 +673,7 @@
 				D3202FA61BF8486C0001F19A /* ProfileView.xib in Resources */,
 				D3202FC21BF8B7FC0001F19A /* ion-ios-clock-outline_256_0_c3c3c3_none.png in Resources */,
 				D34010EB1BF2FC470031442A /* ProfileSummary.xib in Resources */,
+				D3339A1E1C26025300A16EAA /* feather-location_0_ffffff_none@3x.png in Resources */,
 				D33F142B1BFDDD9200555931 /* ion-ios-email-outline_256_0_c3c3c3_none.png in Resources */,
 				D305BF4C1C07068200729B64 /* LabelTextFieldCell.xib in Resources */,
 				D3D9B8FF1BFCC5E600A3659D /* NotificationsCell.xib in Resources */,
@@ -666,6 +686,7 @@
 				D3DEE9201C22D02400449E24 /* LaunchScreen.storyboard in Resources */,
 				D3202F771BF38EA30001F19A /* MapViewCell.xib in Resources */,
 				D3D9B9051BFCD69900A3659D /* RateView.xib in Resources */,
+				D3339A1F1C26025300A16EAA /* feather-location_0_ffffff_none@2x.png in Resources */,
 				D305BF4E1C0709BE00729B64 /* IconTextFieldCell.xib in Resources */,
 				D3202FC41BF8B7FC0001F19A /* pe-7s-repeat_256_0_c3c3c3_none.png in Resources */,
 				D33F14191BFD9B6600555931 /* SimpleButtonCell.xib in Resources */,
@@ -713,6 +734,7 @@
 			files = (
 				D32D92DE1BF8D7A4001C35A8 /* RecoverPasswordVC.swift in Sources */,
 				D33F14251BFDB5C600555931 /* TextviewCell.swift in Sources */,
+				D3339A171C25E04300A16EAA /* FacebookFriendsPageList.swift in Sources */,
 				D3BCCB741C0C72C000B32F50 /* OrgEditProfileVC.swift in Sources */,
 				D3DEE91A1C2283EB00449E24 /* VolunteerListVC.swift in Sources */,
 				D3D9B90A1BFCDCE500A3659D /* RateCell.swift in Sources */,
@@ -723,11 +745,13 @@
 				D3D9B9071BFCD6B600A3659D /* RateVC.swift in Sources */,
 				D3202FA41BF8414A0001F19A /* EventPhotoCell.swift in Sources */,
 				D33F14171BFD9B3B00555931 /* SimpleButtonCell.swift in Sources */,
+				D3339A1B1C25F96500A16EAA /* FacebookFriendCell.swift in Sources */,
 				D305BF501C07436700729B64 /* UserDataClass.swift in Sources */,
 				D3D9B8FD1BFCC4BE00A3659D /* NotificationsVC.swift in Sources */,
 				D33F143B1BFE245600555931 /* RatedCell.swift in Sources */,
 				D3C0EF6F1C23064B00C67493 /* SummaryViewController.swift in Sources */,
 				D305BF3E1C05998B00729B64 /* EventClass.swift in Sources */,
+				D3339A211C26038700A16EAA /* ChangeLocationVC.swift in Sources */,
 				D33F14311BFE035C00555931 /* OrgEventsVC.swift in Sources */,
 				D3A474DC1C1FE217001575AA /* OrgHandleEventInvites.swift in Sources */,
 				D33947471BEB3DD200ED53F7 /* ViewController.swift in Sources */,

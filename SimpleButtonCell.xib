@@ -1,8 +1,8 @@
 <?xml version="1.0" encoding="UTF-8" standalone="no"?>
-<document type="com.apple.InterfaceBuilder3.CocoaTouch.XIB" version="3.0" toolsVersion="9059" systemVersion="15B42" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES">
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.XIB" version="3.0" toolsVersion="9531" systemVersion="15C50" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES">
     <dependencies>
         <deployment identifier="iOS"/>
-        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="9049"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="9529"/>
     </dependencies>
     <objects>
         <placeholder placeholderIdentifier="IBFilesOwner" id="-1" userLabel="File's Owner"/>
@@ -15,11 +15,10 @@
                 <autoresizingMask key="autoresizingMask"/>
                 <subviews>
                     <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="EFt-Q3-wi2">
-                        <rect key="frame" x="49" y="7" width="222" height="30"/>
-                        <animations/>
+                        <rect key="frame" x="8" y="8" width="304" height="29"/>
                         <constraints>
-                            <constraint firstAttribute="height" constant="30" id="AnY-Cl-MZO"/>
-                            <constraint firstAttribute="width" constant="222" id="k9R-AB-cZu"/>
+                            <constraint firstAttribute="height" constant="29" id="AnY-Cl-MZO"/>
+                            <constraint firstAttribute="width" constant="304" id="k9R-AB-cZu"/>
                         </constraints>
                         <state key="normal" title="Button"/>
                         <connections>
@@ -27,13 +26,11 @@
                         </connections>
                     </button>
                 </subviews>
-                <animations/>
                 <constraints>
-                    <constraint firstItem="EFt-Q3-wi2" firstAttribute="centerY" secondItem="j9Z-ux-SmR" secondAttribute="centerY" id="HQy-am-PGO"/>
+                    <constraint firstItem="EFt-Q3-wi2" firstAttribute="centerY" secondItem="j9Z-ux-SmR" secondAttribute="centerY" constant="1" id="HQy-am-PGO"/>
                     <constraint firstItem="EFt-Q3-wi2" firstAttribute="centerX" secondItem="j9Z-ux-SmR" secondAttribute="centerX" id="h1Y-Bc-6Jh"/>
                 </constraints>
             </tableViewCellContentView>
-            <animations/>
             <connections>
                 <outlet property="basicButton" destination="EFt-Q3-wi2" id="2uO-bz-NB8"/>
             </connections>

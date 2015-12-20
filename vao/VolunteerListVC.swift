@@ -55,21 +55,31 @@ class VolunteerListVC: UIViewController, UITableViewDataSource, UITableViewDeleg
     
     func getVolunteers() {
         
-        let count = eventObject[VOLUNTEERS].count - 1
-        print(eventObject[VOLUNTEERS].count)
-        
-        for volunteer in 0...count {
-            let volunteerUser = PFUser.query()
-            let volunteerId = eventObject[VOLUNTEERS][volunteer]
-            volunteerUser?.getObjectInBackgroundWithId(volunteerId as! String) {
-                (user: PFObject?, error: NSError?) -> Void in
-                if error == nil {
-                    print(user)
-                    print("getVolunteers")
-                    self.volunteerObjects.append(user!)
-                    self.tableview.reloadData()
+        if eventObject != nil {
+            if eventObject[VOLUNTEERS].count > 0 {
+                let count = eventObject[VOLUNTEERS].count - 1
+                for volunteer in 0...count {
+                    let volunteerUser = PFUser.query()
+                    let volunteerId = eventObject[VOLUNTEERS][volunteer]
+                    volunteerUser?.getObjectInBackgroundWithId(volunteerId as! String) {
+                        (user: PFObject?, error: NSError?) -> Void in
+                        if error == nil {
+                            print(user)
+                            print("getVolunteers")
+                            self.volunteerObjects.append(user!)
+                            self.tableview.reloadData()
+                        }
+                    }
                 }
+            } else {
+                let alert = UIAlertController(title: "Alert", message: "There are currently no volunteers", preferredStyle: UIAlertControllerStyle.Alert)
+                alert.addAction(UIAlertAction(title: "Okay", style: UIAlertActionStyle.Default, handler: nil))
+                self.presentViewController(alert, animated: true, completion: nil)
             }
+        } else {
+            let alert = UIAlertController(title: "Alert", message: "There are currently no volunteers", preferredStyle: UIAlertControllerStyle.Alert)
+            alert.addAction(UIAlertAction(title: "Okay", style: UIAlertActionStyle.Default, handler: nil))
+            self.presentViewController(alert, animated: true, completion: nil)
         }
     }
     

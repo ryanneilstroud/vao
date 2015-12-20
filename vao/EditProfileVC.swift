@@ -31,10 +31,12 @@ class EditProfileVC: UIViewController, UITableViewDataSource, UITableViewDelegat
     let placeholders = ["phone number","email"]
     let aboutPlaceholders = ["Hong Kong", "Male", "22", "Christian", "English, Cantonese"]
     
+    var skills = ""
+    
     let keyboardType = [UIKeyboardType.PhonePad, UIKeyboardType.EmailAddress, UIKeyboardType.URL]
     
     func numberOfSectionsInTableView(tableView: UITableView) -> Int {
-        return 3
+        return 4
     }
     
     func tableView(tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
@@ -42,6 +44,8 @@ class EditProfileVC: UIViewController, UITableViewDataSource, UITableViewDelegat
             return 1
         } else if section == 1 {
             return about.count
+        } else if section == 2 {
+            return 1
         } else {
             return icons.count
         }
@@ -86,6 +90,20 @@ class EditProfileVC: UIViewController, UITableViewDataSource, UITableViewDelegat
             cell.refreshCellWithLabel(about[indexPath.row], _labelValues:labelTextFieldText[indexPath.row] , _placeholder: aboutPlaceholders[indexPath.row])
             
             return cell
+        } else if indexPath.section == 2 {
+            let nib = UINib(nibName: "LabelTextFieldCell", bundle: nil)
+            
+            tableView.rowHeight = 50
+            tableView.registerNib(nib, forCellReuseIdentifier: "cell")
+            
+            let cell: EditCell = tableView.dequeueReusableCellWithIdentifier("cell", forIndexPath: indexPath) as! EditCell
+            cell.selectionStyle = UITableViewCellSelectionStyle.None
+            cell.editTextField.delegate = self
+            cell.editTextField.addTarget(self, action: "textFieldDidChange:", forControlEvents: UIControlEvents.EditingChanged)
+            
+            cell.refreshCellWithLabel("skills", _labelValues: skills, _placeholder: "singing, dancing, computers")
+            
+            return cell
         } else {
             let nib = UINib(nibName: "IconTextFieldCell", bundle: nil)
             
@@ -107,6 +125,8 @@ class EditProfileVC: UIViewController, UITableViewDataSource, UITableViewDelegat
             return nil
         } else if section == 1 {
             return "about"
+        } else if section == 2 {
+            return "skills"
         } else {
             return "contact"
         }
@@ -144,6 +164,8 @@ class EditProfileVC: UIViewController, UITableViewDataSource, UITableViewDelegat
             labelTextFieldText[3] = textField.text!
         } else if textField.placeholder == "English, Cantonese" {
             labelTextFieldText[4] = textField.text!
+        } else if textField.placeholder == "singing, dancing, computers" {
+            skills = textField.text!
         } else {
             name = textField.text!
         }
@@ -164,6 +186,7 @@ class EditProfileVC: UIViewController, UITableViewDataSource, UITableViewDelegat
         labelTextFieldText[2] = currentUser?["age"] != nil ? currentUser?["age"] as! String : ""
         labelTextFieldText[3] = currentUser?["religion"] != nil ? currentUser?["religion"] as! String : ""
         labelTextFieldText[4] = currentUser?["languages"] != nil ? currentUser?["languages"] as! String : ""
+        skills = currentUser?["skills"] != nil ? currentUser?["skills"] as! String : ""
         
         if let userImageFile = currentUser!["orgImage"] as? PFFile {
             userImageFile.getDataInBackgroundWithBlock {
@@ -216,6 +239,7 @@ class EditProfileVC: UIViewController, UITableViewDataSource, UITableViewDelegat
                 currentUser?["age"] = labelTextFieldText[2] != "" ? labelTextFieldText[2] : ""
                 currentUser?["religion"] = labelTextFieldText[3] != "" ? labelTextFieldText[3] : ""
                 currentUser?["languages"] = labelTextFieldText[4] != "" ? labelTextFieldText[4] : ""
+                currentUser?["skills"] = skills != "" ? skills : ""
                 
                 currentUser?.saveInBackgroundWithBlock {
                     (success: Bool, error: NSError?) -> Void in

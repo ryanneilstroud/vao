@@ -11,12 +11,22 @@ import Parse
 
 class OrgHandlesEventInvites: UIViewController, UITableViewDataSource, UITableViewDelegate {
     
+    let NOTIFICATION_CLASS = "Notification"
+    let RECEIVER = "receiver"
+    let SENDER = "sender"
+    let NOTIFICATION_TYPE = "type"
+    let IS_READ = "isRead"
+    
+    let TYPE_EVENT_PARTICIPANT_VALIDATION = "eventParticipantValidation"
+    let TYPE_REVIEW = "review"
     let EVENT_PARTICIPANT_VALIDATION = "EventParticipantValidation"
     let EVENT_ID = "event"
     let VOLUNTEER = "volunteer"
     let VOLUNTEERS = "volunteers"
     let ORGANIZATION = "organization"
     let INITIATOR_TYPE_IS_VOLUNTEER = "initiatorTypeIsVolunteer"
+    let NOTIFICATION_TYPE_POINTER_ID = "notificationTypePointerId"
+    let NOTIFICATION_POINTER = "notifcationPointer"
     
     let EVENT_CLASS = "Event"
     
@@ -231,6 +241,9 @@ class OrgHandlesEventInvites: UIViewController, UITableViewDataSource, UITableVi
     func createAlertForHandlingEventParticipantValidation(_section: Int, _event: PFObject) {
         
         if _section == 0 {
+            
+            print("SECTION 0")
+            
             let alert = UIAlertController(title: "Alert", message: "Would you like to accept this persons request to join this event?", preferredStyle: UIAlertControllerStyle.Alert)
             alert.addAction(UIAlertAction(title: "Cancel", style: UIAlertActionStyle.Cancel, handler: nil))
             alert.addAction(UIAlertAction(title: "Decline", style: UIAlertActionStyle.Destructive, handler: { action in
@@ -247,7 +260,7 @@ class OrgHandlesEventInvites: UIViewController, UITableViewDataSource, UITableVi
                             (success: Bool, error: NSError?) -> Void in
                             if (success) {
                                 // The object has been saved.
-                                self.navigationController?.popViewControllerAnimated(true)
+                                self.setNotification(objects![0], _notficationType: self.TYPE_EVENT_PARTICIPANT_VALIDATION, _dismiss: true)
 
                             } else {
                                 // There was a problem, check error.description
@@ -281,9 +294,15 @@ class OrgHandlesEventInvites: UIViewController, UITableViewDataSource, UITableVi
                                     _event.saveInBackgroundWithBlock {
                                         (success: Bool, error: NSError?) -> Void in
                                         if (success) {
-                                            self.navigationController?.popViewControllerAnimated(true)
-                                        } else {
+                                            self.setNotification(objects![0], _notficationType: self.TYPE_EVENT_PARTICIPANT_VALIDATION, _dismiss: false)
+                                            self.setNotification(objects![0], _notficationType: self.TYPE_REVIEW, _dismiss: true)
+
                                             
+                                            //SET REVIEW HEAR
+                                            //ONE FOR YOU
+                                            //ONE FOR ME
+                                        } else {
+                                            print(error)
                                         }
                                     }
                                 }
@@ -323,9 +342,9 @@ class OrgHandlesEventInvites: UIViewController, UITableViewDataSource, UITableVi
                                     _event.saveInBackgroundWithBlock {
                                         (success: Bool, error: NSError?) -> Void in
                                         if (success) {
-                                            self.navigationController?.popViewControllerAnimated(true)
+                                            self.setNotification(objects![0], _notficationType: self.TYPE_EVENT_PARTICIPANT_VALIDATION, _dismiss: true)
                                         } else {
-                                        
+                                            
                                         }
                                     }
                                 }
@@ -363,7 +382,19 @@ class OrgHandlesEventInvites: UIViewController, UITableViewDataSource, UITableVi
                             eventParticipantClass.saveInBackgroundWithBlock {
                                 (success: Bool, error: NSError?) -> Void in
                                 if (success) {
-                                    self.navigationController?.popViewControllerAnimated(true)
+                                    
+                                    let val = PFQuery(className: self.EVENT_PARTICIPANT_VALIDATION)
+                                    val.whereKey(self.EVENT_ID, equalTo: _event.objectId!)
+                                    val.findObjectsInBackgroundWithBlock {
+                                        (valObject: [PFObject]?, error: NSError?) -> Void in
+                                        if error == nil {
+                                            print(valObject![0].objectId)
+                                            self.setNotification(valObject![0], _notficationType: self.TYPE_EVENT_PARTICIPANT_VALIDATION, _dismiss: true)
+                                        } else {
+                                            print(error)
+                                        }
+                                    }
+
                                 } else {
                                     print(error)
                                 }
@@ -375,7 +406,7 @@ class OrgHandlesEventInvites: UIViewController, UITableViewDataSource, UITableVi
                                 (success: Bool, error: NSError?) -> Void in
                                 if (success) {
                                     // The object has been saved.
-                                    self.navigationController?.popViewControllerAnimated(true)
+                                    self.setNotification(objects![0], _notficationType: self.TYPE_EVENT_PARTICIPANT_VALIDATION, _dismiss: true)
                                 } else {
                                     // There was a problem, check error.description
                                     print(error)
@@ -413,7 +444,7 @@ class OrgHandlesEventInvites: UIViewController, UITableViewDataSource, UITableVi
                                     _event.saveInBackgroundWithBlock {
                                         (success: Bool, error: NSError?) -> Void in
                                         if (success) {
-                                            self.navigationController?.popViewControllerAnimated(true)
+                                            self.setNotification(objects![0], _notficationType: self.TYPE_EVENT_PARTICIPANT_VALIDATION, _dismiss: true)
                                         } else {
                                             
                                         }
@@ -449,7 +480,8 @@ class OrgHandlesEventInvites: UIViewController, UITableViewDataSource, UITableVi
                             (success: Bool, error: NSError?) -> Void in
                             if (success) {
                                 // The object has been saved.
-                                self.navigationController?.popViewControllerAnimated(true)
+                                self.setNotification(objects![0], _notficationType: self.TYPE_EVENT_PARTICIPANT_VALIDATION, _dismiss: true)
+
                             } else {
                                 // There was a problem, check error.description
                                 print(error)
@@ -547,6 +579,82 @@ class OrgHandlesEventInvites: UIViewController, UITableViewDataSource, UITableVi
             } else {
                 // Log details of the failure
                 print("Error: \(error!) \(error!.userInfo)")
+            }
+        }
+    }
+    
+    func setNotification(_object: PFObject, _notficationType: String, _dismiss: Bool) {
+        print("settingNotification")
+        let notification = PFQuery(className: self.NOTIFICATION_CLASS)
+        notification.whereKey(self.NOTIFICATION_TYPE_POINTER_ID, equalTo: _object.objectId!)
+        notification.findObjectsInBackgroundWithBlock {
+            (notificationId: [PFObject]?, error: NSError?) -> Void in
+            if error == nil && notificationId?.count > 0 {
+                
+                if notificationId![0][self.NOTIFICATION_TYPE] as! String != _notficationType {
+                    print("creating new")
+                    let notificationId2 = PFObject(className: self.NOTIFICATION_CLASS)
+                    notificationId2[self.NOTIFICATION_TYPE_POINTER_ID] = _object.objectId
+                    notificationId2[self.IS_READ] = false
+                    notificationId2[self.RECEIVER] = PFUser.currentUser()
+                    notificationId2[self.SENDER] = _object[self.VOLUNTEER]
+                    notificationId2[self.NOTIFICATION_TYPE] = _notficationType
+                    notificationId2.saveInBackground()
+                    
+                    let notificationId = PFObject(className: self.NOTIFICATION_CLASS)
+                    notificationId[self.NOTIFICATION_TYPE_POINTER_ID] = _object.objectId
+                    notificationId[self.IS_READ] = false
+                    notificationId[self.RECEIVER] = _object[self.VOLUNTEER]
+                    notificationId[self.SENDER] = PFUser.currentUser()
+                    notificationId[self.NOTIFICATION_TYPE] = _notficationType
+                    notificationId.saveInBackgroundWithBlock {
+                        (success: Bool?, saveError: NSError?) -> Void in
+                        if success != nil {
+                            if _dismiss {
+                                self.navigationController?.popViewControllerAnimated(true)
+                            }
+                        }
+                    }
+
+                } else {
+                
+                    print("retrieving old")
+                    notificationId![0][self.IS_READ] = false
+                    notificationId?[0].saveInBackgroundWithBlock {
+                        (success: Bool?, saveError: NSError?) -> Void in
+                        if success != nil {
+                            if _dismiss {
+                                self.navigationController?.popViewControllerAnimated(true)
+                            }
+                        }
+                    }
+                }
+            } else {
+                //createNew
+                
+                let notificationId2 = PFObject(className: self.NOTIFICATION_CLASS)
+                notificationId2[self.NOTIFICATION_TYPE_POINTER_ID] = _object.objectId
+                notificationId2[self.IS_READ] = false
+                notificationId2[self.RECEIVER] = PFUser.currentUser()
+                notificationId2[self.SENDER] = _object[self.VOLUNTEER]
+                notificationId2[self.NOTIFICATION_TYPE] = _notficationType
+                notificationId2.saveInBackground()
+                
+                print("creating new")
+                let notificationId = PFObject(className: self.NOTIFICATION_CLASS)
+                notificationId[self.NOTIFICATION_TYPE_POINTER_ID] = _object.objectId
+                notificationId[self.IS_READ] = false
+                notificationId[self.RECEIVER] = _object[self.VOLUNTEER]
+                notificationId[self.SENDER] = PFUser.currentUser()
+                notificationId[self.NOTIFICATION_TYPE] = _notficationType
+                notificationId.saveInBackgroundWithBlock {
+                    (success: Bool?, saveError: NSError?) -> Void in
+                    if success != nil {
+                        if _dismiss {
+                            self.navigationController?.popViewControllerAnimated(true)
+                        }
+                    }
+                }
             }
         }
     }

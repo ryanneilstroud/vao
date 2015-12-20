@@ -6,11 +6,14 @@
 //  Copyright © 2015 Ryan Stroud. All rights reserved.
 //
 
+import Foundation
 import UIKit
 import Parse
 import ParseFacebookUtilsV4
 
 class OpportunitiesDetailVC: UIViewController, UITableViewDataSource, UITableViewDelegate {
+    
+    let NOTIFICATION_CLASS = "Notification"
     
     let EVENT_PARTICIPANT_VALIDATION = "EventParticipantValidation"
     let EVENT_ID = "event"
@@ -30,17 +33,27 @@ class OpportunitiesDetailVC: UIViewController, UITableViewDataSource, UITableVie
     
     let CANCEL_REQUEST = "Cancel Request"
     let ACCEPT_REQUEST = "Accept Request"
-    //        let DECLINE_REQUEST = "Decline Request"
+    let DECLINE_REQUEST = "Decline Request"
     let LEAVE_EVENT = "Leave Event"
     let JOIN_EVENT = "Join Event"
     let VOLUNTEER_DECLINED = "You were declined from this event"
     
+    let RECEIVER = "receiver"
+    let SENDER = "sender"
+    let NOTIFICATION_TYPE = "type"
+    let IS_READ = "isRead"
+    
+    let TYPE_EVENT_PARTICIPANT_VALIDATION = "eventParticipantValidation"
+    let TYPE_REVIEW = "review"
+    let NOTIFICATION_TYPE_POINTER_ID = "notificationTypePointerId"
+    let NOTIFICATION_POINTER = "notifcationPointer"
+    
     //        var buttonControlState = UIControlState.Normal
     
     var event = EventClass()
-    var orgInvited = false
-    
     var objectEvent: PFObject?
+    
+    var orgInvited = false
     
     var tableview: UITableView!
     
@@ -222,8 +235,27 @@ class OpportunitiesDetailVC: UIViewController, UITableViewDataSource, UITableVie
     }
     
     func tableView(tableView: UITableView, didSelectRowAtIndexPath indexPath: NSIndexPath) {
-        if indexPath.section == 5 {
+        print("hello there ", indexPath.section)
+        if indexPath.section == 4 {
             let user = PFUser.currentUser()
+            
+            print("hello!")
+            
+            let request = FBSDKGraphRequest(graphPath: "me/friends", parameters: ["fields":"name, id, picture"], HTTPMethod: "GET")
+            request.startWithCompletionHandler({
+                (connection, results, error: NSError!) -> Void in
+                if error == nil {
+                    let resultsDict = results as! NSDictionary
+                    print("results: ", resultsDict)
+                                        
+                    let vc = FacebookFriendsPageList(nibName: "TableView", bundle: nil)
+                    vc.friendsDictionary = resultsDict
+                    self.navigationController?.pushViewController(vc, animated: true)
+                    
+                } else {
+                    print("error: ", error)
+                }
+            })
             
             if user![USER_TYPE_IS_VOLUNTEER] as! Bool {
                 if !PFFacebookUtils.isLinkedWithUser(user!) {
@@ -240,16 +272,28 @@ class OpportunitiesDetailVC: UIViewController, UITableViewDataSource, UITableVie
                 }
             } else {
                 //go to volunteer list
-                let vc = VolunteerListVC(nibName:"TableView", bundle: nil)
-                vc.eventObject = objectEvent!
-                navigationController?.pushViewController(vc, animated: true)
+                if objectEvent!["volunteers"] != nil {
+                    if objectEvent!["volunteers"].count != 0 {
+                        let vc = VolunteerListVC(nibName:"TableView", bundle: nil)
+                        vc.eventObject = objectEvent!
+                        navigationController?.pushViewController(vc, animated: true)
+                    } else {
+                        let alert = UIAlertController(title: "Alert", message: "There are currently no volunteers for this event", preferredStyle: UIAlertControllerStyle.Alert)
+                        alert.addAction(UIAlertAction(title: "Okay", style: UIAlertActionStyle.Default, handler: nil))
+                        self.presentViewController(alert, animated: true, completion: nil)
+                    }
+                } else {
+                    let alert = UIAlertController(title: "Alert", message: "There are currently no volunteers for this event", preferredStyle: UIAlertControllerStyle.Alert)
+                    alert.addAction(UIAlertAction(title: "Okay", style: UIAlertActionStyle.Default, handler: nil))
+                    self.presentViewController(alert, animated: true, completion: nil)
+                }
             }
         }
     }
     
     func editEvent() {
-        print("I should be editing")
         let vc = NewEventVC(nibName:"TableView", bundle: nil)
+        vc.editEvent = objectEvent
         navigationController?.pushViewController(vc, animated: true)
     }
     
@@ -257,10 +301,10 @@ class OpportunitiesDetailVC: UIViewController, UITableViewDataSource, UITableVie
         super.viewDidLoad()
         // Do any additional setup after loading the view, typically from a nib.
         
-        if PFUser.currentUser()![USER_TYPE_IS_VOLUNTEER] as! Bool == false {
-            let editEventButton = UIBarButtonItem(barButtonSystemItem: .Edit, target: self, action: "editEvent")
-            self.navigationItem.setRightBarButtonItem(editEventButton, animated: true)
-        }
+//        if PFUser.currentUser()![USER_TYPE_IS_VOLUNTEER] as! Bool == false {
+//            let editEventButton = UIBarButtonItem(barButtonSystemItem: .Edit, target: self, action: "editEvent")
+//            self.navigationItem.setRightBarButtonItem(editEventButton, animated: true)
+//        }
         
         if objectEvent != nil {
             
@@ -323,16 +367,6 @@ class OpportunitiesDetailVC: UIViewController, UITableViewDataSource, UITableVie
         }
         
         loadStatusOfEventParticipantForVolunteer(event.objectId, _eventCreatedBy: event.createdBy)
-        
-//        let request = FBSDKGraphRequest(graphPath: "https://graph.facebook.com/ryanneilstroud/picture?type=large&redirect=false", parameters: nil, HTTPMethod: "GET")
-//        request.startWithCompletionHandler({
-//            (connection, results, error: NSError!) -> Void in
-//            if error == nil {
-//                print("results: ", results)
-//            } else {
-//                print("error: ", error)
-//            }
-//        })
     }
     
     //methods for volunteers
@@ -550,7 +584,7 @@ class OpportunitiesDetailVC: UIViewController, UITableViewDataSource, UITableVie
                         (success: Bool, error: NSError?) -> Void in
                         if (success) {
                             // The post has been added to the user's likes relation.
-                            self.loadStatusOfEventParticipantForVolunteer(self.event.objectId, _eventCreatedBy: self.event.createdBy)
+                            self.setNotification(_eventParticipantValidationEvent, _notficationType: self.TYPE_EVENT_PARTICIPANT_VALIDATION, _dismiss: true)
                         } else {
                             // There was a problem, check error.description
                             print(error)
@@ -596,7 +630,7 @@ class OpportunitiesDetailVC: UIViewController, UITableViewDataSource, UITableVie
                                     if (success) {
                                             // The object has been saved.
                                         print("success")
-                                        self.loadStatusOfEventParticipantForVolunteer(self.event.objectId, _eventCreatedBy: self.event.createdBy)
+                                        self.setNotification(_eventParticipantValidationEvent, _notficationType: self.TYPE_EVENT_PARTICIPANT_VALIDATION, _dismiss: true)
                                     } else {
                                             // There was a problem, check error.description
                                         print(error)
@@ -706,5 +740,81 @@ class OpportunitiesDetailVC: UIViewController, UITableViewDataSource, UITableVie
             }
         }
     }
+    
+    func setNotification(_object: PFObject, _notficationType: String, _dismiss: Bool) {
+        print("settingNotification")
+        let notification = PFQuery(className: self.NOTIFICATION_CLASS)
+        notification.whereKey(self.NOTIFICATION_TYPE_POINTER_ID, equalTo: _object.objectId!)
+        notification.findObjectsInBackgroundWithBlock {
+            (notificationId: [PFObject]?, error: NSError?) -> Void in
+            if error == nil && notificationId?.count > 0 {
+                
+                if notificationId![0][self.NOTIFICATION_TYPE] as! String != _notficationType {
+                    let notificationId2 = PFObject(className: self.NOTIFICATION_CLASS)
+                    notificationId2[self.NOTIFICATION_TYPE_POINTER_ID] = _object.objectId
+                    notificationId2[self.IS_READ] = false
+                    notificationId2[self.RECEIVER] = PFUser.currentUser()
+                    notificationId2[self.SENDER] = _object[self.ORGANIZATION]
+                    notificationId2[self.NOTIFICATION_TYPE] = _notficationType
+                    notificationId2.saveInBackground()
+                    
+                    print("creating new")
+                    let notificationId = PFObject(className: self.NOTIFICATION_CLASS)
+                    notificationId[self.NOTIFICATION_TYPE_POINTER_ID] = _object.objectId
+                    notificationId[self.IS_READ] = false
+                    notificationId[self.RECEIVER] = _object[self.ORGANIZATION]
+                    notificationId[self.SENDER] = PFUser.currentUser()
+                    notificationId[self.NOTIFICATION_TYPE] = _notficationType
+                    notificationId.saveInBackgroundWithBlock {
+                        (success: Bool?, saveError: NSError?) -> Void in
+                        if success != nil {
+                            if _dismiss {
+                                self.loadStatusOfEventParticipantForVolunteer(self.event.objectId, _eventCreatedBy: self.event.createdBy)
+                            }
+                        }
+                    }
+                    
+                } else {
+                    
+                    print("retrieving old")
+                    notificationId![0][self.IS_READ] = false
+                    notificationId?[0].saveInBackgroundWithBlock {
+                        (success: Bool?, saveError: NSError?) -> Void in
+                        if success != nil {
+                            if _dismiss {
+                                self.loadStatusOfEventParticipantForVolunteer(self.event.objectId, _eventCreatedBy: self.event.createdBy)
+                            }
+                        }
+                    }
+                }
+            } else {
+                //createNew
+                let notificationId2 = PFObject(className: self.NOTIFICATION_CLASS)
+                notificationId2[self.NOTIFICATION_TYPE_POINTER_ID] = _object.objectId
+                notificationId2[self.IS_READ] = false
+                notificationId2[self.RECEIVER] = PFUser.currentUser()
+                notificationId2[self.SENDER] = _object[self.ORGANIZATION]
+                notificationId2[self.NOTIFICATION_TYPE] = _notficationType
+                notificationId2.saveInBackground()
+                
+                print("creating new")
+                let notificationId = PFObject(className: self.NOTIFICATION_CLASS)
+                notificationId[self.NOTIFICATION_TYPE_POINTER_ID] = _object.objectId
+                notificationId[self.IS_READ] = false
+                notificationId[self.RECEIVER] = _object[self.ORGANIZATION]
+                notificationId[self.SENDER] = PFUser.currentUser()
+                notificationId[self.NOTIFICATION_TYPE] = _notficationType
+                notificationId.saveInBackgroundWithBlock {
+                    (success: Bool?, saveError: NSError?) -> Void in
+                    if success != nil {
+                        if _dismiss {
+                            self.loadStatusOfEventParticipantForVolunteer(self.event.objectId, _eventCreatedBy: self.event.createdBy)
+                        }
+                    }
+                }
+            }
+        }
+    }
+
 }
 

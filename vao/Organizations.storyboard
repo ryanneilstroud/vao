@@ -407,7 +407,7 @@
                         </constraints>
                     </view>
                     <navigationItem key="navigationItem" title="Events" id="4qm-Qy-lb2">
-                        <barButtonItem key="leftBarButtonItem" title="Item" systemItem="cancel" id="Dph-aV-STm">
+                        <barButtonItem key="leftBarButtonItem" systemItem="cancel" id="Dph-aV-STm">
                             <connections>
                                 <action selector="dismissEventsVC:" destination="nHn-sK-BGT" id="ZLe-NA-Mio"/>
                             </connections>

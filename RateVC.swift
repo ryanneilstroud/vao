@@ -33,7 +33,7 @@ class RateVC: UIViewController, UITableViewDataSource, UITableViewDelegate, UITe
     let EMPTY_COMMENT_TEXT = "The comment box below is empty, are you sure you don't want to say a few words?"
     
     var eventObject: PFObject!
-    var volunteer: PFObject!
+    var volunteer: PFObject?
     var rateCell: RateCell!
     
     var previousReview: PFObject?
@@ -75,7 +75,9 @@ class RateVC: UIViewController, UITableViewDataSource, UITableViewDelegate, UITe
                 
                 let cell : VolunteersTVC = tableView.dequeueReusableCellWithIdentifier("volunteer", forIndexPath: indexPath) as! VolunteersTVC
                 
-                cell.refreshCellWithVolunteer(volunteer)
+                if volunteer != nil {
+                    cell.refreshCellWithVolunteer(volunteer!)
+                }
                 return cell
             }
         } else if indexPath.section == 1 {
@@ -296,6 +298,8 @@ class RateVC: UIViewController, UITableViewDataSource, UITableViewDelegate, UITe
         NSNotificationCenter.defaultCenter().addObserver(self, selector: Selector("keyboardWillShow:"), name:UIKeyboardDidShowNotification, object: nil)
         NSNotificationCenter.defaultCenter().addObserver(self, selector: Selector("keyboardWillHide:"), name:UIKeyboardWillHideNotification, object: nil)
         
+        print(eventObject)
+        
         let review = PFQuery(className: REVIEW)
         review.whereKey(EVENT, equalTo: eventObject)
         review.findObjectsInBackgroundWithBlock {
@@ -303,17 +307,24 @@ class RateVC: UIViewController, UITableViewDataSource, UITableViewDelegate, UITe
             if error == nil && objects != nil {
                 print(objects)
                 
-                for object in objects! {
-                    if object[self.VOLUNTEER] as! PFUser == PFUser.currentUser()! {
-                        self.previousReview = object
-                        self.commentText = self.previousReview![self.COMMENT] as! String
-                        self.tableview.reloadData()
-                    } else if object[self.VOLUNTEER] as! PFUser == self.volunteer {
-                        self.previousReview = object
-                        self.commentText = self.previousReview![self.COMMENT] as! String
-                        self.tableview.reloadData()
+                if PFUser.currentUser()![self.USER_TYPE_IS_VOLUNTEER] as! Bool {
+                    for object in objects! {
+                        if object[self.VOLUNTEER] as! PFUser == PFUser.currentUser()! && object[self.REVIEWER_IS_VOLUNTEER] as! Bool {
+                            self.previousReview = object
+                            self.commentText = self.previousReview![self.COMMENT] as! String
+                            self.tableview.reloadData()
+                        }
+                    }
+                } else {
+                    for object in objects! {
+                        if object[self.VOLUNTEER] as! PFUser == self.volunteer && object[self.REVIEWER_IS_VOLUNTEER] as! Bool == false {
+                            self.previousReview = object
+                            self.commentText = self.previousReview![self.COMMENT] as! String
+                            self.tableview.reloadData()
+                        }
                     }
                 }
+        
                 
             } else {
                 print("no previous review")
