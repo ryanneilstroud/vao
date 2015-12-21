@@ -122,6 +122,7 @@ class OrgNotificationsVC: UIViewController, UITableViewDataSource, UITableViewDe
                     self.events.removeAll()
                     self.eventParticipantValidations.removeAll()
                     self.notifications.removeAll()
+                    self.tableview.reloadData()
                     
                     for notification in notifications! {
                         let eventParticipantValidations = PFQuery(className: self.EVENT_PARTICIPANT_VALIDATION)

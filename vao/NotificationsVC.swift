@@ -83,8 +83,6 @@ class NotificationsVC: UIViewController, UITableViewDataSource, UITableViewDeleg
             return cell
         } else {
             
-            print("HELLO")
-            
             let nib = UINib(nibName: "NotificationsCell", bundle: nil)
             tableView.registerNib(nib, forCellReuseIdentifier: "cell")
             tableView.rowHeight = 100
@@ -124,6 +122,7 @@ class NotificationsVC: UIViewController, UITableViewDataSource, UITableViewDeleg
                     self.events.removeAll()
                     self.eventParticipantValidations.removeAll()
                     self.notifications.removeAll()
+                    self.tableview.reloadData()
                     
                     for notification in notifications! {
                         let eventParticipantValidations = PFQuery(className: self.EVENT_PARTICIPANT_VALIDATION)

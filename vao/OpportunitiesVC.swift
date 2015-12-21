@@ -226,6 +226,7 @@ class OpportunitiesVC: UIViewController, UITableViewDataSource, UITableViewDeleg
     
     override func viewDidAppear(animated: Bool) {
         eventsArray.removeAll()
+        self.tableview.reloadData()
         
         let currentUser = PFUser.currentUser()
         if currentUser != nil {
