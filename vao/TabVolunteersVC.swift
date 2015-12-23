@@ -37,6 +37,11 @@ class TabVolunteersVC: UIViewController, UITableViewDataSource, UITableViewDeleg
         return cell
     }
     
+    @IBAction func createEvent(sender: AnyObject) {
+        let vc = NewEventVC(nibName:"TableView", bundle: nil)
+        navigationController?.pushViewController(vc, animated: true)
+    }
+    
     func tableView(tableView: UITableView, didSelectRowAtIndexPath indexPath: NSIndexPath) {
         let vc = ProfileVC(nibName:"ProfileView", bundle: nil)
         vc.orgIsViewing = true

@@ -297,14 +297,18 @@ class OpportunitiesDetailVC: UIViewController, UITableViewDataSource, UITableVie
         navigationController?.pushViewController(vc, animated: true)
     }
     
+//    override func viewDidAppear(animated: Bool) {
+//        tableview.reloadData()
+//    }
+    
     override func viewDidLoad() {
         super.viewDidLoad()
         // Do any additional setup after loading the view, typically from a nib.
         
-//        if PFUser.currentUser()![USER_TYPE_IS_VOLUNTEER] as! Bool == false {
-//            let editEventButton = UIBarButtonItem(barButtonSystemItem: .Edit, target: self, action: "editEvent")
-//            self.navigationItem.setRightBarButtonItem(editEventButton, animated: true)
-//        }
+        if PFUser.currentUser()![USER_TYPE_IS_VOLUNTEER] as! Bool == false {
+            let editEventButton = UIBarButtonItem(barButtonSystemItem: .Edit, target: self, action: "editEvent")
+            self.navigationItem.setRightBarButtonItem(editEventButton, animated: true)
+        }
         
         if objectEvent != nil {
             

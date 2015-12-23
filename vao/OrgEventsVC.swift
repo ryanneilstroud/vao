@@ -136,7 +136,11 @@ class OrgEventsVC: UIViewController, UITableViewDataSource, UITableViewDelegate 
         
     }
     
-    override func viewDidLoad() {
+//    override func viewDidLoad() {
+//        loadData()
+//    }
+    
+    override func viewDidAppear(animated: Bool) {
         loadData()
     }
     

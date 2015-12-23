@@ -13,6 +13,8 @@ import MapKit
 class NewEventVC: UIViewController, UITableViewDataSource, UITableViewDelegate, UITextFieldDelegate, UITextViewDelegate, UIImagePickerControllerDelegate, UINavigationControllerDelegate, SendToB, SendToMapViewController, SendToCreateEvent {
 
     @IBOutlet var tableview: UITableView!
+    var tv = UITableView()
+    var addButton = UIBarButtonItem()
     
     var activeTextView: UITextView?
     
@@ -30,7 +32,10 @@ class NewEventVC: UIViewController, UITableViewDataSource, UITableViewDelegate, 
     var buttonLabelArray : [String] = ["date","time","don't repeat"]
     let iconImageArray : [UIImage] = [UIImage(named: "ion-ios-calendar-outline_256_0_c3c3c3_none.png")!, UIImage(named: "ion-ios-clock-outline_256_0_c3c3c3_none.png")!, UIImage(named: "pe-7s-repeat_256_0_c3c3c3_none.png")!]
     
-    @IBAction func addEvent(sender: AnyObject) {
+    func addEvent(sender: AnyObject) {
+        
+        addButton.enabled = false
+        
         let orgEvent = PFObject(className: "Event")
         
         if event.title == nil || event.title == "" {
@@ -59,24 +64,80 @@ class NewEventVC: UIViewController, UITableViewDataSource, UITableViewDelegate, 
                 orgEvent["eventImage"] = imageFile
             }
             
-            orgEvent["createdBy"] = PFUser.currentUser()
-            orgEvent.saveInBackgroundWithBlock {
-                (success: Bool, error: NSError?) -> Void in
-                if (success) {
-                    print(success)
-                    let alert = UIAlertController(title: "saved!", message: nil, preferredStyle: UIAlertControllerStyle.Alert)
-                    self.presentViewController(alert, animated: true, completion: nil)
+            if editEvent != nil {
+                print("not nil")
+
+//                let query = PFQuery(className: "Event")
+//                query.getObjectInBackgroundWithId(editEvent.objectId!, block: {
+//                    (object: PFObject?, error: NSError?) -> Void in
+//                    if error == nil {
+//                    
+//                    } else {
+//                        print(error)
+//                    }
+//                })
+                editEvent["title"] = event.title
+                editEvent["date"] = event.date
+                editEvent["time"] = event.time
+                editEvent["frequency"] = event.frequency == nil ? "don't repeat" : event.frequency
+                editEvent["summary"] = event.summary == nil ? "" : event.summary
+                editEvent["locationName"] = event.locationName == nil ? "" : event.locationName
+                editEvent["category"] = event.category == nil ? "none" : event.category
+                
+                if event.location != nil {
+                    editEvent["location"] = PFGeoPoint(latitude: event.location!.latitude, longitude: event.location!.longitude)
+                }
+                
+                if event.eventImage != nil {
+                    let imageData = UIImageJPEGRepresentation(event.eventImage!, 0.5)
+                    let imageFile = PFFile(name:"eventPhoto.png", data:imageData!)
                     
-                    let delay = 0.5 * Double(NSEC_PER_SEC)
-                    let time = dispatch_time(DISPATCH_TIME_NOW, Int64(delay))
-                    dispatch_after(time, dispatch_get_main_queue(), {
-                        alert.dismissViewControllerAnimated(true, completion: {(Bool) in
-                            self.dismissViewControllerAnimated(true, completion: nil)
+                    editEvent["eventImage"] = imageFile
+                }
+                editEvent.saveInBackgroundWithBlock {
+                    (success: Bool, error: NSError?) -> Void in
+                    if (success) {
+                        print(success)
+                        let alert = UIAlertController(title: "updated!", message: nil, preferredStyle: UIAlertControllerStyle.Alert)
+                        self.presentViewController(alert, animated: true, completion: nil)
+                        
+                        let delay = 0.5 * Double(NSEC_PER_SEC)
+                        let time = dispatch_time(DISPATCH_TIME_NOW, Int64(delay))
+                        dispatch_after(time, dispatch_get_main_queue(), {
+                            alert.dismissViewControllerAnimated(true, completion: {(Bool) in
+                                self.navigationController?.popToRootViewControllerAnimated(true)
+                            })
                         })
-                    })
-                    
-                } else {
-                    print(error)
+                        
+                    } else {
+                        if error!.code == 125 {
+                            
+                        }
+                        
+                        print(error)
+                    }
+                }
+            } else {
+                print("nil")
+                orgEvent["createdBy"] = PFUser.currentUser()
+                orgEvent.saveInBackgroundWithBlock {
+                    (success: Bool, error: NSError?) -> Void in
+                    if (success) {
+                        print(success)
+                        let alert = UIAlertController(title: "saved!", message: nil, preferredStyle: UIAlertControllerStyle.Alert)
+                        self.presentViewController(alert, animated: true, completion: nil)
+                        
+                        let delay = 0.5 * Double(NSEC_PER_SEC)
+                        let time = dispatch_time(DISPATCH_TIME_NOW, Int64(delay))
+                        dispatch_after(time, dispatch_get_main_queue(), {
+                            alert.dismissViewControllerAnimated(true, completion: {(Bool) in
+                                self.navigationController?.popViewControllerAnimated(true)
+                            })
+                        })
+                        
+                    } else {
+                        print(error)
+                    }
                 }
             }
         }
@@ -86,11 +147,12 @@ class NewEventVC: UIViewController, UITableViewDataSource, UITableViewDelegate, 
         let alert = UIAlertController(title: _title, message: _message, preferredStyle: UIAlertControllerStyle.Alert)
         alert.addAction(UIAlertAction(title: "okay", style: UIAlertActionStyle.Default, handler: nil))
         self.presentViewController(alert, animated: true, completion: nil)
+        addButton.enabled = true
     }
     
-    @IBAction func cancelEventCreation(sender: AnyObject) {
-        self.dismissViewControllerAnimated(true, completion: nil)
-    }
+//    @IBAction func cancelEventCreation(sender: AnyObject) {
+//        self.dismissViewControllerAnimated(true, completion: nil)
+//    }
     
     func didReceiveAtCreateEvent(_data: EventClass) {
         event = _data
@@ -99,7 +161,7 @@ class NewEventVC: UIViewController, UITableViewDataSource, UITableViewDelegate, 
             categoryType = _data.category!
         }
         
-        tableview.reloadData()
+        tv.reloadData()
     }
     
     func didReceiveAtMapViewController(_data: EventClass) {
@@ -109,7 +171,7 @@ class NewEventVC: UIViewController, UITableViewDataSource, UITableViewDelegate, 
             locationName = _data.locationName!
         }
         
-        tableview.reloadData()
+        tv.reloadData()
     }
     
     func didReceiveAtB(_data: EventClass) {
@@ -138,7 +200,7 @@ class NewEventVC: UIViewController, UITableViewDataSource, UITableViewDelegate, 
             buttonLabelArray[2] = _data.frequency!
         }
         
-        tableview.reloadData()
+        tv.reloadData()
         
     }
     
@@ -147,6 +209,8 @@ class NewEventVC: UIViewController, UITableViewDataSource, UITableViewDelegate, 
     }
     
     func tableView(tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
+        tv = tableView
+        
         if section == 0 {
             return 1
         } else if section == 1 {
@@ -173,20 +237,12 @@ class NewEventVC: UIViewController, UITableViewDataSource, UITableViewDelegate, 
             cell.titleTextField.delegate = self
             cell.titleTextField.addTarget(self, action: "textFieldDidChange:", forControlEvents: UIControlEvents.EditingChanged)
             
-            if editEvent != nil {
-                let userImageFile = editEvent["eventImage"] as? PFFile
-                userImageFile!.getDataInBackgroundWithBlock {
-                    (imageData: NSData?, error: NSError?) -> Void in
-                    if error == nil {
-                        if let imageData = imageData {
-                            cell.refreshCellWithEventImage(UIImage(data:imageData)!)
-                        }
-                    }
-                }
-            } else {
-                if image != nil {
-                    cell.refreshCellWithEventImage(image!)
-                }
+            if image != nil {
+                cell.refreshCellWithEventImage(image!)
+            }
+            
+            if titleTextFieldText != "" {
+                cell.titleTextField.text = titleTextFieldText
             }
             
             return cell
@@ -238,7 +294,11 @@ class NewEventVC: UIViewController, UITableViewDataSource, UITableViewDelegate, 
             let cell = tableView.dequeueReusableCellWithIdentifier("textviewCell", forIndexPath: indexPath) as! GenericLabelTextviewCell
             cell.textview.delegate = self
 
-            cell.refreshCellWithEmptyCell()
+            if aboutTextViewText == "" {
+                cell.refreshCellWithEmptyCell()
+            } else {
+                cell.textview.text = aboutTextViewText
+            }
             return cell
         } else {
             let cell : UITableViewCell = tableView.dequeueReusableCellWithIdentifier("cell", forIndexPath: indexPath)
@@ -332,10 +392,10 @@ class NewEventVC: UIViewController, UITableViewDataSource, UITableViewDelegate, 
         image = info[UIImagePickerControllerOriginalImage] as? UIImage
         event.setEventImage(image!)
         
-        self.tableview.beginUpdates()
+        self.tv.beginUpdates()
         let indexPath = NSIndexPath(forItem: 0, inSection: 0)
-        self.tableview.reloadRowsAtIndexPaths([indexPath], withRowAnimation: .None)
-        self.tableview.endUpdates()
+        self.tv.reloadRowsAtIndexPaths([indexPath], withRowAnimation: .None)
+        self.tv.endUpdates()
     }
     
     func keyboardWillShow(notification: NSNotification) {
@@ -345,7 +405,7 @@ class NewEventVC: UIViewController, UITableViewDataSource, UITableViewDelegate, 
             let keyboardFrame: CGRect = (info[UIKeyboardFrameEndUserInfoKey] as! NSValue).CGRectValue()
             
             UIView.animateWithDuration(0.1, animations: { () -> Void in
-                self.tableview.frame.origin.y = self.tableview.frame.origin.y - keyboardFrame.size.height + 20
+                self.tv.frame.origin.y = self.tv.frame.origin.y - keyboardFrame.size.height + 20
             })
         }
     }
@@ -353,7 +413,7 @@ class NewEventVC: UIViewController, UITableViewDataSource, UITableViewDelegate, 
     func keyboardWillHide(notification: NSNotification) {
         
         UIView.animateWithDuration(0.1, animations: { () -> Void in
-            self.tableview.frame.origin.y = 0
+            self.tv.frame.origin.y = 0
         })
         
     }
@@ -361,6 +421,66 @@ class NewEventVC: UIViewController, UITableViewDataSource, UITableViewDelegate, 
     override func viewDidLoad() {
         imagePicker = UIImagePickerController()
         imagePicker.delegate = self
+        
+        addButton = UIBarButtonItem(title: "Save", style: UIBarButtonItemStyle.Plain, target: self, action: "addEvent:")
+        navigationItem.rightBarButtonItem = addButton
+        
+        if editEvent != nil {
+            
+            titleTextFieldText = editEvent["title"] as! String
+            event.title = editEvent["title"] as? String
+            
+            if let userImageFile = editEvent["eventImage"] as? PFFile {
+                userImageFile.getDataInBackgroundWithBlock {
+                    (imageData: NSData?, error: NSError?) -> Void in
+                    if error == nil {
+                        if let imageData = imageData {
+                            self.image = UIImage(data: imageData)
+                            self.event.eventImage = UIImage(data: imageData)
+                            self.tv.reloadData()
+                        }
+                    }
+                }
+            }
+            
+            let formatter = NSDateFormatter()
+            formatter.dateStyle = NSDateFormatterStyle.LongStyle
+            let dateString = formatter.stringFromDate(editEvent["date"] as! NSDate)
+            
+            let timeFormatter = NSDateFormatter()
+            timeFormatter.timeStyle = NSDateFormatterStyle.ShortStyle
+            let timeString = timeFormatter.stringFromDate(editEvent["time"] as! NSDate)
+            
+            if let loc = editEvent["location"] as? PFGeoPoint {
+                let latitude: CLLocationDegrees = loc.latitude
+                let longtitude: CLLocationDegrees = loc.longitude
+                
+                let newLoc: CLLocationCoordinate2D = CLLocationCoordinate2D(latitude: latitude, longitude: longtitude)
+                event.location = newLoc
+                
+            } else {
+                let newLoc: CLLocationCoordinate2D = CLLocationCoordinate2D(latitude: 0, longitude: 0)
+                event.location = newLoc
+            }
+
+            
+            buttonLabelArray[0] = dateString
+            event.date = editEvent["date"] as? NSDate
+            buttonLabelArray[1] = timeString
+            event.time = editEvent["time"] as? NSDate
+            
+            buttonLabelArray[2] = editEvent["frequency"] as! String
+            event.frequency = editEvent["frequency"] as? String
+            
+            categoryType = editEvent["category"] == nil ? "category" : editEvent["category"] as! String
+            event.category = editEvent["category"] == nil ? "category" : editEvent["category"] as! String
+            locationName = editEvent["locationName"] as! String
+            event.locationName = editEvent["locationName"] as? String
+            
+            aboutTextViewText = editEvent["summary"] as! String
+            event.summary = editEvent["summary"] as? String
+        }
+        
         
 //        if editEvent != nil {
 //            buttonLabelArray[0] = "hello"

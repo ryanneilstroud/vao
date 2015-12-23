@@ -59,6 +59,8 @@ class ChangePrivateData: UIViewController, UITableViewDataSource, UITableViewDel
             }
         } else {
             cell.refreshCellWithSecureDataOptions(UIImage(named: "ion-ios-email-outline_256_0_c3c3c3_none.png")!, _secureTextEntry: false, _placeHolder: "new email")
+            let email = PFUser.currentUser()?.email
+            cell.editIconTextField.text = email
         }
         
         return cell
@@ -99,6 +101,8 @@ class ChangePrivateData: UIViewController, UITableViewDataSource, UITableViewDel
                 }
             }
         } else if viewIndentifier == 2 {
+            let oldEmail = PFUser.currentUser()?.username
+            
             if checkEmail() {
                 if Reachability.isConnectedToNetwork() {
                     user?.username = newEmailTextFieldText
@@ -116,9 +120,17 @@ class ChangePrivateData: UIViewController, UITableViewDataSource, UITableViewDel
                         } else {
                             // There was a problem, check error.description
                             print(error)
-                            let alert = UIAlertController(title: "Error: " + String(error?.code), message: error?.description, preferredStyle: UIAlertControllerStyle.Alert)
-                            alert.addAction(UIAlertAction(title: "Okay", style: UIAlertActionStyle.Default, handler: nil))
-                            self.presentViewController(alert, animated: true, completion: nil)
+                            user?.username = oldEmail
+                            user?.email = oldEmail
+                            if error?.code == 125 {
+                                let alert = UIAlertController(title: "Invalid Email", message: "Please enter a valid email address.", preferredStyle: UIAlertControllerStyle.Alert)
+                                alert.addAction(UIAlertAction(title: "Okay", style: UIAlertActionStyle.Default, handler: nil))
+                                self.presentViewController(alert, animated: true, completion: nil)
+                            } else {
+                                let alert = UIAlertController(title: "Error: " + String(error?.code), message: error?.description, preferredStyle: UIAlertControllerStyle.Alert)
+                                alert.addAction(UIAlertAction(title: "Okay", style: UIAlertActionStyle.Default, handler: nil))
+                                self.presentViewController(alert, animated: true, completion: nil)
+                            }
                             
                         }
                     }

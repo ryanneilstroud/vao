@@ -206,7 +206,7 @@
                         <barButtonItem key="rightBarButtonItem" systemItem="add" id="in4-pa-cS3">
                             <color key="tintColor" red="1" green="1" blue="1" alpha="1" colorSpace="calibratedRGB"/>
                             <connections>
-                                <segue destination="C1S-HW-dKy" kind="presentation" id="Vf6-Pd-KSj"/>
+                                <action selector="createEvent:" destination="UX8-Hu-Hbc" id="Cha-3r-GU0"/>
                             </connections>
                         </barButtonItem>
                     </navigationItem>
@@ -214,67 +214,6 @@
                 <placeholder placeholderIdentifier="IBFirstResponder" id="Ix0-cO-5c5" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
             <point key="canvasLocation" x="1714" y="-157"/>
-        </scene>
-        <!--New Event-->
-        <scene sceneID="uke-OO-syA">
-            <objects>
-                <viewController id="GDu-6x-05x" customClass="NewEventVC" customModule="vao" customModuleProvider="target" sceneMemberID="viewController">
-                    <layoutGuides>
-                        <viewControllerLayoutGuide type="top" id="Z9R-ry-Pu6"/>
-                        <viewControllerLayoutGuide type="bottom" id="bzb-gR-5mg"/>
-                    </layoutGuides>
-                    <view key="view" contentMode="scaleToFill" id="Hfa-wQ-3Xo">
-                        <rect key="frame" x="0.0" y="0.0" width="600" height="600"/>
-                        <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
-                        <subviews>
-                            <tableView clipsSubviews="YES" contentMode="scaleToFill" alwaysBounceVertical="YES" dataMode="prototypes" style="grouped" separatorStyle="default" rowHeight="44" sectionHeaderHeight="18" sectionFooterHeight="18" translatesAutoresizingMaskIntoConstraints="NO" id="c9u-Xi-Tg2">
-                                <rect key="frame" x="0.0" y="0.0" width="600" height="600"/>
-                                <color key="backgroundColor" red="0.93725490199999995" green="0.93725490199999995" blue="0.95686274510000002" alpha="1" colorSpace="calibratedRGB"/>
-                                <prototypes>
-                                    <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" selectionStyle="blue" hidesAccessoryWhenEditing="NO" indentationLevel="1" indentationWidth="0.0" reuseIdentifier="cell" id="Xdh-6X-VIM">
-                                        <rect key="frame" x="0.0" y="114" width="600" height="44"/>
-                                        <autoresizingMask key="autoresizingMask"/>
-                                        <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" tableViewCell="Xdh-6X-VIM" id="RuL-hf-AbG">
-                                            <rect key="frame" x="0.0" y="0.0" width="600" height="43"/>
-                                            <autoresizingMask key="autoresizingMask"/>
-                                        </tableViewCellContentView>
-                                    </tableViewCell>
-                                </prototypes>
-                                <connections>
-                                    <outlet property="dataSource" destination="GDu-6x-05x" id="buz-po-Kfe"/>
-                                    <outlet property="delegate" destination="GDu-6x-05x" id="Ztc-oS-iyO"/>
-                                </connections>
-                            </tableView>
-                        </subviews>
-                        <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
-                        <constraints>
-                            <constraint firstItem="c9u-Xi-Tg2" firstAttribute="leading" secondItem="Hfa-wQ-3Xo" secondAttribute="leading" id="AGf-dM-cjx"/>
-                            <constraint firstItem="c9u-Xi-Tg2" firstAttribute="bottom" secondItem="bzb-gR-5mg" secondAttribute="top" id="X37-35-xa9"/>
-                            <constraint firstItem="c9u-Xi-Tg2" firstAttribute="top" secondItem="Hfa-wQ-3Xo" secondAttribute="top" id="cQF-CQ-kZh"/>
-                            <constraint firstAttribute="trailing" secondItem="c9u-Xi-Tg2" secondAttribute="trailing" id="yaG-fg-wCI"/>
-                        </constraints>
-                    </view>
-                    <navigationItem key="navigationItem" title="New Event" id="l74-b7-uz0">
-                        <barButtonItem key="leftBarButtonItem" systemItem="cancel" id="JYt-MM-bn8">
-                            <color key="tintColor" red="1" green="1" blue="1" alpha="1" colorSpace="calibratedRGB"/>
-                            <connections>
-                                <action selector="cancelEventCreation:" destination="GDu-6x-05x" id="ZEk-K7-d2Z"/>
-                            </connections>
-                        </barButtonItem>
-                        <barButtonItem key="rightBarButtonItem" title="Add" id="T7p-ID-XZg">
-                            <color key="tintColor" red="1" green="1" blue="1" alpha="1" colorSpace="calibratedRGB"/>
-                            <connections>
-                                <action selector="addEvent:" destination="GDu-6x-05x" id="YGc-bJ-KZ2"/>
-                            </connections>
-                        </barButtonItem>
-                    </navigationItem>
-                    <connections>
-                        <outlet property="tableview" destination="c9u-Xi-Tg2" id="dWF-Qm-vCY"/>
-                    </connections>
-                </viewController>
-                <placeholder placeholderIdentifier="IBFirstResponder" id="bQs-aR-Vff" userLabel="First Responder" sceneMemberID="firstResponder"/>
-            </objects>
-            <point key="canvasLocation" x="3245" y="-157"/>
         </scene>
         <!--Tab Bar Controller-->
         <scene sceneID="kWL-AG-CGa">
@@ -425,29 +364,6 @@
                 <placeholder placeholderIdentifier="IBFirstResponder" id="xPf-uv-ThS" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
             <point key="canvasLocation" x="3245" y="-849"/>
-        </scene>
-        <!--Navigation Controller-->
-        <scene sceneID="vbz-Kc-3T9">
-            <objects>
-                <navigationController automaticallyAdjustsScrollViewInsets="NO" id="C1S-HW-dKy" sceneMemberID="viewController">
-                    <toolbarItems/>
-                    <navigationBar key="navigationBar" contentMode="scaleToFill" id="Pnr-yT-2x1">
-                        <rect key="frame" x="0.0" y="0.0" width="320" height="44"/>
-                        <autoresizingMask key="autoresizingMask"/>
-                        <color key="tintColor" red="1" green="1" blue="1" alpha="1" colorSpace="calibratedRGB"/>
-                        <color key="barTintColor" red="1" green="0.45098039220000002" blue="0.0" alpha="1" colorSpace="calibratedRGB"/>
-                        <textAttributes key="titleTextAttributes">
-                            <color key="textColor" red="1" green="1" blue="1" alpha="1" colorSpace="calibratedRGB"/>
-                        </textAttributes>
-                    </navigationBar>
-                    <nil name="viewControllers"/>
-                    <connections>
-                        <segue destination="GDu-6x-05x" kind="relationship" relationship="rootViewController" id="edF-7D-TwR"/>
-                    </connections>
-                </navigationController>
-                <placeholder placeholderIdentifier="IBFirstResponder" id="PvP-rr-G0c" userLabel="First Responder" sceneMemberID="firstResponder"/>
-            </objects>
-            <point key="canvasLocation" x="2433" y="-157"/>
         </scene>
         <!--Navigation Controller-->
         <scene sceneID="Naz-ez-BQ4">

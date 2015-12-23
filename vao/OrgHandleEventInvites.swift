@@ -288,13 +288,15 @@ class OrgHandlesEventInvites: UIViewController, UITableViewDataSource, UITableVi
                             (success: Bool, error: NSError?) -> Void in
                             if (success) {
                                 // The object has been saved.
-                                
-                                if(_event.valueForKey(self.VOLUNTEERS) != nil) {
+                                print("check if volunteers array is not nil")
+                                if(_event.valueForKey(self.VOLUNTEERS) == nil) {
+                                    print("nil")
                                     _event.addObject(self.volunteerObject.objectId!, forKey: self.VOLUNTEERS)
                                     _event.saveInBackgroundWithBlock {
                                         (success: Bool, error: NSError?) -> Void in
                                         if (success) {
                                             self.setNotification(objects![0], _notficationType: self.TYPE_EVENT_PARTICIPANT_VALIDATION, _dismiss: false)
+                                            print("set nofication for review")
                                             self.setNotification(objects![0], _notficationType: self.TYPE_REVIEW, _dismiss: true)
 
                                             
@@ -305,9 +307,13 @@ class OrgHandlesEventInvites: UIViewController, UITableViewDataSource, UITableVi
                                             print(error)
                                         }
                                     }
+                                } else {
+                                    self.setNotification(objects![0], _notficationType: self.TYPE_EVENT_PARTICIPANT_VALIDATION, _dismiss: false)
+                                    print("set nofication for review")
+                                    self.setNotification(objects![0], _notficationType: self.TYPE_REVIEW, _dismiss: true)
                                 }
                             } else {
-                                // There was a problem, check error.description
+//                                // There was a problem, check error.description
                                 print(error)
                             }
                         }

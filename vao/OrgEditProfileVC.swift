@@ -157,47 +157,53 @@ class OrgEditProfileVC: UIViewController, UITableViewDataSource, UITableViewDele
         }
         return false
         
-//        let urlRegEx = "(http|https)://((\\w)*|([0-9]*)|([-|_])*)+([\\.|/]((\\w)*|([0-9]*)|([-|_])*))+"
-//        let urlTest = NSPredicate(format: "SELF MATCHES %@", urlRegEx)
-//        return urlTest.evaluateWithObject(urlString)
-    }
 
+    }
     
     func saveUserData() {
-        
-        if verifyUrl("http://" + iconTextFieldText[2]){
-            let currentUser = PFUser.currentUser()
-            currentUser!["fullName"] = name
-            
-            if orgImage != nil {
-                let imageData = UIImageJPEGRepresentation(orgImage!, 0.5)
-                let imageFile = PFFile(name: "orgProfilePhoto", data: imageData!)
-                currentUser!["orgImage"] = imageFile
-            }
-            
-            currentUser!["phoneNumber"] = iconTextFieldText[0]
-            currentUser?.email = iconTextFieldText[1]
-            currentUser?.username = iconTextFieldText[1]
-            currentUser!["website"] = iconTextFieldText[2]
-            
-            currentUser!["location"] = aboutTextFieldText[0]
-            currentUser!["languages"] = aboutTextFieldText[1]
-            
-            currentUser?.saveInBackgroundWithBlock {
-                (success: Bool, error: NSError?) -> Void in
-                if (success) {
-                    // The score key has been incremented
-                    self.navigationController?.popToRootViewControllerAnimated(true)
-                } else {
-                    // There was a problem, check error.description
-                    let alert = UIAlertController(title: "Error: " + String(error?.code), message: error?.description, preferredStyle: UIAlertControllerStyle.Alert)
-                    alert.addAction(UIAlertAction(title: "okay", style: UIAlertActionStyle.Default, handler: nil))
-                    self.presentViewController(alert, animated: true, completion: nil)
+
+        let num = Int(iconTextFieldText[0])
+        if num != nil {
+            if verifyUrl("http://" + iconTextFieldText[2]){
+                let currentUser = PFUser.currentUser()
+                currentUser!["fullName"] = name
+                
+                print("hello?")
+                
+                if orgImage != nil {
+                    let imageData = UIImageJPEGRepresentation(orgImage!, 0.5)
+                    let imageFile = PFFile(name: "orgProfilePhoto", data: imageData!)
+                    currentUser!["orgImage"] = imageFile
                 }
+                
+                currentUser!["phoneNumber"] = iconTextFieldText[0]
+                currentUser?.email = iconTextFieldText[1]
+                currentUser?.username = iconTextFieldText[1]
+                currentUser!["website"] = iconTextFieldText[2]
+                
+                currentUser!["location"] = aboutTextFieldText[0]
+                currentUser!["languages"] = aboutTextFieldText[1]
+                
+                currentUser?.saveInBackgroundWithBlock {
+                    (success: Bool, error: NSError?) -> Void in
+                    if (success) {
+                        // The score key has been incremented
+                        self.navigationController?.popToRootViewControllerAnimated(true)
+                    } else {
+                        // There was a problem, check error.description
+                        let alert = UIAlertController(title: "Error: " + String(error?.code), message: error?.description, preferredStyle: UIAlertControllerStyle.Alert)
+                        alert.addAction(UIAlertAction(title: "okay", style: UIAlertActionStyle.Default, handler: nil))
+                        self.presentViewController(alert, animated: true, completion: nil)
+                    }
+                }
+            } else {
+                let alert = UIAlertController(title: "Invalid Web Address", message: "Please enter a valid web address.", preferredStyle: UIAlertControllerStyle.Alert)
+                alert.addAction(UIAlertAction(title: "Okay", style: UIAlertActionStyle.Default, handler: nil))
+                self.presentViewController(alert, animated: true, completion: nil)
             }
 
         } else {
-            let alert = UIAlertController(title: "Invalid Web Address", message: "Please enter a valid web address.", preferredStyle: UIAlertControllerStyle.Alert)
+            let alert = UIAlertController(title: "Invalid Phone Number", message: "Please enter a phone number address.", preferredStyle: UIAlertControllerStyle.Alert)
             alert.addAction(UIAlertAction(title: "Okay", style: UIAlertActionStyle.Default, handler: nil))
             self.presentViewController(alert, animated: true, completion: nil)
         }
