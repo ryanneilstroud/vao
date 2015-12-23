@@ -122,6 +122,16 @@ class SignUpVC: UIViewController, UITextFieldDelegate {
                     let errorString = error.userInfo["error"] as? NSString
                     // Show the errorString somewhere and let the user try again.
                     print(errorString)
+                    
+                    if error.code == 125 {
+                        let alert = UIAlertController(title: "Invalid Email", message: "Please enter a valid email address.", preferredStyle: UIAlertControllerStyle.Alert)
+                        alert.addAction(UIAlertAction(title: "Okay", style: UIAlertActionStyle.Default, handler: nil))
+                        self.presentViewController(alert, animated: true, completion: nil)
+                    } else if error.code == 202 {
+                        let alert = UIAlertController(title: "Invalid Email", message: "This email is already in use.", preferredStyle: UIAlertControllerStyle.Alert)
+                        alert.addAction(UIAlertAction(title: "Okay", style: UIAlertActionStyle.Default, handler: nil))
+                        self.presentViewController(alert, animated: true, completion: nil)
+                    }
                 } else {
                     // Hooray! Let them use the app now.
                     

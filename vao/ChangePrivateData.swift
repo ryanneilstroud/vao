@@ -126,6 +126,10 @@ class ChangePrivateData: UIViewController, UITableViewDataSource, UITableViewDel
                                 let alert = UIAlertController(title: "Invalid Email", message: "Please enter a valid email address.", preferredStyle: UIAlertControllerStyle.Alert)
                                 alert.addAction(UIAlertAction(title: "Okay", style: UIAlertActionStyle.Default, handler: nil))
                                 self.presentViewController(alert, animated: true, completion: nil)
+                            } else if error?.code == 202 {
+                                let alert = UIAlertController(title: "Invalid Email", message: "This email is already in use.", preferredStyle: UIAlertControllerStyle.Alert)
+                                alert.addAction(UIAlertAction(title: "Okay", style: UIAlertActionStyle.Default, handler: nil))
+                                self.presentViewController(alert, animated: true, completion: nil)
                             } else {
                                 let alert = UIAlertController(title: "Error: " + String(error?.code), message: error?.description, preferredStyle: UIAlertControllerStyle.Alert)
                                 alert.addAction(UIAlertAction(title: "Okay", style: UIAlertActionStyle.Default, handler: nil))
