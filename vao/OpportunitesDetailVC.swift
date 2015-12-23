@@ -388,7 +388,7 @@ class OpportunitiesDetailVC: UIViewController, UITableViewDataSource, UITableVie
             (eventObject:PFObject?, error: NSError?) -> Void in
             
             if error == nil {
-                print("eventObject: ", eventObject)
+                print("eventObject1: ", eventObject)
                 
                 //check volunteer and organization
                 if eventObject![self.VOLUNTEER] as! PFUser == PFUser.currentUser()! && eventObject![self.ORGANIZATION] as! PFUser == _eventCreatedBy {
@@ -433,6 +433,8 @@ class OpportunitiesDetailVC: UIViewController, UITableViewDataSource, UITableVie
 //                            buttonControlState = UIControlState.Disabled
                         }
                     }
+                } else {
+                    self.buttonTextArray[1] = self.JOIN_EVENT
                 }
                 self.tableview.reloadData()
 
@@ -461,6 +463,8 @@ class OpportunitiesDetailVC: UIViewController, UITableViewDataSource, UITableVie
                     
                     
                     self.createAlertForHandlingEventParticipantValidation(eventObject![self.INITIATOR_TYPE_IS_VOLUNTEER] as! Bool, _eventParticipantValidationStatus: eventParticipantValidationStatus, _eventParticipantValidationEvent: eventObject!)
+                } else {
+                    self.createAlertForHandlingEventParticipantValidation(true, _eventParticipantValidationStatus: "", _eventParticipantValidationEvent: eventObject!)
                 }
             } else {
                 print("event_query_error: ", error)

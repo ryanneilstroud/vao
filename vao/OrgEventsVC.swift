@@ -141,6 +141,7 @@ class OrgEventsVC: UIViewController, UITableViewDataSource, UITableViewDelegate 
 //    }
     
     override func viewDidAppear(animated: Bool) {
+        eventObjects.removeAll()
         loadData()
     }
     

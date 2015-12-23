@@ -217,63 +217,72 @@ class EditProfileVC: UIViewController, UITableViewDataSource, UITableViewDelegat
         saveButton.enabled = false
         
         if checkEmail() {
-            print("valid email: ", iconTextFieldText[1])
-            if Reachability.isConnectedToNetwork() {
-                let currentUser = PFUser.currentUser()
-                currentUser!["fullName"] = name
-                
-                if orgImage != nil {
-                    let imageData = UIImageJPEGRepresentation(orgImage!, 0.5)
-                    let imageFile = PFFile(name: "orgProfilePhoto", data: imageData!)
-                    currentUser!["orgImage"] = imageFile
-                }
-                
-                let oldEmail = currentUser?.username
-                
-                currentUser!["phoneNumber"] = iconTextFieldText[0] != "" ? iconTextFieldText[0] : ""
-                currentUser?.email = iconTextFieldText[1] != "" ? iconTextFieldText[1] : ""
-                currentUser?.username = iconTextFieldText[1] != "" ? iconTextFieldText[1] : ""
-                
-                currentUser?["location"] = labelTextFieldText[0] != "" ? labelTextFieldText[0] : ""
-                currentUser?["gender"] = labelTextFieldText[1] != "" ? labelTextFieldText[1] : ""
-                currentUser?["age"] = labelTextFieldText[2] != "" ? labelTextFieldText[2] : ""
-                currentUser?["religion"] = labelTextFieldText[3] != "" ? labelTextFieldText[3] : ""
-                currentUser?["languages"] = labelTextFieldText[4] != "" ? labelTextFieldText[4] : ""
-                currentUser?["skills"] = skills != "" ? skills : ""
-                
-                currentUser?.saveInBackgroundWithBlock {
-                    (success: Bool, error: NSError?) -> Void in
-                    if (success) {
-                        // The object has been saved.
-                        let alert = UIAlertController(title: "saved!", message: nil, preferredStyle: UIAlertControllerStyle.Alert)
-                        self.presentViewController(alert, animated: true, completion: nil)
-                        
-                        let delay = 0.5 * Double(NSEC_PER_SEC)
-                        let time = dispatch_time(DISPATCH_TIME_NOW, Int64(delay))
-                        dispatch_after(time, dispatch_get_main_queue(), {
-                            alert.dismissViewControllerAnimated(true, completion: {(Bool) in
-                                self.navigationController?.popViewControllerAnimated(true)
-                            })
-                        })
-                    } else {
-                        // There was a problem, check error.description
-//                        print(error)
-//                        let alert = UIAlertController(title: "Error: " + String(error?.code), message: error?.description, preferredStyle: UIAlertControllerStyle.Alert)
-//                        alert.addAction(UIAlertAction(title: "Okay", style: UIAlertActionStyle.Default, handler: nil))
-//                        self.presentViewController(alert, animated: true, completion: nil)
-                        currentUser?.email = oldEmail
-                        currentUser?.username = oldEmail
-                        
-                        let alert = UIAlertController(title: "Invalid Email", message: "Please enter a valid email address.", preferredStyle: UIAlertControllerStyle.Alert)
-                        alert.addAction(UIAlertAction(title: "Okay", style: UIAlertActionStyle.Default, handler: nil))
-                        self.presentViewController(alert, animated: true, completion: nil)
-                        
-                        self.saveButton.enabled = true
+            let num = Int(iconTextFieldText[0])
+            if num != nil {
+                print("valid email: ", iconTextFieldText[1])
+                if Reachability.isConnectedToNetwork() {
+                    let currentUser = PFUser.currentUser()
+                    currentUser!["fullName"] = name
+                    
+                    if orgImage != nil {
+                        let imageData = UIImageJPEGRepresentation(orgImage!, 0.5)
+                        let imageFile = PFFile(name: "orgProfilePhoto", data: imageData!)
+                        currentUser!["orgImage"] = imageFile
                     }
                     
+                    let oldEmail = currentUser?.username
+                    
+                    currentUser!["phoneNumber"] = iconTextFieldText[0] != "" ? iconTextFieldText[0] : ""
+                    currentUser?.email = iconTextFieldText[1] != "" ? iconTextFieldText[1] : ""
+                    currentUser?.username = iconTextFieldText[1] != "" ? iconTextFieldText[1] : ""
+                    
+                    currentUser?["location"] = labelTextFieldText[0] != "" ? labelTextFieldText[0] : ""
+                    currentUser?["gender"] = labelTextFieldText[1] != "" ? labelTextFieldText[1] : ""
+                    currentUser?["age"] = labelTextFieldText[2] != "" ? labelTextFieldText[2] : ""
+                    currentUser?["religion"] = labelTextFieldText[3] != "" ? labelTextFieldText[3] : ""
+                    currentUser?["languages"] = labelTextFieldText[4] != "" ? labelTextFieldText[4] : ""
+                    currentUser?["skills"] = skills != "" ? skills : ""
+                    
+                    currentUser?.saveInBackgroundWithBlock {
+                        (success: Bool, error: NSError?) -> Void in
+                        if (success) {
+                            // The object has been saved.
+                            let alert = UIAlertController(title: "saved!", message: nil, preferredStyle: UIAlertControllerStyle.Alert)
+                            self.presentViewController(alert, animated: true, completion: nil)
+                            
+                            let delay = 0.5 * Double(NSEC_PER_SEC)
+                            let time = dispatch_time(DISPATCH_TIME_NOW, Int64(delay))
+                            dispatch_after(time, dispatch_get_main_queue(), {
+                                alert.dismissViewControllerAnimated(true, completion: {(Bool) in
+                                    self.navigationController?.popViewControllerAnimated(true)
+                                })
+                            })
+                        } else {
+                            // There was a problem, check error.description
+    //                        print(error)
+    //                        let alert = UIAlertController(title: "Error: " + String(error?.code), message: error?.description, preferredStyle: UIAlertControllerStyle.Alert)
+    //                        alert.addAction(UIAlertAction(title: "Okay", style: UIAlertActionStyle.Default, handler: nil))
+    //                        self.presentViewController(alert, animated: true, completion: nil)
+                            currentUser?.email = oldEmail
+                            currentUser?.username = oldEmail
+                            
+                            let alert = UIAlertController(title: "Invalid Email", message: "Please enter a valid email address.", preferredStyle: UIAlertControllerStyle.Alert)
+                            alert.addAction(UIAlertAction(title: "Okay", style: UIAlertActionStyle.Default, handler: nil))
+                            self.presentViewController(alert, animated: true, completion: nil)
+                            
+                            self.saveButton.enabled = true
+                        }
+                        
+                    }
+                } else {
+                    let alert = UIAlertController(title: "Internet Not Found", message: "We can't seem to connect to the Internet. Please double check your connection.", preferredStyle: UIAlertControllerStyle.Alert)
+                    alert.addAction(UIAlertAction(title: "Okay", style: UIAlertActionStyle.Default, handler: nil))
+                    self.presentViewController(alert, animated: true, completion: nil)
+                    
+                    self.saveButton.enabled = true
                 }
             } else {
-                let alert = UIAlertController(title: "Internet Not Found", message: "We can't seem to connect to the Internet. Please double check your connection.", preferredStyle: UIAlertControllerStyle.Alert)
+                let alert = UIAlertController(title: "Invalid Phone Number", message: "Please enter a phone number.", preferredStyle: UIAlertControllerStyle.Alert)
                 alert.addAction(UIAlertAction(title: "Okay", style: UIAlertActionStyle.Default, handler: nil))
                 self.presentViewController(alert, animated: true, completion: nil)
                 

@@ -160,15 +160,19 @@ class OrgEditProfileVC: UIViewController, UITableViewDataSource, UITableViewDele
 
     }
     
+    func validateUrl(urlString: String?) -> Bool {
+        let regEx = "(http|https)://((\\w)*|([0-9]*)|([-|_])*)+([\\.|/]((\\w)*|([0-9]*)|([-|_])*))+"
+        let urlTest = NSPredicate(format: "SELF MATCHES %@", regEx)
+        return urlTest.evaluateWithObject(urlString)
+    }
+    
     func saveUserData() {
 
         let num = Int(iconTextFieldText[0])
         if num != nil {
-            if verifyUrl("http://" + iconTextFieldText[2]){
+            if validateUrl(iconTextFieldText[2]){
                 let currentUser = PFUser.currentUser()
                 currentUser!["fullName"] = name
-                
-                print("hello?")
                 
                 if orgImage != nil {
                     let imageData = UIImageJPEGRepresentation(orgImage!, 0.5)
@@ -197,13 +201,13 @@ class OrgEditProfileVC: UIViewController, UITableViewDataSource, UITableViewDele
                     }
                 }
             } else {
-                let alert = UIAlertController(title: "Invalid Web Address", message: "Please enter a valid web address.", preferredStyle: UIAlertControllerStyle.Alert)
+                let alert = UIAlertController(title: "Invalid Web Address", message: "Please enter a valid web address that starts with http://www. or https://www.", preferredStyle: UIAlertControllerStyle.Alert)
                 alert.addAction(UIAlertAction(title: "Okay", style: UIAlertActionStyle.Default, handler: nil))
                 self.presentViewController(alert, animated: true, completion: nil)
             }
 
         } else {
-            let alert = UIAlertController(title: "Invalid Phone Number", message: "Please enter a phone number address.", preferredStyle: UIAlertControllerStyle.Alert)
+            let alert = UIAlertController(title: "Invalid Phone Number", message: "Please enter a valid phone number.", preferredStyle: UIAlertControllerStyle.Alert)
             alert.addAction(UIAlertAction(title: "Okay", style: UIAlertActionStyle.Default, handler: nil))
             self.presentViewController(alert, animated: true, completion: nil)
         }

@@ -308,6 +308,23 @@ class OrgHandlesEventInvites: UIViewController, UITableViewDataSource, UITableVi
                                         }
                                     }
                                 } else {
+                                    _event.addObject(self.volunteerObject.objectId!, forKey: self.VOLUNTEERS)
+                                    _event.saveInBackgroundWithBlock {
+                                        (success: Bool, error: NSError?) -> Void in
+                                        if (success) {
+                                            self.setNotification(objects![0], _notficationType: self.TYPE_EVENT_PARTICIPANT_VALIDATION, _dismiss: false)
+                                            print("set nofication for review")
+                                            self.setNotification(objects![0], _notficationType: self.TYPE_REVIEW, _dismiss: true)
+                                            
+                                            
+                                            //SET REVIEW HEAR
+                                            //ONE FOR YOU
+                                            //ONE FOR ME
+                                        } else {
+                                            print(error)
+                                        }
+                                    }
+
                                     self.setNotification(objects![0], _notficationType: self.TYPE_EVENT_PARTICIPANT_VALIDATION, _dismiss: false)
                                     print("set nofication for review")
                                     self.setNotification(objects![0], _notficationType: self.TYPE_REVIEW, _dismiss: true)
@@ -343,7 +360,6 @@ class OrgHandlesEventInvites: UIViewController, UITableViewDataSource, UITableVi
                             if (success) {
                                 // The object has been saved.
                                 
-                                if(_event.valueForKey(self.VOLUNTEERS) != nil) {
                                     _event.removeObject(self.volunteerObject.objectId!, forKey: self.VOLUNTEERS)
                                     _event.saveInBackgroundWithBlock {
                                         (success: Bool, error: NSError?) -> Void in
@@ -353,7 +369,6 @@ class OrgHandlesEventInvites: UIViewController, UITableViewDataSource, UITableVi
                                             
                                         }
                                     }
-                                }
                             } else {
                                 // There was a problem, check error.description
                                 print(error)
@@ -445,7 +460,6 @@ class OrgHandlesEventInvites: UIViewController, UITableViewDataSource, UITableVi
                             if (success) {
                                 // The object has been saved.
                                 
-                                if(_event.valueForKey(self.VOLUNTEERS) != nil) {
                                     _event.removeObject(self.volunteerObject.objectId!, forKey: self.VOLUNTEERS)
                                     _event.saveInBackgroundWithBlock {
                                         (success: Bool, error: NSError?) -> Void in
@@ -455,7 +469,6 @@ class OrgHandlesEventInvites: UIViewController, UITableViewDataSource, UITableVi
                                             
                                         }
                                     }
-                                }
                             } else {
                                 // There was a problem, check error.description
                                 print(error)

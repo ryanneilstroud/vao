@@ -23,24 +23,32 @@ class RatedCell: UITableViewCell {
     
     func refreshCellWithObject(_review: PFObject) {
         
-        let event = _review["event"] as! PFObject
-        ratedForLabel.text = "Rated for " + String(event["title"])
+        let eventQuery = PFQuery(className: "Event")
+        eventQuery.getObjectInBackgroundWithId(_review["event"].objectId!!) {
+            (event: PFObject?, error: NSError?) -> Void in
+            if error == nil {
+                
+                self.ratedForLabel.text = "Rated for " + String(event!["title"])
+                
+                if let userImageFile = event!["eventImage"] as? PFFile {
+                    userImageFile.getDataInBackgroundWithBlock {
+                        (imageData: NSData?, error: NSError?) -> Void in
+                        if error == nil {
+                            if let imageData = imageData {
+                                self.profileImage.image = UIImage(data:imageData)!
+                            }
+                        }
+                    }
+                } else {
+                    self.profileImage.image = UIImage(named: "pe-7s-user_256_0_606060_none.png")!
+                }
+            } else {
+                print(error)
+            }
+        }
         
         let org = _review["organization"] as! PFUser
         byOrgLabel.text = "By " + String(org["fullName"])
-        
-        if let userImageFile = event["eventImage"] as? PFFile {
-            userImageFile.getDataInBackgroundWithBlock {
-                (imageData: NSData?, error: NSError?) -> Void in
-                if error == nil {
-                    if let imageData = imageData {
-                        self.profileImage.image = UIImage(data:imageData)!
-                    }
-                }
-            }
-        } else {
-            profileImage.image = UIImage(named: "pe-7s-user_256_0_606060_none.png")!
-        }
         
         let array = [starOne, starTwo, starThree, starFour, starFive]
         let rating = _review["rating"] as! Int

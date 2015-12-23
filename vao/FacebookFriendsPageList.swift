@@ -35,10 +35,17 @@ class FacebookFriendsPageList: UIViewController, UITableViewDataSource, UITableV
     override func viewDidLoad() {
         
         let data = friendsDictionary.objectForKey("data") as! NSArray
+        print("data: ", data)
 
         for i in 0...data.count - 1 {
-            print(i)
             let valueDict: NSDictionary = data[i] as! NSDictionary
+            
+//            let query = PFUser.query()
+//            query?.whereKey("authData", equalTo: <#T##AnyObject#>)
+            
+//            print(PFUser.currentUser())
+            
+            print(valueDict.objectForKey("id") as? String)
             friendsDictionaryArray.append(valueDict)
         }
     }

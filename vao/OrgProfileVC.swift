@@ -207,7 +207,7 @@ class OrgProfileVC: UIViewController, UITableViewDataSource, UITableViewDelegate
         }
         
         let reviewsQuery = PFQuery(className: "Review")
-        reviewsQuery.whereKey("organization", equalTo: PFUser.currentUser()!)
+        reviewsQuery.whereKey("organization", equalTo: organization)
         reviewsQuery.findObjectsInBackgroundWithBlock {
             (objects: [PFObject]?, error: NSError?) -> Void in
             if error == nil && objects != nil {
@@ -232,6 +232,9 @@ class OrgProfileVC: UIViewController, UITableViewDataSource, UITableViewDelegate
                 }
                 
                 self.orgRatingScore = orgScore / Double(ratingArray.count)
+                if isnan(self.orgRatingScore) {
+                    self.orgRatingScore = 0
+                }
                 self.tableview.reloadData()
                 
             } else {

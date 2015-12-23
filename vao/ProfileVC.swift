@@ -194,6 +194,8 @@ class ProfileVC: UIViewController, UITableViewDataSource, UITableViewDelegate, S
             vc.objectIds = eventIds
             vc.target = 1
         } else {
+            print("review objects", reviewsObjects)
+            vc.ratingObjects = reviewsObjects
             vc.target = 2
         }
         
@@ -292,6 +294,9 @@ class ProfileVC: UIViewController, UITableViewDataSource, UITableViewDelegate, S
     override func viewDidLoad() {
         super.viewDidLoad()
         
+        userNumberOfProjects = 0
+        userNumberOfEvents = 0
+        userRatingScore = 0
         
         var volunteer: PFObject!
         if PFUser.currentUser()!["userTypeIsVolunteer"] as! Bool {
@@ -317,16 +322,96 @@ class ProfileVC: UIViewController, UITableViewDataSource, UITableViewDelegate, S
         
         getUserData()
         // Do any additional setup after loading the view, typically from a nib.
+    }
+    
+    func getSummary() {
+        
+        let query = PFQuery(className: "Event")
+        
+        var userId = ""
+        if PFUser.currentUser()!["userTypeIsVolunteer"] as! Bool {
+            userId = (PFUser.currentUser()?.objectId)!
+        } else {
+            userId = volObject.objectId!
+        }
 
-        userNumberOfProjects = 0
-        userNumberOfEvents = 0
-        userRatingScore = 0
+        query.whereKey("volunteers", equalTo: userId)
+        query.findObjectsInBackgroundWithBlock {
+            (objects: [PFObject]?, error: NSError?) -> Void in
+            if error == nil {
+                print(objects)
+                for object in objects! {
+                    if object["frequency"] as! String == "don't repeat" {
+                        self.userNumberOfEvents! += 1
+                        self.eventIds.append(object.objectId!)
+                        self.tableview.reloadData()
+                    } else {
+                        self.projectIds.append(object.objectId!)
+                        self.userNumberOfProjects! += 1
+                        self.tableview.reloadData()
+                    }
+                }
+            } else {
+                print("oh nooooo")
+                print(error)
+            }
+        }
+        
+        let reviewsQuery = PFQuery(className: "Review")
+        if PFUser.currentUser()!["userTypeIsVolunteer"] as! Bool {
+            reviewsQuery.whereKey("volunteer", equalTo: PFUser.currentUser()!)
+        } else {
+            reviewsQuery.whereKey("volunteer", equalTo: volObject)
+        }
+        reviewsQuery.findObjectsInBackgroundWithBlock {
+            (objects: [PFObject]?, error: NSError?) -> Void in
+            if error == nil && objects != nil {
+                // There was an error
+                print("reviews: ", objects)
+                
+                self.reviewsObjects.removeAll()
+                
+                var ratingArray = [Double]()
+                
+                for review in objects! {
+                    if review["reviewerIsVolunteer"] as! Bool == false {
+                        self.reviewsObjects.append(review)
+                        ratingArray.append(review["rating"] as! Double)
+                    }
+                }
+                
+                var orgScore = Double()
+                
+                for score in ratingArray {
+                    orgScore += score
+                }
+                
+                self.userRatingScore = orgScore / Double(ratingArray.count)
+                if isnan(self.userRatingScore) {
+                    self.userRatingScore = 0
+                }
+                self.tableview.reloadData()
+                
+            } else {
+                // objects has all the Posts the current user liked.
+                print(error)
+            }
+        }
+
     }
     
     override func viewDidAppear(animated: Bool) {
         labelArray.removeAll()
         labelValueArray.removeAll()
         getUserData()
+        
+        eventIds.removeAll()
+        projectIds.removeAll()
+        
+        userNumberOfProjects = 0
+        userNumberOfEvents = 0
+        userRatingScore = 0
+        getSummary()
     }
     
     func loadStatusOfEventParticipantForOrganization(_volunteerObject: PFObject) {
