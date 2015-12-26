@@ -1,8 +1,8 @@
 <?xml version="1.0" encoding="UTF-8" standalone="no"?>
-<document type="com.apple.InterfaceBuilder3.CocoaTouch.XIB" version="3.0" toolsVersion="9060" systemVersion="15B42" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES">
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.XIB" version="3.0" toolsVersion="9531" systemVersion="15C50" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES">
     <dependencies>
         <deployment identifier="iOS"/>
-        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="9051"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="9529"/>
         <capability name="Constraints to layout margins" minToolsVersion="6.0"/>
     </dependencies>
     <objects>
@@ -17,10 +17,8 @@
                 <subviews>
                     <mapView clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" mapType="standard" translatesAutoresizingMaskIntoConstraints="NO" id="cjc-6S-bht">
                         <rect key="frame" x="0.0" y="0.0" width="320" height="130"/>
-                        <animations/>
                     </mapView>
                 </subviews>
-                <animations/>
                 <constraints>
                     <constraint firstAttribute="trailingMargin" secondItem="cjc-6S-bht" secondAttribute="trailing" constant="-8" id="8Ig-0G-VlQ"/>
                     <constraint firstItem="cjc-6S-bht" firstAttribute="leading" secondItem="1rS-zC-aYy" secondAttribute="leadingMargin" constant="-8" id="XMq-Vg-fzI"/>
@@ -28,7 +26,6 @@
                     <constraint firstAttribute="bottomMargin" secondItem="cjc-6S-bht" secondAttribute="bottom" constant="-7" id="yIV-x5-SNh"/>
                 </constraints>
             </tableViewCellContentView>
-            <animations/>
             <connections>
                 <outlet property="mapView" destination="cjc-6S-bht" id="I1F-Pn-8vQ"/>
             </connections>

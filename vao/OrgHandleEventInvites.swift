@@ -240,11 +240,13 @@ class OrgHandlesEventInvites: UIViewController, UITableViewDataSource, UITableVi
     
     func createAlertForHandlingEventParticipantValidation(_section: Int, _event: PFObject) {
         
+        let volName = volunteerObject["fullName"] as! String
+        
         if _section == 0 {
             
             print("SECTION 0")
             
-            let alert = UIAlertController(title: "Alert", message: "Would you like to accept this persons request to join this event?", preferredStyle: UIAlertControllerStyle.Alert)
+            let alert = UIAlertController(title: "Alert", message: "Would you like to accept " + volName + " request to join this event?", preferredStyle: UIAlertControllerStyle.Alert)
             alert.addAction(UIAlertAction(title: "Cancel", style: UIAlertActionStyle.Cancel, handler: nil))
             alert.addAction(UIAlertAction(title: "Decline", style: UIAlertActionStyle.Destructive, handler: { action in
                 let validation = PFQuery(className: self.EVENT_PARTICIPANT_VALIDATION)
@@ -343,7 +345,7 @@ class OrgHandlesEventInvites: UIViewController, UITableViewDataSource, UITableVi
             }))
             self.presentViewController(alert, animated: true, completion: nil)
         } else if _section == 1 {
-            let alert = UIAlertController(title: "Alert", message: "Would you like to uninvite this person from this event?", preferredStyle: UIAlertControllerStyle.Alert)
+            let alert = UIAlertController(title: "Alert", message: "Would you like to uninvite " + volName + " from this event?", preferredStyle: UIAlertControllerStyle.Alert)
             alert.addAction(UIAlertAction(title: "Cancel", style: UIAlertActionStyle.Cancel, handler: nil))
             alert.addAction(UIAlertAction(title: "Uninvite", style: UIAlertActionStyle.Default, handler: { action in
                 let validation = PFQuery(className: self.EVENT_PARTICIPANT_VALIDATION)
@@ -382,7 +384,7 @@ class OrgHandlesEventInvites: UIViewController, UITableViewDataSource, UITableVi
             }))
             self.presentViewController(alert, animated: true, completion: nil)
         } else if _section == 2 {
-            let alert = UIAlertController(title: "Alert", message: "Would you like invite this person to this event?", preferredStyle: UIAlertControllerStyle.Alert)
+            let alert = UIAlertController(title: "Alert", message: "Would you like to invite " + volName + " to this event?", preferredStyle: UIAlertControllerStyle.Alert)
             alert.addAction(UIAlertAction(title: "Cancel", style: UIAlertActionStyle.Cancel, handler: nil))
             alert.addAction(UIAlertAction(title: "Invite", style: UIAlertActionStyle.Default, handler: { action in
                 let validation = PFQuery(className: self.EVENT_PARTICIPANT_VALIDATION)
@@ -443,7 +445,7 @@ class OrgHandlesEventInvites: UIViewController, UITableViewDataSource, UITableVi
             }))
             self.presentViewController(alert, animated: true, completion: nil)
         } else if _section == 3 {
-            let alert = UIAlertController(title: "Alert", message: "Would you like to remove this person from this event?", preferredStyle: UIAlertControllerStyle.Alert)
+            let alert = UIAlertController(title: "Alert", message: "Would you like to remove " + volName + " from this event?", preferredStyle: UIAlertControllerStyle.Alert)
             alert.addAction(UIAlertAction(title: "Cancel", style: UIAlertActionStyle.Cancel, handler: nil))
             alert.addAction(UIAlertAction(title: "Remove", style: UIAlertActionStyle.Default, handler: { action in
                 let validation = PFQuery(className: self.EVENT_PARTICIPANT_VALIDATION)
@@ -483,7 +485,7 @@ class OrgHandlesEventInvites: UIViewController, UITableViewDataSource, UITableVi
             }))
             self.presentViewController(alert, animated: true, completion: nil)
         } else if _section == 4 {
-            let alert = UIAlertController(title: "Alert", message: "Would you like to reinvite this person to become a volunteer?", preferredStyle: UIAlertControllerStyle.Alert)
+            let alert = UIAlertController(title: "Alert", message: "Would you like to reinvite " + volName + " to become a volunteer?", preferredStyle: UIAlertControllerStyle.Alert)
             alert.addAction(UIAlertAction(title: "Cancel", style: UIAlertActionStyle.Cancel, handler: nil))
             alert.addAction(UIAlertAction(title: "Reinvite", style: UIAlertActionStyle.Default, handler: { action in
                 let validation = PFQuery(className: self.EVENT_PARTICIPANT_VALIDATION)

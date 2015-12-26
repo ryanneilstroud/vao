@@ -34,7 +34,6 @@ class OpportunitiesVC: UIViewController, UITableViewDataSource, UITableViewDeleg
 //    let array = ["recent", "upcoming", "recommended", "bookmarked", "my opportunities"]
     
     var eventsArray = [EventClass]()
-//    var eventObjectArrays = [PFObject]()
     
     func tableView(tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
         return eventsArray.count
@@ -120,9 +119,7 @@ class OpportunitiesVC: UIViewController, UITableViewDataSource, UITableViewDeleg
                         userQuery?.getObjectInBackgroundWithId(personId!) {
                             (user: PFObject?, error: NSError?) -> Void in
                             if error == nil {
-                                print("user: ", user)
                                 if user!["location"] != nil {
-                                    print("HELLO!")
                                     if user!["location"] as! String == location {
                                         let event = EventClass()
                                         event.setTitle(object["title"] as! String)

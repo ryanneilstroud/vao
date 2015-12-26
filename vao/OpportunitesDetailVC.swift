@@ -184,6 +184,8 @@ class OpportunitiesDetailVC: UIViewController, UITableViewDataSource, UITableVie
             tableView.registerNib(nib, forCellReuseIdentifier: "cell")
             let cell = tableView.dequeueReusableCellWithIdentifier("cell", forIndexPath: indexPath) as! SimpleButtonCell
             cell.basicButton.enabled = false
+            cell.basicButton.setTitleColor(UIColor.blackColor(), forState: .Disabled)
+            cell.accessoryType = UITableViewCellAccessoryType.DetailButton
 
             cell.refreshCellWithButtonData(buttonTextArray[0])
             
@@ -200,6 +202,7 @@ class OpportunitiesDetailVC: UIViewController, UITableViewDataSource, UITableVie
             
             cell.basicButton.enabled = true
             cell.basicButton.addTarget(self, action: "handleEventParticipantValidation:", forControlEvents: UIControlEvents.TouchUpInside)
+            cell.accessoryType = UITableViewCellAccessoryType.None
 
             var buttonText = ""
             
@@ -235,40 +238,72 @@ class OpportunitiesDetailVC: UIViewController, UITableViewDataSource, UITableVie
     }
     
     func tableView(tableView: UITableView, didSelectRowAtIndexPath indexPath: NSIndexPath) {
-        print("hello there ", indexPath.section)
         if indexPath.section == 4 {
             let user = PFUser.currentUser()
-            
-            print("hello!")
-            
-            let request = FBSDKGraphRequest(graphPath: "me/friends", parameters: ["fields":"name, id, picture"], HTTPMethod: "GET")
-            request.startWithCompletionHandler({
-                (connection, results, error: NSError!) -> Void in
-                if error == nil {
-                    let resultsDict = results as! NSDictionary
-                    print("results: ", resultsDict)
-                                        
-                    let vc = FacebookFriendsPageList(nibName: "TableView", bundle: nil)
-                    vc.friendsDictionary = resultsDict
-                    self.navigationController?.pushViewController(vc, animated: true)
-                    
-                } else {
-                    print("error: ", error)
-                }
-            })
-            
+                        
             if user![USER_TYPE_IS_VOLUNTEER] as! Bool {
                 if !PFFacebookUtils.isLinkedWithUser(user!) {
                     PFFacebookUtils.linkUserInBackground(user!, withReadPermissions: ["user_friends"], block: {
                         (succeeded: Bool?, error: NSError?) -> Void in
                         if succeeded == true {
+                            
+                            let currentUserRequest = FBSDKGraphRequest(graphPath: "me", parameters: ["fields":"id"], HTTPMethod: "GET")
+                            currentUserRequest.startWithCompletionHandler({
+                                (connection, results, error) -> Void in
+                                if error == nil {
+                                    print("user id = ", results)
+                                    
+                                    let facebookUserOnVao = PFObject(className: "FacebookUserOnVao")
+                                    facebookUserOnVao["facebookId"] = results
+                                    facebookUserOnVao["owner"] = PFUser.currentUser()
+                                    facebookUserOnVao.saveInBackground()
+                                    
+                                } else {
+                                    print("facebook error: ", error)
+                                }
+                            })
+                            
+                            
                             print("Woohoo, the user is linked with Facebook!")
+                            let request = FBSDKGraphRequest(graphPath: "me/friends", parameters: ["fields":"name, id, picture"], HTTPMethod: "GET")
+                            request.startWithCompletionHandler({
+                                (connection, results, error: NSError!) -> Void in
+                                if error == nil {
+                                    let resultsDict = results as! NSDictionary
+                                    print("results: ", resultsDict)
+                                    
+                                    let vc = FacebookFriendsPageList(nibName: "TableView", bundle: nil)
+                                    vc.friendsDictionary = resultsDict
+                                    vc.eventId = self.event.objectId
+                                    self.navigationController?.pushViewController(vc, animated: true)
+                                    
+                                } else {
+                                    print("error: ", error)
+                                }
+                            })
+
                         } else {
                             print(error)
                         }
                     })
                 } else {
                     //load friend cell
+                    let request = FBSDKGraphRequest(graphPath: "me/friends", parameters: ["fields":"name, id, picture"], HTTPMethod: "GET")
+                    request.startWithCompletionHandler({
+                        (connection, results, error: NSError!) -> Void in
+                        if error == nil {
+                            let resultsDict = results as! NSDictionary
+                            print("results: ", resultsDict)
+                            
+                            let vc = FacebookFriendsPageList(nibName: "TableView", bundle: nil)
+                            vc.friendsDictionary = resultsDict
+                            vc.eventId = self.event.objectId
+                            self.navigationController?.pushViewController(vc, animated: true)
+                            
+                        } else {
+                            print("error: ", error)
+                        }
+                    })
                 }
             } else {
                 //go to volunteer list
@@ -311,8 +346,6 @@ class OpportunitiesDetailVC: UIViewController, UITableViewDataSource, UITableVie
         }
         
         if objectEvent != nil {
-            
-            print("EVENT = ", objectEvent)
             
             event.title = objectEvent!["title"] as? String
             event.date = objectEvent!["date"] as? NSDate

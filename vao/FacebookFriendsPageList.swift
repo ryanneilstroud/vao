@@ -14,7 +14,12 @@ class FacebookFriendsPageList: UIViewController, UITableViewDataSource, UITableV
     var friendsDictionary: NSDictionary!
     var friendsDictionaryArray = [NSDictionary]()
     
+    var eventId = ""
+    
+    var tv = UITableView()
+    
     func tableView(tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
+        tv = tableView
         return friendsDictionaryArray.count
     }
     
@@ -34,20 +39,71 @@ class FacebookFriendsPageList: UIViewController, UITableViewDataSource, UITableV
     
     override func viewDidLoad() {
         
-        let data = friendsDictionary.objectForKey("data") as! NSArray
-        print("data: ", data)
-
-        for i in 0...data.count - 1 {
-            let valueDict: NSDictionary = data[i] as! NSDictionary
+        let facebookUserQuery = PFQuery(className: "FacebookUserOnVao")
+        facebookUserQuery.findObjectsInBackgroundWithBlock({
+            (facebookUsers: [PFObject]?, error: NSError?) -> Void in
+            print("facebookUsers: ", facebookUsers![0]["facebookId"].objectForKey("id")!)
             
-//            let query = PFUser.query()
-//            query?.whereKey("authData", equalTo: <#T##AnyObject#>)
+            for facebookUser in facebookUsers! {
+                let data = self.friendsDictionary.objectForKey("data") as! NSArray
+                print("data: ", data)
+                
+                for i in 0...data.count - 1 {
+                    let valueDict: NSDictionary = data[i] as! NSDictionary
+                    
+                    print("parse facebook Id: ",facebookUsers![0]["facebookId"].objectForKey("id")!)
+                    print("facebook Id: ",valueDict.objectForKey("id") as? String)
+                    
+                    if facebookUser["facebookId"].objectForKey("id")! as? String == valueDict.objectForKey("id") as? String {
+                        
+                        print("eventId:", self.eventId)
+                        
+                        let eventQuery = PFQuery(className: "Event")
+                        eventQuery.getObjectInBackgroundWithId(self.eventId) {
+                            (event: PFObject?, error: NSError?) -> Void in
+                            if error == nil {
+                                
+                                if event!["volunteers"] != nil {
+                                    print("event: ", event!["volunteers"])
+                                    let count = event!["volunteers"].count - 1
+                                    
+                                    for volunteer in 0...count{
+                                        if event!["volunteers"][volunteer] as? String == facebookUser["owner"].objectId {
+                                            print("true")
+                                            self.friendsDictionaryArray.append(valueDict)
+                                            self.tv.reloadData()
+                                        } else {
+                                            print("false")
+                                        }
+                                    }
+                                    
+                                    if self.friendsDictionaryArray.count < 1 {
+                                        let alert = UIAlertController(title: "Alert", message: "You currently don't have any Facebook friends participating in this event.", preferredStyle: UIAlertControllerStyle.Alert)
+                                        alert.addAction(UIAlertAction(title: "Okay", style: UIAlertActionStyle.Default, handler: nil))
+                                        self.presentViewController(alert, animated: true, completion: nil)
+                                    }
+                                } else {
+                                    let alert = UIAlertController(title: "Alert", message: "You currently don't have any Facebook friends participating in this event.", preferredStyle: UIAlertControllerStyle.Alert)
+                                    alert.addAction(UIAlertAction(title: "Okay", style: UIAlertActionStyle.Default, handler: nil))
+                                    self.presentViewController(alert, animated: true, completion: nil)
+                                }
+                            } else {
+                                let alert = UIAlertController(title: "Alert", message: "You currently don't have any Facebook friends participating in this event.", preferredStyle: UIAlertControllerStyle.Alert)
+                                alert.addAction(UIAlertAction(title: "Okay", style: UIAlertActionStyle.Default, handler: nil))
+                                self.presentViewController(alert, animated: true, completion: nil)
+                            }
+                        }
+                        
+                    } else {
+                        print(false)
+                        let alert = UIAlertController(title: "Alert", message: "You currently don't have any Facebook friends participating in this event.", preferredStyle: UIAlertControllerStyle.Alert)
+                        alert.addAction(UIAlertAction(title: "Okay", style: UIAlertActionStyle.Default, handler: nil))
+                        self.presentViewController(alert, animated: true, completion: nil)
+                    }
+                }
+            }
             
-//            print(PFUser.currentUser())
-            
-            print(valueDict.objectForKey("id") as? String)
-            friendsDictionaryArray.append(valueDict)
-        }
+        })
     }
     
 }
