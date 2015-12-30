@@ -89,6 +89,10 @@ class OpportunitiesDetailVC: UIViewController, UITableViewDataSource, UITableVie
     func tableView(tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
         tableview = tableView
         
+        if PFUser.currentUser()![USER_TYPE_IS_VOLUNTEER] as! Bool == false {
+            tableView.contentInset = UIEdgeInsets(top: 0, left: 0, bottom: 50, right: 0)
+        }
+        
         if section == 0 {
             return 1
         } else if section == 1 {
@@ -344,6 +348,7 @@ class OpportunitiesDetailVC: UIViewController, UITableViewDataSource, UITableVie
             let editEventButton = UIBarButtonItem(barButtonSystemItem: .Edit, target: self, action: "editEvent")
             self.navigationItem.setRightBarButtonItem(editEventButton, animated: true)
         }
+        
         
         if objectEvent != nil {
             

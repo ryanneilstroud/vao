@@ -22,7 +22,7 @@ class OrgEventsVC: UIViewController, UITableViewDataSource, UITableViewDelegate 
     var tableview: UITableView!
     
     @IBAction func dismissEventsVC(sender: AnyObject) {
-        self.dismissViewControllerAnimated(true, completion: nil)
+        self.navigationController!.dismissViewControllerAnimated(true, completion: nil)
     }
     
     @IBAction func enterDeleteMode(sender: AnyObject) {
