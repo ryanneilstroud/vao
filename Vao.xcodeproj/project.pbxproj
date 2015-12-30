@@ -118,6 +118,17 @@
 		D378FC011C19601C0038EA20 /* Reachability.swift in Sources */ = {isa = PBXBuildFile; fileRef = D378FC001C19601C0038EA20 /* Reachability.swift */; };
 		D3A474DA1C1C7DDB001575AA /* EventParticipantValidation.swift in Sources */ = {isa = PBXBuildFile; fileRef = D3A474D91C1C7DDB001575AA /* EventParticipantValidation.swift */; };
 		D3A474DC1C1FE217001575AA /* OrgHandleEventInvites.swift in Sources */ = {isa = PBXBuildFile; fileRef = D3A474DB1C1FE217001575AA /* OrgHandleEventInvites.swift */; };
+		D3BAF4D71C344BCA00C13593 /* fa-hand-peace-o_100_25_ffffff_2bd49c.png in Resources */ = {isa = PBXBuildFile; fileRef = D3BAF4D61C344BCA00C13593 /* fa-hand-peace-o_100_25_ffffff_2bd49c.png */; };
+		D3BAF4D91C344CA700C13593 /* CreateNewCategory.swift in Sources */ = {isa = PBXBuildFile; fileRef = D3BAF4D81C344CA700C13593 /* CreateNewCategory.swift */; };
+		D3BAF4DB1C344D0400C13593 /* CreateNewCategoryView.xib in Resources */ = {isa = PBXBuildFile; fileRef = D3BAF4DA1C344D0400C13593 /* CreateNewCategoryView.xib */; };
+		D3BAF4DD1C344F2D00C13593 /* CreateNewCategoryCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = D3BAF4DC1C344F2D00C13593 /* CreateNewCategoryCell.xib */; };
+		D3BAF4DF1C34514B00C13593 /* CreateNewCategoryCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = D3BAF4DE1C34514B00C13593 /* CreateNewCategoryCell.swift */; };
+		D3BAF4E11C34594900C13593 /* oi-question-mark_100_25_ffffff_bfbfbf.png in Resources */ = {isa = PBXBuildFile; fileRef = D3BAF4E01C34594900C13593 /* oi-question-mark_100_25_ffffff_bfbfbf.png */; };
+		D3BAF4E31C345D3A00C13593 /* fa-heart_100_25_ffffff_ff49d2.png in Resources */ = {isa = PBXBuildFile; fileRef = D3BAF4E21C345D3A00C13593 /* fa-heart_100_25_ffffff_ff49d2.png */; };
+		D3BAF4E51C345D9F00C13593 /* ion-ios-baseball_100_25_ffffff_499dff.png in Resources */ = {isa = PBXBuildFile; fileRef = D3BAF4E41C345D9F00C13593 /* ion-ios-baseball_100_25_ffffff_499dff.png */; };
+		D3BAF4E71C345DCF00C13593 /* pe-7s-science_100_25_ffffff_9f49ff.png in Resources */ = {isa = PBXBuildFile; fileRef = D3BAF4E61C345DCF00C13593 /* pe-7s-science_100_25_ffffff_9f49ff.png */; };
+		D3BAF4E91C345E3900C13593 /* fa-tablet_100_25_ffffff_ff4949.png in Resources */ = {isa = PBXBuildFile; fileRef = D3BAF4E81C345E3900C13593 /* fa-tablet_100_25_ffffff_ff4949.png */; };
+		D3BAF4EB1C345E6B00C13593 /* ion-ios-game-controller-a_100_25_ffffff_ffe249.png in Resources */ = {isa = PBXBuildFile; fileRef = D3BAF4EA1C345E6B00C13593 /* ion-ios-game-controller-a_100_25_ffffff_ffe249.png */; };
 		D3BCCB741C0C72C000B32F50 /* OrgEditProfileVC.swift in Sources */ = {isa = PBXBuildFile; fileRef = D3BCCB731C0C72C000B32F50 /* OrgEditProfileVC.swift */; };
 		D3C0EF6F1C23064B00C67493 /* SummaryViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = D3C0EF6E1C23064B00C67493 /* SummaryViewController.swift */; };
 		D3C0EF731C23389D00C67493 /* ion-android-arrow-dropup_256_0_ffffff_none.png in Resources */ = {isa = PBXBuildFile; fileRef = D3C0EF721C23389D00C67493 /* ion-android-arrow-dropup_256_0_ffffff_none.png */; };
@@ -262,6 +273,17 @@
 		D378FC001C19601C0038EA20 /* Reachability.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Reachability.swift; sourceTree = "<group>"; };
 		D3A474D91C1C7DDB001575AA /* EventParticipantValidation.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = EventParticipantValidation.swift; sourceTree = "<group>"; };
 		D3A474DB1C1FE217001575AA /* OrgHandleEventInvites.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = OrgHandleEventInvites.swift; sourceTree = "<group>"; };
+		D3BAF4D61C344BCA00C13593 /* fa-hand-peace-o_100_25_ffffff_2bd49c.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "fa-hand-peace-o_100_25_ffffff_2bd49c.png"; sourceTree = "<group>"; };
+		D3BAF4D81C344CA700C13593 /* CreateNewCategory.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CreateNewCategory.swift; sourceTree = "<group>"; };
+		D3BAF4DA1C344D0400C13593 /* CreateNewCategoryView.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = CreateNewCategoryView.xib; sourceTree = "<group>"; };
+		D3BAF4DC1C344F2D00C13593 /* CreateNewCategoryCell.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = CreateNewCategoryCell.xib; sourceTree = "<group>"; };
+		D3BAF4DE1C34514B00C13593 /* CreateNewCategoryCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CreateNewCategoryCell.swift; sourceTree = "<group>"; };
+		D3BAF4E01C34594900C13593 /* oi-question-mark_100_25_ffffff_bfbfbf.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "oi-question-mark_100_25_ffffff_bfbfbf.png"; sourceTree = "<group>"; };
+		D3BAF4E21C345D3A00C13593 /* fa-heart_100_25_ffffff_ff49d2.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "fa-heart_100_25_ffffff_ff49d2.png"; sourceTree = "<group>"; };
+		D3BAF4E41C345D9F00C13593 /* ion-ios-baseball_100_25_ffffff_499dff.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "ion-ios-baseball_100_25_ffffff_499dff.png"; sourceTree = "<group>"; };
+		D3BAF4E61C345DCF00C13593 /* pe-7s-science_100_25_ffffff_9f49ff.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "pe-7s-science_100_25_ffffff_9f49ff.png"; sourceTree = "<group>"; };
+		D3BAF4E81C345E3900C13593 /* fa-tablet_100_25_ffffff_ff4949.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "fa-tablet_100_25_ffffff_ff4949.png"; sourceTree = "<group>"; };
+		D3BAF4EA1C345E6B00C13593 /* ion-ios-game-controller-a_100_25_ffffff_ffe249.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "ion-ios-game-controller-a_100_25_ffffff_ffe249.png"; sourceTree = "<group>"; };
 		D3BCCB731C0C72C000B32F50 /* OrgEditProfileVC.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = OrgEditProfileVC.swift; sourceTree = "<group>"; };
 		D3C0EF6E1C23064B00C67493 /* SummaryViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SummaryViewController.swift; sourceTree = "<group>"; };
 		D3C0EF721C23389D00C67493 /* ion-android-arrow-dropup_256_0_ffffff_none.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "ion-android-arrow-dropup_256_0_ffffff_none.png"; sourceTree = "<group>"; };
@@ -366,10 +388,17 @@
 		D3202F981BF44F660001F19A /* category */ = {
 			isa = PBXGroup;
 			children = (
+				D3BAF4E01C34594900C13593 /* oi-question-mark_100_25_ffffff_bfbfbf.png */,
 				D3DEE91D1C22B9B500449E24 /* lsf-category_100_25_ffffff_e0c71c.png */,
 				D3D9B8ED1BFCB4C300A3659D /* lsf-walking_100_25_ffffff_2197ed.png */,
 				D3202F961BF44F060001F19A /* fa-hospital-o_100_25_ffffff_ed8f21.png */,
+				D3BAF4D61C344BCA00C13593 /* fa-hand-peace-o_100_25_ffffff_2bd49c.png */,
 				D3D9B8EA1BFCB3F000A3659D /* fa-book_100_25_ffffff_21ed8b.png */,
+				D3BAF4E21C345D3A00C13593 /* fa-heart_100_25_ffffff_ff49d2.png */,
+				D3BAF4E41C345D9F00C13593 /* ion-ios-baseball_100_25_ffffff_499dff.png */,
+				D3BAF4E61C345DCF00C13593 /* pe-7s-science_100_25_ffffff_9f49ff.png */,
+				D3BAF4E81C345E3900C13593 /* fa-tablet_100_25_ffffff_ff4949.png */,
+				D3BAF4EA1C345E6B00C13593 /* ion-ios-game-controller-a_100_25_ffffff_ffe249.png */,
 			);
 			name = category;
 			sourceTree = "<group>";
@@ -422,6 +451,10 @@
 				D3339A201C26038700A16EAA /* ChangeLocationVC.swift */,
 				D305BF4F1C07436700729B64 /* UserDataClass.swift */,
 				D3A474D91C1C7DDB001575AA /* EventParticipantValidation.swift */,
+				D3BAF4D81C344CA700C13593 /* CreateNewCategory.swift */,
+				D3BAF4DA1C344D0400C13593 /* CreateNewCategoryView.xib */,
+				D3BAF4DC1C344F2D00C13593 /* CreateNewCategoryCell.xib */,
+				D3BAF4DE1C34514B00C13593 /* CreateNewCategoryCell.swift */,
 				D378FBF11C147E810038EA20 /* profile */,
 				D3D9B8EF1BFCBBD500A3659D /* org_volunteers */,
 				D3D9B8F41BFCBC9900A3659D /* notifications */,
@@ -651,6 +684,7 @@
 				D33F143E1BFE2FF600555931 /* Montserrat-Bold.ttf in Resources */,
 				D3339A191C25F8C200A16EAA /* FacebookFriendCell.xib in Resources */,
 				D33F143F1BFE2FF600555931 /* Montserrat-Regular.ttf in Resources */,
+				D3BAF4DD1C344F2D00C13593 /* CreateNewCategoryCell.xib in Resources */,
 				D3202F8E1BF442BA0001F19A /* ion-ios-cog-outline_0_ffffff_none@3x.png in Resources */,
 				D3D9B8EC1BFCB3F000A3659D /* fa-book_100_25_ffffff_21ed8b.png in Resources */,
 				D33F14231BFDB56000555931 /* TextviewCell.xib in Resources */,
@@ -658,13 +692,18 @@
 				D3202F811BF440860001F19A /* pe-7s-user_0_ffffff_none@2x.png in Resources */,
 				D3202FC31BF8B7FC0001F19A /* ion-ios-location-outline_256_0_c3c3c3_none.png in Resources */,
 				D32D92D91BF8C8E8001C35A8 /* vao_logo_full_alt1.png in Resources */,
+				D3BAF4E91C345E3900C13593 /* fa-tablet_100_25_ffffff_ff4949.png in Resources */,
+				D3BAF4EB1C345E6B00C13593 /* ion-ios-game-controller-a_100_25_ffffff_ffe249.png in Resources */,
+				D3BAF4E51C345D9F00C13593 /* ion-ios-baseball_100_25_ffffff_499dff.png in Resources */,
 				D3D9B90F1BFCDDF000A3659D /* ion-ios-star-outline_100_0_a3a3a3_none.png in Resources */,
 				D33F14391BFE242E00555931 /* RatedCell.xib in Resources */,
+				D3BAF4E11C34594900C13593 /* oi-question-mark_100_25_ffffff_bfbfbf.png in Resources */,
 				D3202FA81BF853460001F19A /* vao_logo_full.png in Resources */,
 				D3202F881BF441B90001F19A /* ion-ios-bell-outline_0_ffffff_none@2x.png in Resources */,
 				D30A057C1BFCECC100B8F72A /* FullButtonCell.xib in Resources */,
 				D3C0EF731C23389D00C67493 /* ion-android-arrow-dropup_256_0_ffffff_none.png in Resources */,
 				D36738C81C105B99002CE8DB /* TableView.xib in Resources */,
+				D3BAF4DB1C344D0400C13593 /* CreateNewCategoryView.xib in Resources */,
 				D3DEE9241C22D3CC00449E24 /* LaunchImage.png in Resources */,
 				D305BF401C05DAB600729B64 /* DetailPickerView.xib in Resources */,
 				D3202FC11BF8B7FC0001F19A /* ion-ios-calendar-outline_256_0_c3c3c3_none.png in Resources */,
@@ -691,9 +730,11 @@
 				D3202FC41BF8B7FC0001F19A /* pe-7s-repeat_256_0_c3c3c3_none.png in Resources */,
 				D33F14191BFD9B6600555931 /* SimpleButtonCell.xib in Resources */,
 				D339474A1BEB3DD200ED53F7 /* Main.storyboard in Resources */,
+				D3BAF4D71C344BCA00C13593 /* fa-hand-peace-o_100_25_ffffff_2bd49c.png in Resources */,
 				D378FBFF1C181FF50038EA20 /* lsf-category_128_0_c3c3c3_none.png in Resources */,
 				D3202F851BF441340001F19A /* ion-ios-calendar-outline_0_ffffff_none@3x.png in Resources */,
 				D3202FC81BF8BE310001F19A /* ion-ios-arrow-forward_128_0_c3c3c3_none.png in Resources */,
+				D3BAF4E31C345D3A00C13593 /* fa-heart_100_25_ffffff_ff49d2.png in Resources */,
 				D3ECA1AC1BFA45AA0072AAFB /* DetailDatePickerView.xib in Resources */,
 				D32D92DC1BF8C93A001C35A8 /* RecoverPassword.xib in Resources */,
 				D32D92DA1BF8C8E8001C35A8 /* vao_logo_full_alt2.png in Resources */,
@@ -705,6 +746,7 @@
 				D3202F6B1BF369610001F19A /* OpportunitiesCell.xib in Resources */,
 				D33F14371BFE196300555931 /* SignUp.xib in Resources */,
 				D3202F931BF4493F0001F19A /* CategoriesCell.xib in Resources */,
+				D3BAF4E71C345DCF00C13593 /* pe-7s-science_100_25_ffffff_9f49ff.png in Resources */,
 				D3DEE91E1C22B9B500449E24 /* lsf-category_100_25_ffffff_e0c71c.png in Resources */,
 				D3202F971BF44F060001F19A /* fa-hospital-o_100_25_ffffff_ed8f21.png in Resources */,
 				D34010F11BF31E830031442A /* AttributeValue.xib in Resources */,
@@ -750,6 +792,7 @@
 				D3D9B8FD1BFCC4BE00A3659D /* NotificationsVC.swift in Sources */,
 				D33F143B1BFE245600555931 /* RatedCell.swift in Sources */,
 				D3C0EF6F1C23064B00C67493 /* SummaryViewController.swift in Sources */,
+				D3BAF4DF1C34514B00C13593 /* CreateNewCategoryCell.swift in Sources */,
 				D305BF3E1C05998B00729B64 /* EventClass.swift in Sources */,
 				D3339A211C26038700A16EAA /* ChangeLocationVC.swift in Sources */,
 				D33F14311BFE035C00555931 /* OrgEventsVC.swift in Sources */,
@@ -769,6 +812,7 @@
 				D305BF3C1C058F3F00729B64 /* NewEventCollectSelectionVC.swift in Sources */,
 				D3202FB61BF8A3550001F19A /* NewEventVC.swift in Sources */,
 				D3202F711BF380F20001F19A /* OpportunitesDetailVC.swift in Sources */,
+				D3BAF4D91C344CA700C13593 /* CreateNewCategory.swift in Sources */,
 				D3D9B8DB1BFAF7B600A3659D /* VolunteersTVC.swift in Sources */,
 				D3202F6F1BF36AED0001F19A /* OpportunitiesCell.swift in Sources */,
 				D33947571BEB44F700ED53F7 /* OpportunitiesVC.swift in Sources */,

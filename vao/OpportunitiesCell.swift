@@ -69,6 +69,27 @@ class OpportuntiesCell: UITableViewCell {
         categoriesImageView.clipsToBounds = true
     }
     
+    func refreshCellWithCategoryObject(_object: PFObject) {
+        categoriesImageView.layer.cornerRadius = 10
+        categoriesImageView.clipsToBounds = true
+        
+        if let userImageFile = _object["categoryIcon"] as? PFFile {
+            userImageFile.getDataInBackgroundWithBlock {
+                (imageData: NSData?, error: NSError?) -> Void in
+                if error == nil {
+                    if let imageData = imageData {
+                        let image = UIImage(data:imageData)
+                        self.categoriesImageView.image = image
+                        self.categoriesLabel.text = _object["category"] as? String
+                    }
+                }
+            }
+        } else {
+            self.categoriesLabel.text = _object["category"] as? String
+            self.categoriesImageView.image = UIImage(named: "oi-question-mark_100_25_ffffff_bfbfbf.png")!
+        }
+    }
+    
     func refreshCellWithObject(object: PFObject) {
         opportunityTitle.text = object["title"] as? String
         

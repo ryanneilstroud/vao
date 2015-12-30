@@ -61,6 +61,14 @@ class OrgNotificationsVC: UIViewController, UITableViewDataSource, UITableViewDe
             tableView.rowHeight = 100
             let cell: NotificationsCell = tableView.dequeueReusableCellWithIdentifier("cell", forIndexPath: indexPath) as! NotificationsCell
             
+            let formatter = NSDateFormatter()
+            formatter.dateStyle = NSDateFormatterStyle.MediumStyle
+            formatter.timeStyle = .ShortStyle
+            
+            let dateString = formatter.stringFromDate(notifications[indexPath.row].updatedAt!)
+            
+            cell.dateLabel.text = dateString
+            
             let status = eventParticipantValidations[indexPath.row][self.STATUS] as! String
             let initiatorIsVolunteer = eventParticipantValidations[indexPath.row][self.INITIATOR_TYPE_IS_VOLUNTEER] as! Bool
             
@@ -87,6 +95,14 @@ class OrgNotificationsVC: UIViewController, UITableViewDataSource, UITableViewDe
             
             cell.refreshNotificationsCellWithData(organizations[indexPath.row]["orgImage"] as? PFFile, _text: "You can now review " + String(organizations[indexPath.row]["fullName"]) + " based on their performance at " + String(events[indexPath.row]["title"]))
             
+            let formatter = NSDateFormatter()
+            formatter.dateStyle = NSDateFormatterStyle.MediumStyle
+            formatter.timeStyle = .ShortStyle
+            
+            let dateString = formatter.stringFromDate(notifications[indexPath.row].updatedAt!)
+            
+            cell.dateLabel.text = dateString
+            
             return cell
         }
     }
@@ -112,7 +128,7 @@ class OrgNotificationsVC: UIViewController, UITableViewDataSource, UITableViewDe
         print("getting notifications")
         let notificationQuery = PFQuery(className: NOTIFICATION_CLASS)
         notificationQuery.whereKey(RECEIVER, equalTo: PFUser.currentUser()!)
-        notificationQuery.orderByAscending(UPDATED_AT)
+        notificationQuery.orderByDescending(UPDATED_AT)
         notificationQuery.findObjectsInBackgroundWithBlock {
             (notifications: [PFObject]?, error: NSError?) -> Void in
             if error == nil {

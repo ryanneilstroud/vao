@@ -79,6 +79,13 @@ class NotificationsVC: UIViewController, UITableViewDataSource, UITableViewDeleg
             } else if status == self.DECLINED && initiatorIsVolunteer {
                 cell.refreshNotificationsCellWithData(organizations[indexPath.row]["orgImage"] as? PFFile, _text: String(organizations[indexPath.row]["fullName"]) + " declined your request to join " + String(events[indexPath.row]["title"]))
             }
+            let formatter = NSDateFormatter()
+            formatter.dateStyle = NSDateFormatterStyle.MediumStyle
+            formatter.timeStyle = .ShortStyle
+            
+            let dateString = formatter.stringFromDate(notifications[indexPath.row].updatedAt!)
+            
+            cell.dateLabel.text = dateString
             
             return cell
         } else {
@@ -89,6 +96,14 @@ class NotificationsVC: UIViewController, UITableViewDataSource, UITableViewDeleg
             let cell: NotificationsCell = tableView.dequeueReusableCellWithIdentifier("cell", forIndexPath: indexPath) as! NotificationsCell
             
             cell.refreshNotificationsCellWithData(organizations[indexPath.row]["orgImage"] as? PFFile, _text: "You can now review " + String(organizations[indexPath.row]["fullName"]) + " and their event, " + String(events[indexPath.row]["title"]))
+            
+            let formatter = NSDateFormatter()
+            formatter.dateStyle = NSDateFormatterStyle.MediumStyle
+            formatter.timeStyle = .ShortStyle
+            
+            let dateString = formatter.stringFromDate(notifications[indexPath.row].updatedAt!)
+            
+            cell.dateLabel.text = dateString
             
             return cell
         }
@@ -112,7 +127,7 @@ class NotificationsVC: UIViewController, UITableViewDataSource, UITableViewDeleg
         print("getting notifications")
         let notificationQuery = PFQuery(className: NOTIFICATION_CLASS)
         notificationQuery.whereKey(RECEIVER, equalTo: PFUser.currentUser()!)
-        notificationQuery.orderByAscending("createdAt")
+        notificationQuery.orderByAscending("updatedAt")
         notificationQuery.findObjectsInBackgroundWithBlock {
             (notifications: [PFObject]?, error: NSError?) -> Void in
             if error == nil {
@@ -126,6 +141,7 @@ class NotificationsVC: UIViewController, UITableViewDataSource, UITableViewDeleg
                     
                     for notification in notifications! {
                         let eventParticipantValidations = PFQuery(className: self.EVENT_PARTICIPANT_VALIDATION)
+                        eventParticipantValidations.orderByAscending("updatedAt")
                         eventParticipantValidations.getObjectInBackgroundWithId(notification[self.NOTIFICATION_TYPE_POINTER_AT] as! String) {
                             (eventParticipantValidation: PFObject?, error: NSError?) -> Void in
                             if error == nil {
@@ -134,6 +150,7 @@ class NotificationsVC: UIViewController, UITableViewDataSource, UITableViewDeleg
                                 print(eventParticipantValidation)
                                 
                                 let events = PFQuery(className: self.EVENT_CLASS)
+                                events.orderByAscending("updatedAt")
                                 events.getObjectInBackgroundWithId(eventParticipantValidation![self.EVENT_ID] as! String) {
                                     (event: PFObject?, error: NSError?) -> Void in
                                     if error == nil {

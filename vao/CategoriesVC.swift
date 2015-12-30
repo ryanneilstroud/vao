@@ -22,12 +22,10 @@ class CategoriesVC: UIViewController, UITableViewDataSource, UITableViewDelegate
     var creatingEvent = false
     var tv = UITableView()
     
-    let image : [UIImage] = [UIImage(named: "lsf-category_100_25_ffffff_e0c71c.png")!,
-                                UIImage(named: "lsf-walking_100_25_ffffff_2197ed.png")!,
-                                UIImage(named: "fa-hospital-o_100_25_ffffff_ed8f21.png")!,
-                                UIImage(named: "fa-book_100_25_ffffff_21ed8b.png")!]
-    
     var names = [String]()
+    var images = [UIImage]()
+    
+    var categories = [PFObject]()
     
     func tableView(tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
         tv = tableView
@@ -41,25 +39,10 @@ class CategoriesVC: UIViewController, UITableViewDataSource, UITableViewDelegate
         
         tableView.rowHeight = 70
         tableView.registerNib(nib, forCellReuseIdentifier: "category")
-        cell = tableView.dequeueReusableCellWithIdentifier("category", forIndexPath: indexPath) as! OpportuntiesCell;
-//        cell.refreshCellWithCategoryData(image[indexPath.row], categoryName: name[indexPath.row])
+        cell = tableView.dequeueReusableCellWithIdentifier("category", forIndexPath: indexPath) as! OpportuntiesCell
         
-        if names[indexPath.row] == "All Categories" {
-            cell.categoriesImageView.image = nil
-            cell.refreshCellWithCategoryData(UIImage(named: "lsf-category_100_25_ffffff_e0c71c.png")!, categoryName: names[indexPath.row])
-        } else if names[indexPath.row] == "Tutor" {
-            cell.categoriesImageView.image = nil
-            cell.refreshCellWithCategoryData(UIImage(named: "fa-book_100_25_ffffff_21ed8b.png")!, categoryName: names[indexPath.row])
-        } else if names[indexPath.row] == "Delivery" {
-            cell.categoriesImageView.image = nil
-            cell.refreshCellWithCategoryData(UIImage(named: "lsf-walking_100_25_ffffff_2197ed.png")!, categoryName: names[indexPath.row])
-        } else if names[indexPath.row] == "Medical" {
-            cell.categoriesImageView.image = nil
-            cell.refreshCellWithCategoryData(UIImage(named: "fa-hospital-o_100_25_ffffff_ed8f21.png")!, categoryName: names[indexPath.row])
-        } else {
-            cell.categoriesImageView.image = nil
-            cell.categoriesLabel.text = names[indexPath.row]
-        }
+//        cell.refreshCellWithCategoryData(images[indexPath.row], categoryName: names[indexPath.row])
+        cell.refreshCellWithCategoryObject(categories[indexPath.row])
         
         return cell
     }
@@ -98,37 +81,8 @@ class CategoriesVC: UIViewController, UITableViewDataSource, UITableViewDelegate
     
     func addNewCategory() {
         
-        let alert = UIAlertController(title: "New Category", message: nil, preferredStyle: UIAlertControllerStyle.Alert)
-        alert.addTextFieldWithConfigurationHandler({(textField: UITextField!) in
-//            myTextField = textField.text!
-        })
-        alert.addAction(UIAlertAction(title: "Create", style: UIAlertActionStyle.Default, handler: { action in
-            print("created")
-            let tf = alert.textFields![0] as UITextField
-            print("textfield = ",tf.text)
-            
-//            for name in self.names {
-//                if name != tf.text {
-//                
-//                }
-//            }
-            
-            let newCategory = PFObject(className: "Category")
-            newCategory["category"] = tf.text!
-            newCategory.saveInBackgroundWithBlock({
-                (success: Bool?, error: NSError?) -> Void in
-                if success == true {
-                    //refreshTable
-                    self.names.removeAll()
-                    self.loadCategories()
-                } else {
-                    print(error)
-                }
-            })
-
-        }))
-        alert.addAction(UIAlertAction(title: "Cancel", style: UIAlertActionStyle.Cancel, handler: nil))
-        self.presentViewController(alert, animated: true, completion: nil)
+        let vc = CreateNewCategory(nibName:"CreateNewCategoryView", bundle: nil)
+        navigationController?.pushViewController(vc, animated: true)
     }
     
     func loadCategories() {
@@ -137,7 +91,13 @@ class CategoriesVC: UIViewController, UITableViewDataSource, UITableViewDelegate
         categoriesQuery.findObjectsInBackgroundWithBlock {
             (categories: [PFObject]?, error: NSError?) -> Void in
             if error == nil {
+                
+                self.categories.removeAll()
+                self.names.removeAll()
+                
                 for category in categories! {
+                    
+                    self.categories.append(category)
                     self.names.append(category["category"] as! String)
                     self.tv.reloadData()
                 }
@@ -155,8 +115,6 @@ class CategoriesVC: UIViewController, UITableViewDataSource, UITableViewDelegate
             navigationItem.rightBarButtonItem = addCategoryButton
         }
         
-        loadCategories()
-        
         // Do any additional setup after loading the view, typically from a nib.
     }
     
@@ -168,5 +126,9 @@ class CategoriesVC: UIViewController, UITableViewDataSource, UITableViewDelegate
     @IBAction func dismissCategories(sender: AnyObject) {
         
         self.dismissViewControllerAnimated(true, completion: nil)
+    }
+    
+    override func viewDidAppear(animated: Bool) {
+        loadCategories()
     }
 }

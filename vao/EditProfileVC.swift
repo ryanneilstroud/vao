@@ -212,13 +212,27 @@ class EditProfileVC: UIViewController, UITableViewDataSource, UITableViewDelegat
         return (emailTest.evaluateWithObject(iconTextFieldText[1]))
     }
     
+    func validatePhoneNumber(_url: String) -> Bool {
+        let phoneNumberRegExArray = ["\\(\\d{3}\\)\\s\\d{3}-\\d{4}","\\(\\d{3}\\)\\d{3}-\\d{4}","^\\d{3}-\\d{3}-\\d{4}$","1-\\d{3}-\\d{3}-\\d{4}","\\d{3}\\.\\d{3}\\.\\d{4}"]
+        
+        for x in 0...phoneNumberRegExArray.count - 1 {
+            let phoneTest = NSPredicate(format: "SELF MATCHES %@", phoneNumberRegExArray[x])
+            let result = phoneTest.evaluateWithObject(_url)
+            
+            if result == true {
+                return true
+            }
+        }
+        
+        return false
+    }
+    
     func saveUserData() {
         
         saveButton.enabled = false
         
         if checkEmail() {
-            let num = Int(iconTextFieldText[0])
-            if num != nil {
+            if validatePhoneNumber(iconTextFieldText[0]){
                 print("valid email: ", iconTextFieldText[1])
                 if Reachability.isConnectedToNetwork() {
                     let currentUser = PFUser.currentUser()
@@ -282,7 +296,7 @@ class EditProfileVC: UIViewController, UITableViewDataSource, UITableViewDelegat
                     self.saveButton.enabled = true
                 }
             } else {
-                let alert = UIAlertController(title: "Invalid Phone Number", message: "Please enter a phone number.", preferredStyle: UIAlertControllerStyle.Alert)
+                let alert = UIAlertController(title: "Invalid Phone Number", message: "Please enter a phone number. Example: 555-123-1234", preferredStyle: UIAlertControllerStyle.Alert)
                 alert.addAction(UIAlertAction(title: "Okay", style: UIAlertActionStyle.Default, handler: nil))
                 self.presentViewController(alert, animated: true, completion: nil)
                 

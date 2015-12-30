@@ -13,6 +13,7 @@ class NotificationsCell: UITableViewCell {
 
     @IBOutlet var notificationText: UITextView!
     @IBOutlet var profilePicture: UIImageView!
+    @IBOutlet var dateLabel: UILabel!
     
     func refreshNotificationsCellWithData(_file: PFFile?, _text: String) {
     

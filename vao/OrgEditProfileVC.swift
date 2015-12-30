@@ -28,7 +28,7 @@ class OrgEditProfileVC: UIViewController, UITableViewDataSource, UITableViewDele
     let icons = [UIImage(named: "ion-ios-telephone-outline_256_0_c3c3c3_none.png"), UIImage(named: "ion-ios-email-outline_256_0_c3c3c3_none.png"), UIImage(named: "ion-ios-world-outline_256_0_c3c3c3_none.png")]
     let placeholders = ["phone number","email","website"]
     var iconTextFieldText = ["","",""]
-    let keyboardType = [UIKeyboardType.PhonePad, UIKeyboardType.EmailAddress, UIKeyboardType.URL]
+    let keyboardType = [UIKeyboardType.NumbersAndPunctuation, UIKeyboardType.EmailAddress, UIKeyboardType.URL]
     
     func numberOfSectionsInTableView(tableView: UITableView) -> Int {
         return 3
@@ -146,30 +146,43 @@ class OrgEditProfileVC: UIViewController, UITableViewDataSource, UITableViewDele
         }
     }
     
-    func verifyUrl (urlString: String?) -> Bool {
-//        Check for nil
-        if let urlString = urlString {
-            // create NSURL instance
-            if let url = NSURL(string: urlString) {
-                // check if your application can open the NSURL instance
-                return UIApplication.sharedApplication().canOpenURL(url)
+    func validatePhoneNumber(_url: String) -> Bool {
+        let phoneNumberRegExArray = ["\\(\\d{3}\\)\\s\\d{3}-\\d{4}","\\(\\d{3}\\)\\d{3}-\\d{4}","^\\d{3}-\\d{3}-\\d{4}$","1-\\d{3}-\\d{3}-\\d{4}","\\d{3}\\.\\d{3}\\.\\d{4}"]
+        
+        for x in 0...phoneNumberRegExArray.count - 1 {
+            let phoneTest = NSPredicate(format: "SELF MATCHES %@", phoneNumberRegExArray[x])
+            let result = phoneTest.evaluateWithObject(_url)
+            
+            if result == true {
+                return true
             }
         }
-        return false
         
-
+        return false
     }
     
-    func validateUrl(urlString: String?) -> Bool {
-        let regEx = "(http|https)://((\\w)*|([0-9]*)|([-|_])*)+([\\.|/]((\\w)*|([0-9]*)|([-|_])*))+"
-        let urlTest = NSPredicate(format: "SELF MATCHES %@", regEx)
-        return urlTest.evaluateWithObject(urlString)
+    func validateUrl(_url: String) -> Bool {
+        let urlRegExArray = ["www\\.[a-z0-9_~-]*\\.(?:com|net|org|edu|gov)",
+            "[a-z0-9_~-]*\\.(?:com|net|org|edu|gov)",
+            "(http://|https://)www\\.[a-z0-9_~-]*\\.(?:com|net|org|edu|gov)",
+            "(http://|https://)[a-z0-9_~-]*\\.(?:com|net|org|edu|gov)"]
+        
+        for x in 0...urlRegExArray.count - 1 {
+            let phoneTest = NSPredicate(format: "SELF MATCHES %@", urlRegExArray[x])
+            let result = phoneTest.evaluateWithObject(_url.lowercaseString)
+            
+            if result == true {
+                print(x)
+                return true
+            }
+        }
+        
+        return false
     }
     
     func saveUserData() {
 
-        let num = Int(iconTextFieldText[0])
-        if num != nil {
+        if validatePhoneNumber(iconTextFieldText[0]) {
             if validateUrl(iconTextFieldText[2]){
                 let currentUser = PFUser.currentUser()
                 currentUser!["fullName"] = name
@@ -201,13 +214,13 @@ class OrgEditProfileVC: UIViewController, UITableViewDataSource, UITableViewDele
                     }
                 }
             } else {
-                let alert = UIAlertController(title: "Invalid Web Address", message: "Please enter a valid web address that starts with http://www. or https://www.", preferredStyle: UIAlertControllerStyle.Alert)
+                let alert = UIAlertController(title: "Invalid Web Address", message: "Please enter a valid web address. Example: www.example.com", preferredStyle: UIAlertControllerStyle.Alert)
                 alert.addAction(UIAlertAction(title: "Okay", style: UIAlertActionStyle.Default, handler: nil))
                 self.presentViewController(alert, animated: true, completion: nil)
             }
 
         } else {
-            let alert = UIAlertController(title: "Invalid Phone Number", message: "Please enter a valid phone number.", preferredStyle: UIAlertControllerStyle.Alert)
+            let alert = UIAlertController(title: "Invalid Phone Number", message: "Please enter a valid phone number. Example: 555-123-1234", preferredStyle: UIAlertControllerStyle.Alert)
             alert.addAction(UIAlertAction(title: "Okay", style: UIAlertActionStyle.Default, handler: nil))
             self.presentViewController(alert, animated: true, completion: nil)
         }

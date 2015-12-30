@@ -33,20 +33,33 @@
                         <fontDescription key="fontDescription" type="system" pointSize="16"/>
                         <textInputTraits key="textInputTraits" autocapitalizationType="sentences"/>
                     </textView>
+                    <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="date" textAlignment="right" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="tw0-oE-G2K">
+                        <rect key="frame" x="81" y="51" width="206" height="21"/>
+                        <constraints>
+                            <constraint firstAttribute="height" constant="21" id="Tf9-ba-8zV"/>
+                            <constraint firstAttribute="width" constant="206" id="xht-SG-NJ3"/>
+                        </constraints>
+                        <fontDescription key="fontDescription" type="system" pointSize="12"/>
+                        <color key="textColor" red="0.0" green="0.0" blue="0.0" alpha="1" colorSpace="calibratedRGB"/>
+                        <nil key="highlightedColor"/>
+                    </label>
                 </subviews>
                 <constraints>
                     <constraint firstItem="PXn-cK-aeT" firstAttribute="centerY" secondItem="Dey-sI-ZbF" secondAttribute="centerY" id="MVN-NO-7n3"/>
                     <constraint firstItem="Nrp-Et-x9k" firstAttribute="top" secondItem="Dey-sI-ZbF" secondAttribute="topMargin" constant="-1" id="Pbt-lR-wuV"/>
                     <constraint firstAttribute="bottomMargin" secondItem="Nrp-Et-x9k" secondAttribute="bottom" id="aAl-Cm-bBA"/>
                     <constraint firstItem="Nrp-Et-x9k" firstAttribute="leading" secondItem="PXn-cK-aeT" secondAttribute="trailing" constant="8" id="g4a-si-9o6"/>
+                    <constraint firstItem="tw0-oE-G2K" firstAttribute="top" secondItem="Nrp-Et-x9k" secondAttribute="bottom" constant="-21" id="q0e-12-kBx"/>
                     <constraint firstAttribute="leadingMargin" secondItem="PXn-cK-aeT" secondAttribute="leading" id="sC9-Xe-BUL"/>
                 </constraints>
             </tableViewCellContentView>
             <constraints>
                 <constraint firstAttribute="trailing" secondItem="Nrp-Et-x9k" secondAttribute="trailing" constant="24" id="OXI-Mr-S37"/>
+                <constraint firstAttribute="trailing" secondItem="tw0-oE-G2K" secondAttribute="trailing" constant="33" id="l4W-Ob-UD1"/>
                 <constraint firstItem="Nrp-Et-x9k" firstAttribute="centerY" secondItem="edn-5X-6PI" secondAttribute="centerY" id="yoW-AV-Sa8"/>
             </constraints>
             <connections>
+                <outlet property="dateLabel" destination="tw0-oE-G2K" id="DUn-3q-gtq"/>
                 <outlet property="notificationText" destination="Nrp-Et-x9k" id="dhS-Kx-8mH"/>
                 <outlet property="profilePicture" destination="PXn-cK-aeT" id="KaN-zA-tPa"/>
             </connections>

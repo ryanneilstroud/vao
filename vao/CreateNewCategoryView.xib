@@ -1,0 +1,41 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.XIB" version="3.0" toolsVersion="9531" systemVersion="15C50" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES">
+    <dependencies>
+        <deployment identifier="iOS"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="9529"/>
+    </dependencies>
+    <objects>
+        <placeholder placeholderIdentifier="IBFilesOwner" id="-1" userLabel="File's Owner" customClass="CreateNewCategory" customModule="vao" customModuleProvider="target">
+            <connections>
+                <outlet property="view" destination="iN0-l3-epB" id="N0M-ra-gm4"/>
+            </connections>
+        </placeholder>
+        <placeholder placeholderIdentifier="IBFirstResponder" id="-2" customClass="UIResponder"/>
+        <view contentMode="scaleToFill" id="iN0-l3-epB">
+            <rect key="frame" x="0.0" y="0.0" width="600" height="600"/>
+            <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+            <subviews>
+                <collectionView clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" indicatorStyle="white" dataMode="none" translatesAutoresizingMaskIntoConstraints="NO" id="KcI-wc-rjs">
+                    <rect key="frame" x="0.0" y="0.0" width="600" height="600"/>
+                    <collectionViewFlowLayout key="collectionViewLayout" minimumLineSpacing="10" minimumInteritemSpacing="10" id="Xgk-ON-eid">
+                        <size key="itemSize" width="100" height="100"/>
+                        <size key="headerReferenceSize" width="0.0" height="0.0"/>
+                        <size key="footerReferenceSize" width="0.0" height="0.0"/>
+                        <inset key="sectionInset" minX="10" minY="10" maxX="10" maxY="10"/>
+                    </collectionViewFlowLayout>
+                    <connections>
+                        <outlet property="dataSource" destination="-1" id="VGd-Ez-roH"/>
+                        <outlet property="delegate" destination="-1" id="2b2-Gz-afP"/>
+                    </connections>
+                </collectionView>
+            </subviews>
+            <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="calibratedWhite"/>
+            <constraints>
+                <constraint firstAttribute="bottom" secondItem="KcI-wc-rjs" secondAttribute="bottom" id="1y2-gr-F5T"/>
+                <constraint firstItem="KcI-wc-rjs" firstAttribute="top" secondItem="iN0-l3-epB" secondAttribute="top" id="oWZ-s1-JNn"/>
+                <constraint firstAttribute="trailing" secondItem="KcI-wc-rjs" secondAttribute="trailing" id="rlg-BA-0RA"/>
+                <constraint firstItem="KcI-wc-rjs" firstAttribute="leading" secondItem="iN0-l3-epB" secondAttribute="leading" id="zMt-Yq-0Az"/>
+            </constraints>
+        </view>
+    </objects>
+</document>
